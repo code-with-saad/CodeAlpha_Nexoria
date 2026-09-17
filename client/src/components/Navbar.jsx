@@ -1,10 +1,12 @@
 import React from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
 
 export default function Navbar() {
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
+  const { totalItems } = useCart();
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -41,6 +43,16 @@ export default function Navbar() {
                 Products
               </NavLink>
             </li>
+            {isAuthenticated && (
+              <li>
+                <NavLink
+                  to="/orders"
+                  className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+                >
+                  My Orders
+                </NavLink>
+              </li>
+            )}
           </ul>
         </nav>
 
@@ -48,9 +60,22 @@ export default function Navbar() {
           <Link
             to="/cart"
             className="btn btn-outline"
-            style={{ padding: '0.45rem 0.95rem', fontSize: '0.875rem' }}
+            style={{ padding: '0.45rem 0.95rem', fontSize: '0.875rem', position: 'relative' }}
           >
-            🛒 Cart (0)
+            <span>🛒 Cart</span>
+            <span
+              style={{
+                background: 'var(--color-accent)',
+                color: '#ffffff',
+                fontSize: '0.75rem',
+                fontWeight: 800,
+                borderRadius: 'var(--radius-full)',
+                padding: '0.1rem 0.45rem',
+                marginLeft: '0.35rem'
+              }}
+            >
+              {totalItems}
+            </span>
           </Link>
 
           {isAuthenticated ? (

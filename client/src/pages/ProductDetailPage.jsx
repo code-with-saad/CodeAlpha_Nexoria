@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../services/api';
 import { useToast } from '../context/ToastContext';
+import { useCart } from '../context/CartContext';
 
 const FALLBACK_PRODUCTS_MAP = {
   'mock-1': {
@@ -54,6 +55,7 @@ export default function ProductDetailPage() {
   const [error, setError] = useState(null);
 
   const toast = useToast();
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -94,10 +96,7 @@ export default function ProductDetailPage() {
 
   const handleAddToCart = () => {
     if (!product) return;
-    toast.success(
-      `Added ${quantity} × ${product.name} to cart! (Full cart persistence active in Phase 3)`,
-      { title: 'Added to Cart' }
-    );
+    addToCart(product, quantity);
   };
 
   if (loading) {

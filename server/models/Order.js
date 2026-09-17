@@ -52,6 +52,16 @@ const shippingAddressSchema = new mongoose.Schema(
   { _id: false }
 );
 
+const paymentResultSchema = new mongoose.Schema(
+  {
+    id: { type: String },
+    status: { type: String },
+    update_time: { type: String },
+    email_address: { type: String }
+  },
+  { _id: false }
+);
+
 const orderSchema = new mongoose.Schema(
   {
     user: {
@@ -71,6 +81,26 @@ const orderSchema = new mongoose.Schema(
       type: shippingAddressSchema,
       required: true
     },
+    paymentMethod: {
+      type: String,
+      default: 'Stripe'
+    },
+    paymentResult: paymentResultSchema,
+    itemsPrice: {
+      type: Number,
+      required: true,
+      default: 0.0
+    },
+    taxPrice: {
+      type: Number,
+      required: true,
+      default: 0.0
+    },
+    shippingPrice: {
+      type: Number,
+      required: true,
+      default: 0.0
+    },
     totalAmount: {
       type: Number,
       required: true,
@@ -80,7 +110,7 @@ const orderSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: {
-        values: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'],
+        values: ['Pending', 'Processing', 'Paid', 'Shipped', 'Delivered', 'Cancelled'],
         message: 'Invalid order status'
       },
       default: 'Pending'
@@ -91,6 +121,10 @@ const orderSchema = new mongoose.Schema(
     },
     paidAt: {
       type: Date
+    },
+    isDelivered: {
+      type: Boolean,
+      default: false
     },
     deliveredAt: {
       type: Date
