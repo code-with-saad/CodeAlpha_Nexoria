@@ -9,7 +9,8 @@
 ### Frontend (`/client`)
 - **React 19** with **Vite** — High-performance frontend toolchain
 - **React Router DOM** — Client-side declarative routing
-- **Axios** — Promise-based HTTP client for API communication
+- **Axios** — Promise-based HTTP client with Bearer token interceptor
+- **React Context API** — Global state management (`AuthContext`, `ToastContext`)
 - **Vanilla CSS / Modern CSS Variables** — Design token-driven architecture
 
 ### Backend (`/server`)
@@ -17,6 +18,35 @@
 - **MongoDB** & **Mongoose** — Document-oriented database & object modeling
 - **JSON Web Token (JWT)** & **bcryptjs** — Stateless authentication and password hashing
 - **CORS** & **dotenv** — Cross-origin resource sharing & environment configuration
+
+---
+
+## 🔐 How Authentication Works
+
+Nexoria uses a stateless JSON Web Token (JWT) architecture:
+
+```text
+[User Form] ──(POST /api/auth/login or register)──▶ [Express Server]
+                                                            │
+                                                     [Validate & Hash]
+                                                            │
+[AuthContext / localStorage] ◀──(JWT + User Payload)───────┘
+            │
+    [Axios Interceptor]
+            │
+(Attach Bearer <token>)
+            │
+            ▼
+[Protected Endpoints] ──▶ [authMiddleware (protect/admin)] ──▶ [Controller Action]
+```
+
+1. **Registration & Login**: User submits credentials to `POST /api/auth/register` or `POST /api/auth/login`.
+2. **Password Verification**: `bcryptjs` hashes passwords on save or validates them via `matchPassword()`.
+3. **JWT Issuance**: Server generates a signed JWT (30-day expiry) containing the user `_id`.
+4. **Client-Side Persistence**: `AuthContext` receives the token and user payload, storing them in `localStorage` (`nexoria_token`, `nexoria_user`).
+5. **Automatic Request Header Injection**: An Axios request interceptor (`api.js`) automatically attaches `Authorization: Bearer <token>` to all outgoing requests.
+6. **Protected Route Authorization**: Server-side `protect` middleware verifies the token and attaches `req.user`. `admin` middleware enforces role restrictions for administrative actions.
+7. **Session Expiry & Logout**: If a protected request returns `401 Unauthorized`, the interceptor clears local storage and dispatches a `nexoria-logout` event to reset `AuthContext`.
 
 ---
 
@@ -56,10 +86,10 @@ The design system for **Nexoria** is crafted for high-trust e-commerce conversio
   <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;500;600;700&family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   ```
 
-### 4. Visual Effects & Interaction
-- **Elevation & Depth**: Soft layered drop shadows (`0 4px 20px -2px rgba(5, 150, 105, 0.08)`).
-- **Hover Micro-Interactions**: Smooth 200–300ms cubic-bezier transitions for card lifts and button gradients.
-- **Accessibility**: Guaranteed ≥ 4.5:1 contrast ratio for all readable text; dedicated keyboard `:focus-visible` outlines.
+### 4. Toast Notification System
+- Custom `ToastContext` supporting `success`, `error`, `warning`, and `info` alerts.
+- **Pause-on-Hover**: Timers and animated progress bars pause on hover and seamlessly resume on mouse leave.
+- Zero browser `alert()` or `confirm()` dialogs.
 
 ---
 
@@ -108,7 +138,7 @@ npm install
 Create a `.env` file in the `/server` directory:
 ```env
 PORT=5000
-MONGO_URI=mongodb://localhost:27017/nexoria
+MONGO_URI=mongodb+srv://<username>:<password>@nexoria-cluster.jbp9aug.mongodb.net/nexoria_db?appName=Nexoria-Cluster
 JWT_SECRET=your_jwt_secret_key_here
 NODE_ENV=development
 ```
@@ -140,10 +170,12 @@ Nexoria/
 ├── client/                     # Frontend React + Vite application
 │   ├── public/                 # Static public assets
 │   ├── src/                    # React source code (components, pages, styles)
-│   │   ├── components/         # Reusable UI components
-│   │   ├── pages/              # Routed view pages
-│   │   ├── App.jsx             # React Router routing skeleton
-│   │   ├── index.css           # Design tokens & global CSS
+│   │   ├── components/         # Reusable UI components (Navbar, Footer)
+│   │   ├── context/            # Global React Contexts (AuthContext, ToastContext)
+│   │   ├── pages/              # Routed view pages (Home, Products, Details, Login, Register, Cart)
+│   │   ├── services/           # Axios instance & HTTP interceptors (api.js)
+│   │   ├── App.jsx             # React Router routing skeleton & Context Providers
+│   │   ├── index.css           # Design tokens, toast animations, skeletons & CSS layout
 │   │   └── main.jsx            # Entry point
 │   ├── index.html              # HTML entry point with Google Fonts
 │   ├── package.json            # Client dependencies & scripts
@@ -170,6 +202,6 @@ Nexoria/
 │   ├── package.json            # Server dependencies & scripts
 │   └── server.js               # Server entry point
 ├── .gitignore                  # Git ignore rules for MERN
-├── PROGRESS.md                 # Project phase tracker
+├── PROGRESS.md                 # Project phase tracker with live status
 └── README.md                   # Project documentation & design system
 ```
