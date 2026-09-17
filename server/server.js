@@ -1,0 +1,74 @@
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import { connectDB } from './config/db.js';
+import authRoutes from './routes/authRoutes.js';
+import productRoutes from './routes/productRoutes.js';
+import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+
+// Load environment variables
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Body Parsers & CORS Middleware
+app.use(cors({
+  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+  credentials: true
+}));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Root Route & API Info
+app.get('/', (req, res) => {
+  res.status(200).json({
+    status: 'online',
+    project: 'Nexoria E-Commerce API',
+    version: '1.0.0',
+    timestamp: new Date().toISOString(),
+    database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+  });
+});
+
+// Database Connection Test Endpoint
+app.get('/api/health/db', (req, res) => {
+  const dbState = mongoose.connection.readyState;
+  const stateMap = {
+    0: 'disconnected',
+    1: 'connected',
+    2: 'connecting',
+    3: 'disconnecting'
+  };
+
+  if (dbState === 1) {
+    return res.status(200).json({
+      success: true,
+      status: 'MongoDB Connected',
+      host: mongoose.connection.host,
+      database: mongoose.connection.name
+    });
+  } else {
+    return res.status(200).json({
+      success: false,
+      status: 'MongoDB Disconnected or Awaiting Local Daemon',
+      state: stateMap[dbState] || 'disconnected',
+      message: 'Server is active. Set MONGO_URI in server/.env or start local mongod service when ready.'
+    });
+  }
+});
+
+// API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/products', productRoutes);
+
+// Error Handling Middlewares (Must be defined last)
+app.use(notFound);
+app.use(errorHandler);
+
+// Start Express Server & Connect Database
+app.listen(PORT, () => {
+  console.log(`🚀 Nexoria Server running on port ${PORT} (http://localhost:${PORT})`);
+  connectDB();
+});
