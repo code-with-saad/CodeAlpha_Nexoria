@@ -1,11 +1,11 @@
 import Product from '../models/Product.js';
 
-// @desc    Fetch all products (with search & category filters)
+// @desc    Fetch all products (with search, category filters & pagination)
 // @route   GET /api/products
 // @access  Public
 export const getProducts = async (req, res, next) => {
   try {
-    const { search, keyword, category } = req.query;
+    const { search, keyword, category, page = 1, limit = 12 } = req.query;
     const filter = {};
 
     const searchTerm = search || keyword;
@@ -20,11 +20,23 @@ export const getProducts = async (req, res, next) => {
       filter.category = { $regex: `^${category.trim()}$`, $options: 'i' };
     }
 
-    const products = await Product.find(filter).sort({ createdAt: -1 });
+    const pageNum = Math.max(1, parseInt(page, 10));
+    const limitNum = Math.min(50, Math.max(1, parseInt(limit, 10)));
+    const skip = (pageNum - 1) * limitNum;
+
+    const [products, total] = await Promise.all([
+      Product.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limitNum),
+      Product.countDocuments(filter)
+    ]);
+
+    const totalPages = Math.ceil(total / limitNum);
 
     res.status(200).json({
       success: true,
       count: products.length,
+      total,
+      page: pageNum,
+      totalPages,
       data: products
     });
   } catch (error) {

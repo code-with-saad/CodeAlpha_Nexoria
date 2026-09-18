@@ -1,165 +1,135 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Search, SlidersHorizontal, Heart, ShoppingCart, ChevronLeft, ChevronRight, Package } from 'lucide-react';
 import api from '../services/api';
 import { useToast } from '../context/ToastContext';
+import { useCart } from '../context/CartContext';
 
 const CATEGORIES = ['All', 'Electronics', 'Accessories', 'Lifestyle', 'Home'];
-
-const FALLBACK_PRODUCTS = [
-  {
-    _id: 'mock-1',
-    name: 'Nexoria Pro Wireless ANC Headphones',
-    description: 'Ultra-low latency Bluetooth 5.3 headphones with active noise cancellation and 40h battery life.',
-    price: 149.99,
-    category: 'Electronics',
-    stock: 25,
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80'
-  },
-  {
-    _id: 'mock-2',
-    name: 'Ergonomic Split Mechanical Keyboard',
-    description: 'Custom hot-swappable RGB mechanical keyboard designed for maximum typing posture comfort.',
-    price: 119.50,
-    category: 'Accessories',
-    stock: 14,
-    image: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600&q=80'
-  },
-  {
-    _id: 'mock-3',
-    name: 'Minimalist Chronograph Wristwatch',
-    description: 'Precision Japanese quartz movement with surgical-grade 316L stainless steel casing and sapphire crystal.',
-    price: 189.00,
-    category: 'Lifestyle',
-    stock: 8,
-    image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80'
-  },
-  {
-    _id: 'mock-4',
-    name: 'Smart Ambient LED Studio Lamp',
-    description: 'Dimmable color-temperature desk lamp with app control, wireless charging base, and eye-care diffuser.',
-    price: 59.99,
-    category: 'Home',
-    stock: 19,
-    image: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=600&q=80'
-  }
-];
+const LIMIT = 12;
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All');
-  const [isUsingFallback, setIsUsingFallback] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [wishlist, setWishlist] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('nexoria_wishlist') || '[]'); } catch { return []; }
+  });
 
   const toast = useToast();
+  const { addToCart } = useCart();
+  const navigate = useNavigate();
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async (pg = 1) => {
     setLoading(true);
     try {
-      const params = {};
+      const params = { page: pg, limit: LIMIT };
       if (search.trim()) params.search = search.trim();
       if (category !== 'All') params.category = category;
-
-      const response = await api.get('/products', { params });
-      if (response.data?.data) {
-        if (response.data.data.length === 0 && !search.trim() && category === 'All') {
-          // Backend is online but database has no products yet; offer preview catalog
-          setProducts(FALLBACK_PRODUCTS);
-          setIsUsingFallback(true);
-        } else {
-          setProducts(response.data.data);
-          setIsUsingFallback(false);
-        }
+      const { data } = await api.get('/products', { params });
+      if (data?.data) {
+        setProducts(data.data);
+        setPage(data.page || pg);
+        setTotalPages(data.totalPages || 1);
+        setTotal(data.total || data.count || data.data.length);
       }
     } catch (error) {
-      console.warn('Could not reach backend product API; showing preview catalog:', error.message);
-      // Filter fallback products locally so user experience remains rich
-      let filtered = FALLBACK_PRODUCTS;
-      if (category !== 'All') {
-        filtered = filtered.filter((p) => p.category.toLowerCase() === category.toLowerCase());
-      }
-      if (search.trim()) {
-        const q = search.toLowerCase();
-        filtered = filtered.filter(
-          (p) => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q)
-        );
-      }
-      setProducts(filtered);
-      setIsUsingFallback(true);
-      toast.warning('Displaying preview catalog while connecting to MongoDB server.', {
-        title: 'Catalog Preview Mode'
-      });
+      toast.error('Failed to load products. Please try again.', { title: 'Connection Error' });
+      setProducts([]);
     } finally {
       setLoading(false);
     }
-  };
-
-  useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      fetchProducts();
-    }, 250);
-
-    return () => clearTimeout(delayDebounce);
   }, [search, category]);
 
-  const handleSearchChange = (e) => {
-    setSearch(e.target.value);
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setPage(1);
+  }, [search, category]);
+
+  useEffect(() => {
+    const debounce = setTimeout(() => fetchProducts(1), search ? 300 : 0);
+    return () => clearTimeout(debounce);
+  }, [search, category]);
+
+  useEffect(() => {
+    if (page > 1) fetchProducts(page);
+  }, [page]);
+
+  const toggleWishlist = (e, prodId) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setWishlist(prev => {
+      const next = prev.includes(prodId) ? prev.filter(id => id !== prodId) : [...prev, prodId];
+      localStorage.setItem('nexoria_wishlist', JSON.stringify(next));
+      toast.info(prev.includes(prodId) ? 'Removed from wishlist' : 'Added to wishlist', { title: 'Wishlist' });
+      return next;
+    });
   };
 
-  const handleCategorySelect = (cat) => {
-    setCategory(cat);
+  const handleAddToCart = (e, prod) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (prod.stock <= 0) {
+      toast.warning('This item is out of stock.', { title: 'Out of Stock' });
+      return;
+    }
+    addToCart(prod, 1);
+    toast.success(prod.name + ' added to cart!', { title: 'Cart Updated' });
   };
+
+  const handlePageChange = (newPage) => {
+    if (newPage < 1 || newPage > totalPages) return;
+    setPage(newPage);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const SkeletonGrid = () => (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(270px, 1fr))', gap: '1.75rem' }}>
+      {Array.from({ length: LIMIT }).map((_, i) => (
+        <div key={i} className="skeleton-card">
+          <div className="skeleton skeleton-img" />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', padding: '0.25rem' }}>
+            <div className="skeleton skeleton-text" />
+            <div className="skeleton skeleton-text-sm" />
+            <div className="skeleton" style={{ height: '14px', width: '30%' }} />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 
   return (
     <div className="products-page">
       <div style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Explore Products</h1>
         <p style={{ color: 'var(--color-muted-text)' }}>
-          Discover our curated collection of verified premium goods.
+          {total > 0 ? `${total} products in our catalog` : 'Discover our curated collection of premium goods.'}
         </p>
       </div>
-
-      {isUsingFallback && (
-        <div
-          style={{
-            background: '#ecfdf5',
-            border: '1px solid #a7f3d0',
-            color: '#065f46',
-            padding: '0.75rem 1rem',
-            borderRadius: 'var(--radius-md)',
-            marginBottom: '1.5rem',
-            fontSize: '0.875rem',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem'
-          }}
-        >
-          <span>💡</span>
-          <span>
-            Showing demonstration catalog. Products created via backend will automatically appear here.
-          </span>
-        </div>
-      )}
 
       {/* FILTER & SEARCH CONTROLS */}
       <div className="filters-bar">
         <div className="search-box">
-          <span className="search-icon">🔍</span>
+          <Search size={17} style={{ position: 'absolute', left: '0.85rem', color: 'var(--color-muted-text)', zIndex: 1 }} />
           <input
             type="text"
             className="form-input"
-            placeholder="Search products by title or keywords..."
+            placeholder="Search products..."
             value={search}
-            onChange={handleSearchChange}
+            onChange={e => setSearch(e.target.value)}
+            style={{ paddingLeft: '2.5rem' }}
           />
         </div>
-
         <div className="category-pills">
-          {CATEGORIES.map((cat) => (
+          {CATEGORIES.map(cat => (
             <button
               key={cat}
-              className={`category-pill ${category === cat ? 'active' : ''}`}
-              onClick={() => handleCategorySelect(cat)}
+              className={category-pill}
+              onClick={() => setCategory(cat)}
             >
               {cat}
             </button>
@@ -167,126 +137,145 @@ export default function ProductsPage() {
         </div>
       </div>
 
-      {/* PRODUCTS DISPLAY */}
+      {/* PRODUCTS GRID */}
       {loading ? (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '1.75rem' }}>
-          {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="skeleton-card">
-              <div className="skeleton skeleton-img" />
-              <div className="skeleton skeleton-text" />
-              <div className="skeleton skeleton-text-sm" />
-            </div>
-          ))}
-        </div>
+        <SkeletonGrid />
       ) : products.length === 0 ? (
         <div className="card" style={{ textAlign: 'center', padding: '4rem 1.5rem' }}>
-          <div style={{ fontSize: '3rem', marginBottom: '0.75rem' }}>🔍</div>
+          <Package size={56} style={{ color: 'var(--color-muted-text)', margin: '0 auto 1rem' }} />
           <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>No products found</h3>
           <p style={{ color: 'var(--color-muted-text)', marginBottom: '1.5rem' }}>
-            No items matched your current filter criteria "{search || category}".
+            No items matched your current filters.
           </p>
-          <button
-            className="btn btn-outline"
-            onClick={() => {
-              setSearch('');
-              setCategory('All');
-            }}
-          >
+          <button className="btn btn-outline" onClick={() => { setSearch(''); setCategory('All'); }}>
             Clear Filters
           </button>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '1.75rem' }}>
-          {products.map((prod) => (
-            <div key={prod._id} className="card product-card">
-              <div className="product-image-container">
-                {prod.image?.startsWith('http') ? (
-                  <img
-                    src={prod.image}
-                    alt={prod.name}
-                    className="product-image"
-                    loading="lazy"
-                    onError={(e) => {
-                      e.target.style.display = 'none';
-                      e.target.nextSibling.style.display = 'flex';
-                    }}
-                  />
-                ) : null}
-                <div
+        <>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(270px, 1fr))', gap: '1.75rem' }}>
+            {products.map(prod => (
+              <div
+                key={prod._id}
+                className="card product-card"
+                style={{ cursor: 'pointer', position: 'relative', overflow: 'hidden' }}
+                onClick={() => navigate(/products/)}
+              >
+                {/* WISHLIST BUTTON */}
+                <button
+                  onClick={e => toggleWishlist(e, prod._id)}
                   style={{
-                    display: prod.image?.startsWith('http') ? 'none' : 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '3.5rem',
-                    height: '100%',
-                    width: '100%'
+                    position: 'absolute', top: '1rem', right: '1rem', zIndex: 2,
+                    background: 'rgba(255,255,255,0.9)', border: '1px solid var(--color-border)',
+                    borderRadius: '50%', width: '36px', height: '36px',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    boxShadow: 'var(--shadow-sm)', transition: 'all 0.2s', cursor: 'pointer'
+                  }}
+                  title={wishlist.includes(prod._id) ? 'Remove from wishlist' : 'Add to wishlist'}
+                >
+                  <Heart
+                    size={17}
+                    fill={wishlist.includes(prod._id) ? '#ef4444' : 'none'}
+                    stroke={wishlist.includes(prod._id) ? '#ef4444' : 'var(--color-muted-text)'}
+                  />
+                </button>
+
+                {/* PRODUCT IMAGE */}
+                <div className="product-image-container" style={{ marginBottom: '1rem' }}>
+                  {prod.image?.startsWith('http') ? (
+                    <img
+                      src={prod.image}
+                      alt={prod.name}
+                      className="product-image"
+                      loading="lazy"
+                      onError={e => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
+                    />
+                  ) : null}
+                  <div style={{ display: prod.image?.startsWith('http') ? 'none' : 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+                    <Package size={56} color="var(--color-muted-text)" />
+                  </div>
+                </div>
+
+                {/* BADGE */}
+                <div style={{ fontSize: '0.72rem', color: 'var(--color-primary)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.3rem' }}>
+                  {prod.category}
+                </div>
+
+                {/* TITLE */}
+                <h3 style={{ fontSize: '1rem', marginBottom: '0.45rem', lineHeight: 1.35 }}>
+                  {prod.name}
+                </h3>
+
+                {/* DESCRIPTION PREVIEW */}
+                <p style={{ color: 'var(--color-muted-text)', fontSize: '0.83rem', lineHeight: '1.45', marginBottom: '1rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', flex: 1 }}>
+                  {prod.description}
+                </p>
+
+                {/* PRICE + ACTIONS */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.85rem', borderTop: '1px solid var(--color-border)', marginTop: 'auto' }}>
+                  <span style={{ fontSize: '1.3rem', fontWeight: 800 }}>
+                    
+                  </span>
+                  <button
+                    onClick={e => handleAddToCart(e, prod)}
+                    className="btn btn-accent"
+                    style={{ padding: '0.45rem 0.9rem', fontSize: '0.83rem', gap: '0.4rem' }}
+                    disabled={prod.stock <= 0}
+                    title={prod.stock <= 0 ? 'Out of stock' : 'Add to cart'}
+                  >
+                    <ShoppingCart size={15} />
+                    {prod.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
+                  </button>
+                </div>
+
+                {prod.stock > 0 && prod.stock <= 5 && (
+                  <div style={{ fontSize: '0.75rem', color: '#b45309', fontWeight: 700, marginTop: '0.5rem', textAlign: 'right' }}>
+                    Only {prod.stock} left!
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* PAGINATION */}
+          {totalPages > 1 && (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.75rem', marginTop: '3rem' }}>
+              <button
+                className="btn btn-outline"
+                onClick={() => handlePageChange(page - 1)}
+                disabled={page <= 1}
+                style={{ padding: '0.5rem 0.85rem' }}
+              >
+                <ChevronLeft size={18} />
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(pg => (
+                <button
+                  key={pg}
+                  onClick={() => handlePageChange(pg)}
+                  style={{
+                    width: '38px', height: '38px', borderRadius: 'var(--radius-md)',
+                    background: pg === page ? 'var(--color-primary)' : 'transparent',
+                    color: pg === page ? '#fff' : 'var(--color-foreground)',
+                    border: '1px solid',
+                    borderColor: pg === page ? 'var(--color-primary)' : 'var(--color-border)',
+                    fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer',
+                    transition: 'all 0.2s'
                   }}
                 >
-                  📦
-                </div>
-              </div>
-
-              <div
-                style={{
-                  fontSize: '0.75rem',
-                  color: 'var(--color-primary)',
-                  fontWeight: 800,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.5px',
-                  marginBottom: '0.35rem'
-                }}
+                  {pg}
+                </button>
+              ))}
+              <button
+                className="btn btn-outline"
+                onClick={() => handlePageChange(page + 1)}
+                disabled={page >= totalPages}
+                style={{ padding: '0.5rem 0.85rem' }}
               >
-                {prod.category}
-              </div>
-
-              <h3 style={{ fontSize: '1.05rem', marginBottom: '0.5rem', flex: 1 }}>
-                <Link
-                  to={`/products/${prod._id}`}
-                  style={{ transition: 'color 0.2s', color: 'var(--color-foreground)' }}
-                >
-                  {prod.name}
-                </Link>
-              </h3>
-
-              <p
-                style={{
-                  color: 'var(--color-muted-text)',
-                  fontSize: '0.85rem',
-                  lineHeight: '1.4',
-                  marginBottom: '1rem',
-                  display: '-webkit-box',
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden'
-                }}
-              >
-                {prod.description}
-              </p>
-
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginTop: 'auto',
-                  paddingTop: '0.85rem',
-                  borderTop: '1px solid var(--color-border)'
-                }}
-              >
-                <span style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--color-foreground)' }}>
-                  ${Number(prod.price).toFixed(2)}
-                </span>
-                <Link
-                  to={`/products/${prod._id}`}
-                  className="btn btn-outline"
-                  style={{ padding: '0.45rem 0.95rem', fontSize: '0.85rem' }}
-                >
-                  View Details
-                </Link>
-              </div>
+                <ChevronRight size={18} />
+              </button>
             </div>
-          ))}
-        </div>
+          )}
+        </>
       )}
     </div>
   );

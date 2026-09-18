@@ -59,6 +59,102 @@
   --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ── Dark Mode Token Overrides ────────────────────────── */
+[data-theme="dark"] {
+  --color-background: #0b1120;
+  --color-foreground: #e2e8f0;
+  --color-muted-text: #94a3b8;
+
+  --color-card: #131f33;
+  --color-card-foreground: #e2e8f0;
+
+  --color-border: #1e3a5f;
+  --color-border-hover: #2563eb44;
+
+  --color-muted: #0f1a2e;
+
+  --color-ring: #10b981;
+}
+
+[data-theme="dark"] body,
+[data-theme="dark"] html {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+[data-theme="dark"] .navbar {
+  background-color: rgba(11, 17, 32, 0.95);
+  border-bottom-color: var(--color-border);
+}
+
+[data-theme="dark"] .card {
+  background-color: var(--color-card);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .form-input,
+[data-theme="dark"] .form-select {
+  background-color: #0f1a2e;
+  border-color: var(--color-border);
+  color: var(--color-foreground);
+}
+
+[data-theme="dark"] .filters-bar {
+  background-color: var(--color-card);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .product-image-container {
+  background-color: #0f1a2e;
+}
+
+[data-theme="dark"] .skeleton {
+  background: linear-gradient(90deg, #1e2d45 25%, #243347 50%, #1e2d45 75%);
+  background-size: 200% 100%;
+}
+
+[data-theme="dark"] .skeleton-card {
+  background: var(--color-card);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .footer {
+  background-color: #060d1a;
+  border-top-color: #1e2d45;
+}
+
+[data-theme="dark"] .user-badge-pill {
+  background: #0f1a2e;
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .category-pill {
+  background: #0f1a2e;
+  border-color: var(--color-border);
+  color: var(--color-muted-text);
+}
+
+[data-theme="dark"] .toast-item {
+  background: #131f33;
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .toast-progress-track {
+  background-color: #1e2d45;
+}
+
+[data-theme="dark"] .btn-outline {
+  border-color: var(--color-border);
+  color: var(--color-foreground);
+}
+
+[data-theme="dark"] .btn-outline:hover:not(:disabled) {
+  background-color: #0f1a2e;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+
 /* Reset & Global Defaults */
 *, *::before, *::after {
   box-sizing: border-box;

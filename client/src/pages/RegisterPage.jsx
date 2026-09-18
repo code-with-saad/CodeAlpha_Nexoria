@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Eye, EyeOff, UserPlus, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 
@@ -13,6 +14,8 @@ export default function RegisterPage() {
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [serverError, setServerError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const { register } = useAuth();
   const toast = useToast();
@@ -88,13 +91,15 @@ export default function RegisterPage() {
   return (
     <div className="auth-wrapper">
       <div className="card auth-card">
-        <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>✨</div>
+        <div style={{ display: 'inline-flex', background: '#d1fae5', borderRadius: '50%', padding: '1rem', marginBottom: '0.75rem' }}>
+          <UserPlus size={32} color="var(--color-primary)" />
+        </div>
         <h1>Create an Account</h1>
         <p className="subtitle">Join Nexoria to discover exclusive products</p>
 
         {serverError && (
           <div className="form-alert form-alert-error" role="alert">
-            <span>⚠️</span>
+            <AlertCircle size={17} style={{ flexShrink: 0 }} />
             <span>{serverError}</span>
           </div>
         )}
@@ -140,17 +145,23 @@ export default function RegisterPage() {
             <label className="form-label" htmlFor="password">
               Password
             </label>
-            <input
-              id="password"
-              type="password"
-              name="password"
-              className="form-input"
-              placeholder="At least 6 characters"
-              value={formData.password}
-              onChange={handleChange}
-              disabled={isSubmitting}
-              autoComplete="new-password"
-            />
+            <div style={{ position: 'relative' }}>
+              <input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                name="password"
+                className="form-input"
+                placeholder="At least 6 characters"
+                value={formData.password}
+                onChange={handleChange}
+                disabled={isSubmitting}
+                autoComplete="new-password"
+                style={{ paddingRight: '2.75rem' }}
+              />
+              <button type="button" onClick={() => setShowPassword(p => !p)} style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-muted-text)', cursor: 'pointer' }} tabIndex={-1}>
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
             {formErrors.password && (
               <span className="form-error-text">{formErrors.password}</span>
             )}
@@ -160,17 +171,23 @@ export default function RegisterPage() {
             <label className="form-label" htmlFor="confirmPassword">
               Confirm Password
             </label>
-            <input
-              id="confirmPassword"
-              type="password"
-              name="confirmPassword"
-              className="form-input"
-              placeholder="Re-enter password"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              disabled={isSubmitting}
-              autoComplete="new-password"
-            />
+            <div style={{ position: 'relative' }}>
+              <input
+                id="confirmPassword"
+                type={showConfirmPassword ? 'text' : 'password'}
+                name="confirmPassword"
+                className="form-input"
+                placeholder="Re-enter password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                disabled={isSubmitting}
+                autoComplete="new-password"
+                style={{ paddingRight: '2.75rem' }}
+              />
+              <button type="button" onClick={() => setShowConfirmPassword(p => !p)} style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-muted-text)', cursor: 'pointer' }} tabIndex={-1}>
+                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
             {formErrors.confirmPassword && (
               <span className="form-error-text">{formErrors.confirmPassword}</span>
             )}
