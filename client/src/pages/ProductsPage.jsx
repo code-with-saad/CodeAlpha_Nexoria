@@ -62,12 +62,11 @@ export default function ProductsPage() {
   const toggleWishlist = (e, prodId) => {
     e.preventDefault();
     e.stopPropagation();
-    setWishlist(prev => {
-      const next = prev.includes(prodId) ? prev.filter(id => id !== prodId) : [...prev, prodId];
-      localStorage.setItem('nexoria_wishlist', JSON.stringify(next));
-      toast.info(prev.includes(prodId) ? 'Removed from wishlist' : 'Added to wishlist', { title: 'Wishlist' });
-      return next;
-    });
+    const isWished = wishlist.includes(prodId);
+    const next = isWished ? wishlist.filter(id => id !== prodId) : [...wishlist, prodId];
+    setWishlist(next);
+    localStorage.setItem('nexoria_wishlist', JSON.stringify(next));
+    toast.info(isWished ? 'Removed from wishlist' : 'Added to wishlist', { title: 'Wishlist' });
   };
 
   const handleAddToCart = (e, prod) => {
@@ -78,7 +77,6 @@ export default function ProductsPage() {
       return;
     }
     addToCart(prod, 1);
-    toast.success(prod.name + ' added to cart!', { title: 'Cart Updated' });
   };
 
   const handlePageChange = (newPage) => {
@@ -128,7 +126,7 @@ export default function ProductsPage() {
           {CATEGORIES.map(cat => (
             <button
               key={cat}
-              className={category-pill}
+              className={`category-pill ${category === cat ? 'active' : ''}`}
               onClick={() => setCategory(cat)}
             >
               {cat}
@@ -159,7 +157,7 @@ export default function ProductsPage() {
                 key={prod._id}
                 className="card product-card"
                 style={{ cursor: 'pointer', position: 'relative', overflow: 'hidden' }}
-                onClick={() => navigate(/products/)}
+                onClick={() => navigate(`/products/${prod._id}`)}
               >
                 {/* WISHLIST BUTTON */}
                 <button
@@ -214,7 +212,7 @@ export default function ProductsPage() {
                 {/* PRICE + ACTIONS */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.85rem', borderTop: '1px solid var(--color-border)', marginTop: 'auto' }}>
                   <span style={{ fontSize: '1.3rem', fontWeight: 800 }}>
-                    
+                    ${Number(prod.price || 0).toFixed(2)}
                   </span>
                   <button
                     onClick={e => handleAddToCart(e, prod)}

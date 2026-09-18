@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Heart, ShoppingCart, Package, Star, ShoppingBag } from 'lucide-react';
 import api from '../services/api';
@@ -55,7 +55,6 @@ export default function ProductDetailPage() {
   const handleAddToCart = () => {
     if (!product) return;
     addToCart(product, quantity);
-    toast.success(product.name + ' (' + quantity + ') added to cart!', { title: 'Cart Updated' });
   };
 
   const toggleWishlist = () => {

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import { CheckCircle2, AlertCircle, AlertTriangle, Info, X } from 'lucide-react';
 
 const ToastContext = createContext(null);
 
@@ -37,17 +38,17 @@ function ToastItem({ toast, onRemove }) {
     startTimer(remainingTimeRef.current);
   };
 
-  const getIcon = (type) => {
+  const renderIcon = (type) => {
     switch (type) {
       case 'success':
-        return '✅';
+        return <CheckCircle2 size={18} color="#059669" />;
       case 'error':
-        return '❌';
+        return <AlertCircle size={18} color="#dc2626" />;
       case 'warning':
-        return '⚠️';
+        return <AlertTriangle size={18} color="#d97706" />;
       case 'info':
       default:
-        return 'ℹ️';
+        return <Info size={18} color="#2563eb" />;
     }
   };
 
@@ -60,7 +61,7 @@ function ToastItem({ toast, onRemove }) {
       aria-live="polite"
     >
       <div className="toast-content">
-        <span className="toast-icon">{getIcon(toast.type)}</span>
+        <span className="toast-icon">{renderIcon(toast.type)}</span>
         <div className="toast-text">
           {toast.title && <strong className="toast-title">{toast.title}</strong>}
           <p className="toast-message">{toast.message}</p>
@@ -70,7 +71,7 @@ function ToastItem({ toast, onRemove }) {
           onClick={() => onRemove(toast.id)}
           aria-label="Close notification"
         >
-          &times;
+          <X size={15} />
         </button>
       </div>
 

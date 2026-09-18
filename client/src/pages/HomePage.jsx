@@ -1,15 +1,19 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, ShoppingCart, Star, Package, Zap, Heart } from 'lucide-react';
+import {
+  ArrowRight, ShoppingCart, Star, Package, Zap, Heart,
+  Smartphone, Headphones, Sparkles, Home as HomeIcon,
+  ShieldCheck, Truck, RotateCcw, Award, Check
+} from 'lucide-react';
 import api from '../services/api';
 import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
 
 const CATEGORY_DATA = [
-  { name: 'Electronics', emoji: '⚡', color: '#3b82f6', bg: '#eff6ff', desc: 'Cutting-edge tech & gadgets' },
-  { name: 'Accessories', emoji: '🎧', color: '#8b5cf6', bg: '#f5f3ff', desc: 'Elevate your everyday setup' },
-  { name: 'Lifestyle', emoji: '✨', color: '#ea580c', bg: '#fff7ed', desc: 'Refined goods for modern life' },
-  { name: 'Home', emoji: '🏡', color: '#059669', bg: '#ecfdf5', desc: 'Smart living essentials' }
+  { name: 'Electronics', Icon: Smartphone, color: '#3b82f6', bgClass: 'cat-card-electronics', desc: 'Cutting-edge tech & gadgets' },
+  { name: 'Accessories', Icon: Headphones, color: '#8b5cf6', bgClass: 'cat-card-accessories', desc: 'Elevate your everyday setup' },
+  { name: 'Lifestyle', Icon: Sparkles, color: '#f36416', bgClass: 'cat-card-lifestyle', desc: 'Refined goods for modern life' },
+  { name: 'Home', Icon: HomeIcon, color: '#10b981', bgClass: 'cat-card-home', desc: 'Smart living essentials' }
 ];
 
 export default function HomePage() {
@@ -35,57 +39,137 @@ export default function HomePage() {
 
   const toggleWishlist = (e, prodId) => {
     e.stopPropagation();
-    setWishlist(prev => {
-      const next = prev.includes(prodId) ? prev.filter(id => id !== prodId) : [...prev, prodId];
-      localStorage.setItem('nexoria_wishlist', JSON.stringify(next));
-      toast.info(prev.includes(prodId) ? 'Removed from wishlist' : 'Added to wishlist', { title: 'Wishlist' });
-      return next;
-    });
+    const isWished = wishlist.includes(prodId);
+    const next = isWished ? wishlist.filter(id => id !== prodId) : [...wishlist, prodId];
+    setWishlist(next);
+    localStorage.setItem('nexoria_wishlist', JSON.stringify(next));
+    toast.info(isWished ? 'Removed from wishlist' : 'Added to wishlist', { title: 'Wishlist' });
   };
 
   const handleAddToCart = (e, prod) => {
     e.stopPropagation();
     addToCart(prod, 1);
-    toast.success(prod.name + ' added to cart!', { title: 'Cart Updated' });
   };
 
   return (
     <div className="home-page">
 
-      {/* ── HERO ────────────────────────────────────────────────── */}
-      <section style={{
-        background: 'linear-gradient(135deg, #064e3b 0%, #065f46 45%, #0f766e 100%)',
-        color: '#ffffff',
-        padding: '5rem 0',
-        borderRadius: 'var(--radius-lg)',
-        marginBottom: '4rem',
-        boxShadow: 'var(--shadow-glow)',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        {/* Decorative blobs */}
-        <div style={{ position: 'absolute', top: '-40px', right: '-60px', width: '320px', height: '320px', borderRadius: '50%', background: 'rgba(52,211,153,0.12)', filter: 'blur(60px)' }} />
-        <div style={{ position: 'absolute', bottom: '-60px', left: '-40px', width: '260px', height: '260px', borderRadius: '50%', background: 'rgba(251,191,36,0.1)', filter: 'blur(50px)' }} />
-
-        <div className="container" style={{ textAlign: 'center', maxWidth: '800px', position: 'relative' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(6px)', padding: '0.4rem 1.1rem', borderRadius: 'var(--radius-full)', marginBottom: '1.5rem', fontSize: '0.85rem', fontWeight: 600, border: '1px solid rgba(255,255,255,0.2)' }}>
+      {/* ── ASYMMETRIC TWO-COLUMN HERO ──────────────────────────── */}
+      <section className="hero-asymmetric">
+        <div className="hero-content">
+          <div className="hero-pill">
             <Zap size={14} fill="#fbbf24" stroke="#fbbf24" />
-            Free shipping on orders over 
+            Curated 2026 Collection &bull; Free Worldwide Shipping over $50
           </div>
-          <h1 style={{ fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', color: '#ffffff', marginBottom: '1.25rem', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
-            Elevate Your World<br/>with <span style={{ color: '#6ee7b7' }}>Nexoria</span>
+          <h1 className="hero-title">
+            Exceptional Design.<br />
+            <span style={{ color: '#6ee7b7' }}>Modern Performance.</span>
           </h1>
-          <p style={{ fontSize: '1.15rem', color: '#a7f3d0', lineHeight: '1.65', marginBottom: '2.25rem', maxWidth: '600px', margin: '0 auto 2.25rem' }}>
-            Curated premium goods across electronics, accessories, lifestyle &amp; home — hand-picked for modern living.
+          <p className="hero-subtitle">
+            Nexoria delivers meticulously crafted electronics, accessories, lifestyle gear, and smart home essentials designed to elevate your everyday standard.
           </p>
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div className="hero-actions">
             <Link to="/products" className="btn btn-accent" style={{ fontSize: '1.05rem', padding: '0.9rem 2.2rem' }}>
-              Shop Now
+              Explore Collection
               <ArrowRight size={18} />
             </Link>
             <Link to="/products" className="btn btn-outline" style={{ borderColor: 'rgba(255,255,255,0.35)', color: '#ffffff', padding: '0.9rem 1.85rem' }}>
-              Browse Categories
+              View Catalog
             </Link>
+          </div>
+        </div>
+
+        {/* Right column: Tilted layer stack with real seeded products */}
+        <div className="hero-visual-stack">
+          {/* Card 1: Top Left - Backpack */}
+          <Link
+            to={featured[0] ? `/products/${featured[0]._id}` : '/products'}
+            className="hero-card-layer hero-card-layer-1"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&q=80"
+              alt="Hardshell Travel Backpack"
+              className="hero-layer-img"
+            />
+            <div className="hero-layer-info">
+              <span className="hero-layer-title">Travel Backpack</span>
+              <span className="hero-layer-price">$148.00</span>
+            </div>
+          </Link>
+
+          {/* Card 2: Bottom Right - Cardholder */}
+          <Link
+            to={featured[2] ? `/products/${featured[2]._id}` : '/products'}
+            className="hero-card-layer hero-card-layer-2"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1627123424574-724758594e93?w=500&q=80"
+              alt="Slim Cardholder Wallet"
+              className="hero-layer-img"
+            />
+            <div className="hero-layer-info">
+              <span className="hero-layer-title">Slim Cardholder</span>
+              <span className="hero-layer-price">$42.00</span>
+            </div>
+          </Link>
+
+          {/* Card Main: Center - Minimalist Watch */}
+          <Link
+            to={featured[1] ? `/products/${featured[1]._id}` : '/products'}
+            className="hero-card-layer hero-card-layer-main"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80"
+              alt="Minimalist Chronograph Watch"
+              className="hero-layer-img"
+            />
+            <div className="hero-layer-info">
+              <span className="hero-layer-title">Minimalist Chronograph</span>
+              <span className="hero-layer-price">$189.00</span>
+            </div>
+          </Link>
+        </div>
+      </section>
+
+      {/* ── SOCIAL PROOF / TRUST SIGNALS BAR ────────────────────── */}
+      <section className="trust-bar" aria-label="Store Benefits & Guarantees">
+        <div className="trust-item">
+          <div className="trust-icon-box">
+            <Truck size={22} />
+          </div>
+          <div>
+            <div className="trust-title">Free Express Shipping</div>
+            <p className="trust-desc">Fast, tracked delivery on orders over $50</p>
+          </div>
+        </div>
+
+        <div className="trust-item">
+          <div className="trust-icon-box">
+            <Award size={22} />
+          </div>
+          <div>
+            <div className="trust-title">4.9 / 5 Rating</div>
+            <p className="trust-desc">Backed by 12,500+ verified customer reviews</p>
+          </div>
+        </div>
+
+        <div className="trust-item">
+          <div className="trust-icon-box">
+            <ShieldCheck size={22} />
+          </div>
+          <div>
+            <div className="trust-title">Secure Stripe Checkout</div>
+            <p className="trust-desc">256-bit encryption for all card payments</p>
+          </div>
+        </div>
+
+        <div className="trust-item">
+          <div className="trust-icon-box">
+            <RotateCcw size={22} />
+          </div>
+          <div>
+            <div className="trust-title">30-Day Easy Returns</div>
+            <p className="trust-desc">Hassle-free refunds &amp; friendly support</p>
           </div>
         </div>
       </section>
@@ -97,27 +181,40 @@ export default function HomePage() {
           <p style={{ color: 'var(--color-muted-text)' }}>Find exactly what you need in our curated sections</p>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem' }}>
-          {CATEGORY_DATA.map(cat => (
+          {CATEGORY_DATA.map(({ name, Icon, color, desc }) => (
             <Link
-              key={cat.name}
-              to={'/products?category=' + cat.name}
-              onClick={() => navigate('/products')}
+              key={name}
+              to={`/products?category=${name}`}
               style={{ textDecoration: 'none' }}
             >
               <div
-                className="card"
+                className="category-showcase-card"
                 style={{
-                  background: cat.bg, borderColor: cat.color + '30',
-                  textAlign: 'center', padding: '2rem 1.5rem',
-                  transition: 'transform 0.2s, box-shadow 0.2s',
+                  textAlign: 'center',
+                  padding: '2.25rem 1.5rem',
                   cursor: 'pointer'
                 }}
-                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 12px 28px ' + cat.color + '22'; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}
               >
-                <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>{cat.emoji}</div>
-                <h3 style={{ fontSize: '1.1rem', marginBottom: '0.4rem', color: cat.color }}>{cat.name}</h3>
-                <p style={{ fontSize: '0.85rem', color: '#64748b' }}>{cat.desc}</p>
+                <div
+                  className="category-icon-wrapper"
+                  style={{
+                    width: '64px',
+                    height: '64px',
+                    margin: '0 auto 1rem',
+                    borderRadius: 'var(--radius-md)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <Icon size={32} color={color} strokeWidth={2.2} />
+                </div>
+                <h3 style={{ fontSize: '1.15rem', marginBottom: '0.4rem', color: 'var(--color-foreground)', fontWeight: 700 }}>
+                  {name}
+                </h3>
+                <p style={{ fontSize: '0.85rem', color: 'var(--color-muted-text)', margin: 0 }}>
+                  {desc}
+                </p>
               </div>
             </Link>
           ))}
@@ -183,7 +280,9 @@ export default function HomePage() {
                   {[1,2,3,4,5].map(s => <Star key={s} size={13} fill={s<=4?'#f59e0b':'none'} stroke='#f59e0b' />)}
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.85rem', borderTop: '1px solid var(--color-border)', marginTop: 'auto' }}>
-                  <span style={{ fontSize: '1.25rem', fontWeight: 800 }}></span>
+                  <span style={{ fontSize: '1.25rem', fontWeight: 800 }}>
+                    ${Number(prod.price || 0).toFixed(2)}
+                  </span>
                   <button
                     onClick={e => handleAddToCart(e, prod)}
                     className="btn btn-accent"
@@ -200,15 +299,36 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* ── CTA BANNER ──────────────────────────────────────────── */}
-      <section style={{ background: 'linear-gradient(135deg, var(--color-accent) 0%, #9a3412 100%)', padding: '3.5rem 2rem', borderRadius: 'var(--radius-lg)', textAlign: 'center', color: '#fff' }}>
-        <h2 style={{ fontSize: '1.85rem', marginBottom: '0.75rem', color: '#fff' }}>Ready to Shop Nexoria?</h2>
-        <p style={{ color: 'rgba(255,255,255,0.85)', marginBottom: '1.75rem', fontSize: '1.05rem' }}>
-          Join thousands of happy customers and discover your next favourite product.
-        </p>
-        <Link to="/products" className="btn" style={{ background: '#fff', color: 'var(--color-accent)', fontWeight: 800, padding: '0.9rem 2.2rem', fontSize: '1rem' }}>
-          Browse All Products <ArrowRight size={17} />
-        </Link>
+      {/* ── DISTINCT SPLIT CTA BANNER ───────────────────────────── */}
+      <section className="cta-split-banner">
+        <div>
+          <h2 style={{ fontSize: '1.9rem', marginBottom: '0.85rem', color: '#ffffff', lineHeight: 1.25 }}>
+            Upgrade Your Everyday Setup with Nexoria
+          </h2>
+          <p style={{ color: '#d1fae5', marginBottom: '1.5rem', fontSize: '1rem', lineHeight: 1.6, maxWidth: '500px' }}>
+            Experience seamless checkout, premium build quality, and direct buyer protection on every item.
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '0.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#a7f3d0', fontSize: '0.9rem' }}>
+              <Check size={16} color="#6ee7b7" /> 30-Day Risk-Free Trial &amp; Free Returns
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#a7f3d0', fontSize: '0.9rem' }}>
+              <Check size={16} color="#6ee7b7" /> Real-time order tracking &amp; Instant dispatch
+            </div>
+          </div>
+        </div>
+
+        <div className="cta-stat-card">
+          <div className="cta-stat-num">12,500+</div>
+          <div className="cta-stat-label">Orders safely delivered worldwide</div>
+          <Link
+            to="/products"
+            className="btn btn-accent"
+            style={{ width: '100%', justifyContent: 'center', padding: '0.85rem 1.5rem', fontSize: '0.95rem' }}
+          >
+            Start Shopping <ArrowRight size={17} />
+          </Link>
+        </div>
       </section>
     </div>
   );
