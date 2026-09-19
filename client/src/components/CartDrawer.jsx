@@ -87,11 +87,11 @@ export default function CartDrawer() {
               {cartItems.map((item) => (
                 <div
                   key={item.product}
+                  className="cart-item-bg"
                   style={{
                     display: 'flex',
                     gap: '1rem',
                     padding: '0.85rem',
-                    background: 'var(--color-muted)',
                     borderRadius: 'var(--radius-md)',
                     alignItems: 'center'
                   }}
@@ -125,22 +125,24 @@ export default function CartDrawer() {
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <div style={{ display: 'inline-flex', alignItems: 'center', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-sm)', background: 'var(--color-card)' }}>
+                      <div className="cart-qty-wrapper">
                         <button
                           type="button"
+                          className="cart-qty-btn"
                           onClick={() => updateQuantity(item.product, item.quantity - 1)}
-                          style={{ padding: '0.15rem 0.5rem', fontWeight: 700, fontSize: '0.85rem' }}
+                          aria-label="Decrease quantity"
                         >
                           −
                         </button>
-                        <span style={{ padding: '0.15rem 0.5rem', fontSize: '0.85rem', fontWeight: 700 }}>
+                        <span style={{ padding: '0.15rem 0.6rem', fontSize: '0.88rem', fontWeight: 700, color: 'var(--color-foreground)' }}>
                           {item.quantity}
                         </span>
                         <button
                           type="button"
+                          className="cart-qty-btn"
                           onClick={() => updateQuantity(item.product, item.quantity + 1)}
                           disabled={item.quantity >= (item.stock || 99)}
-                          style={{ padding: '0.15rem 0.5rem', fontWeight: 700, fontSize: '0.85rem' }}
+                          aria-label="Increase quantity"
                         >
                           +
                         </button>
@@ -148,7 +150,7 @@ export default function CartDrawer() {
 
                       <button
                         onClick={() => removeFromCart(item.product)}
-                        style={{ color: 'var(--color-destructive)', padding: '0.2rem', marginLeft: 'auto' }}
+                        className="cart-remove-btn"
                         title="Remove item"
                         aria-label="Remove item"
                       >

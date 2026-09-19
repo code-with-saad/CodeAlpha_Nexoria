@@ -30,25 +30,23 @@ function App() {
             <div className="app-layout">
               <Navbar />
               <CartDrawer />
-              <main className="main-content">
-                <div className="container">
-                  <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/products" element={<ProductsPage />} />
-                    <Route path="/products/:id" element={<ProductDetailPage />} />
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/register" element={<RegisterPage />} />
-                    <Route path="/cart" element={<CartPage />} />
-                    <Route path="/checkout" element={<CheckoutPage />} />
-                    <Route path="/order-confirmation/:id" element={<OrderConfirmationPage />} />
-                    <Route path="/orders" element={<OrderHistoryPage />} />
-                    <Route path="/wishlist" element={<WishlistPage />} />
-                    <Route path="/profile" element={<ProfilePage />} />
-                    <Route path="/about" element={<AboutPage />} />
-                    <Route path="/contact" element={<ContactPage />} />
-                    <Route path="*" element={<NotFoundPage />} />
-                  </Routes>
-                </div>
+              <main className="main-content" style={{ padding: 0 }}>
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/products" element={<div className="container" style={{ paddingTop: '2.5rem', paddingBottom: '2.5rem' }}><ProductsPage /></div>} />
+                  <Route path="/products/:id" element={<div className="container" style={{ paddingTop: '2.5rem', paddingBottom: '2.5rem' }}><ProductDetailPage /></div>} />
+                  <Route path="/login" element={<div className="container" style={{ paddingTop: '2.5rem', paddingBottom: '2.5rem' }}><LoginPage /></div>} />
+                  <Route path="/register" element={<div className="container" style={{ paddingTop: '2.5rem', paddingBottom: '2.5rem' }}><RegisterPage /></div>} />
+                  <Route path="/cart" element={<div className="container" style={{ paddingTop: '2.5rem', paddingBottom: '2.5rem' }}><CartPage /></div>} />
+                  <Route path="/checkout" element={<div className="container" style={{ paddingTop: '2.5rem', paddingBottom: '2.5rem' }}><CheckoutPage /></div>} />
+                  <Route path="/order-confirmation/:id" element={<div className="container" style={{ paddingTop: '2.5rem', paddingBottom: '2.5rem' }}><OrderConfirmationPage /></div>} />
+                  <Route path="/orders" element={<div className="container" style={{ paddingTop: '2.5rem', paddingBottom: '2.5rem' }}><OrderHistoryPage /></div>} />
+                  <Route path="/wishlist" element={<div className="container" style={{ paddingTop: '2.5rem', paddingBottom: '2.5rem' }}><WishlistPage /></div>} />
+                  <Route path="/profile" element={<div className="container" style={{ paddingTop: '2.5rem', paddingBottom: '2.5rem' }}><ProfilePage /></div>} />
+                  <Route path="/about" element={<AboutPage />} />
+                  <Route path="/contact" element={<div className="container" style={{ paddingTop: '2.5rem', paddingBottom: '2.5rem' }}><ContactPage /></div>} />
+                  <Route path="*" element={<div className="container" style={{ paddingTop: '2.5rem', paddingBottom: '2.5rem' }}><NotFoundPage /></div>} />
+                </Routes>
               </main>
               <Footer />
             </div>
