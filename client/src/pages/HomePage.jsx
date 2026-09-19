@@ -297,9 +297,14 @@ export default function HomePage() {
 
         {/* ── CATEGORY SHOWCASE ───────────────────────────────────── */}
         <section className="home-section">
-          <div className="text-center mb-8 reveal">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-2" style={{ fontFamily: 'var(--font-heading)' }}>Shop by Category</h2>
-            <p style={{ color: 'var(--color-muted-text)' }}>Find exactly what you need in our curated sections</p>
+          <div className="flex justify-between items-center mb-1 flex-wrap gap-4 reveal">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-1" style={{ fontFamily: 'var(--font-heading)' }}>Shop by Category</h2>
+              <p style={{ color: 'var(--color-muted-text)', fontSize: '0.95rem' }}>Find exactly what you need in our curated sections</p>
+            </div>
+            <Link to="/products" className="btn btn-outline" style={{ gap: '0.4rem' }}>
+              Browse Catalog <ArrowRight size={16} />
+            </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {CATEGORY_DATA.map(({ name, Icon, color, desc }, i) => (
@@ -328,7 +333,7 @@ export default function HomePage() {
 
         {/* ── FEATURED PRODUCTS ───────────────────────────────────── */}
         <section className="home-section">
-          <div className="flex justify-between items-center mb-8 flex-wrap gap-4 reveal">
+          <div className="flex justify-between items-center mb-11 flex-wrap gap-4 reveal">
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold mb-1" style={{ fontFamily: 'var(--font-heading)' }}>Featured Products</h2>
               <p style={{ color: 'var(--color-muted-text)', fontSize: '0.95rem' }}>Top picks from our latest collection</p>
