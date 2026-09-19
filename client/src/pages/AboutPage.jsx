@@ -5,25 +5,86 @@ import { Store, ShieldCheck, Truck, Award, Sparkles, HeartHandshake, CheckCircle
 export default function AboutPage() {
   return (
     <div className="about-page" style={{ maxWidth: '960px', margin: '1rem auto' }}>
-      {/* HERO / STORY SECTION */}
+
+      {/* DARK EDITORIAL HERO — same treatment as homepage flagship hero */}
       <div
-        className="card"
         style={{
-          padding: '3.5rem 2.5rem',
+          background: 'linear-gradient(135deg, #010a06 0%, #041a10 60%, #02120b 100%)',
+          borderRadius: 'var(--radius-xl, 1.25rem)',
+          padding: 'clamp(3rem, 8vw, 5.5rem) clamp(2rem, 6vw, 4rem)',
           marginBottom: '2.5rem',
-          background: 'linear-gradient(135deg, rgba(5, 150, 105, 0.08) 0%, rgba(234, 88, 12, 0.05) 100%)',
-          borderTop: '5px solid var(--color-primary)',
-          textAlign: 'center'
+          textAlign: 'center',
+          position: 'relative',
+          overflow: 'hidden',
+          border: '1px solid rgba(5,150,105,0.18)'
         }}
       >
-        <div style={{ display: 'inline-flex', padding: '1rem', background: 'var(--color-muted)', borderRadius: '50%', marginBottom: '1.25rem' }}>
-          <Store size={40} color="var(--color-primary)" />
-        </div>
-        <h1 style={{ fontSize: '2.5rem', marginBottom: '1rem', color: 'var(--color-foreground)' }}>
-          Curated Essentials for Modern Living
+        {/* Decorative glow */}
+        <div style={{
+          position: 'absolute', top: '-80px', left: '50%', transform: 'translateX(-50%)',
+          width: '420px', height: '420px',
+          background: 'radial-gradient(circle, rgba(5,150,105,0.14) 0%, transparent 70%)',
+          pointerEvents: 'none'
+        }} />
+
+        {/* Eyebrow badge */}
+        <span style={{
+          display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+          background: 'rgba(5,150,105,0.12)',
+          border: '1px solid rgba(5,150,105,0.35)',
+          borderRadius: '100px',
+          padding: '0.3rem 1rem',
+          fontSize: '0.7rem',
+          fontWeight: 700,
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          color: 'rgba(110,231,183,0.9)',
+          marginBottom: '1.75rem',
+          position: 'relative'
+        }}>
+          <Store size={12} />
+          Our Story &amp; Mission
+        </span>
+
+        {/* Two-line editorial headline */}
+        <h1 style={{
+          fontFamily: "'Rubik', sans-serif",
+          fontWeight: 900,
+          lineHeight: 1.05,
+          margin: '0 0 1.5rem',
+          position: 'relative'
+        }}>
+          <span style={{
+            display: 'block',
+            fontSize: 'clamp(2.4rem, 6vw, 4rem)',
+            color: '#ffffff',
+            letterSpacing: '-0.02em'
+          }}>
+            Curated Essentials
+          </span>
+          <span style={{
+            display: 'block',
+            fontSize: 'clamp(2.4rem, 6vw, 4rem)',
+            letterSpacing: '-0.02em',
+            color: 'transparent',
+            WebkitTextStroke: '2px #059669',
+            textStroke: '2px #059669'
+          }}>
+            For Modern Living
+          </span>
         </h1>
-        <p style={{ color: 'var(--color-muted-text)', fontSize: '1.15rem', maxWidth: '720px', margin: '0 auto 1.5rem', lineHeight: 1.7 }}>
-          At Nexoria, we believe that great design and dependable utility should seamlessly intersect. We bring together high-performance electronics, thoughtfully crafted accessories, and lifestyle essentials into one unified shopping experience.
+
+        <p style={{
+          color: 'rgba(255,255,255,0.6)',
+          fontSize: 'clamp(0.95rem, 2vw, 1.1rem)',
+          maxWidth: '640px',
+          margin: '0 auto',
+          lineHeight: 1.75,
+          position: 'relative'
+        }}>
+          At Nexoria, we believe that great design and dependable utility should seamlessly intersect.
+          We bring together high-performance electronics, thoughtfully crafted accessories, and lifestyle
+          essentials into one unified shopping experience.
         </p>
       </div>
 

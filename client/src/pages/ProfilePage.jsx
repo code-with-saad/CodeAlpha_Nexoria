@@ -95,7 +95,18 @@ export default function ProfilePage() {
   return (
     <div className="profile-page" style={{ maxWidth: '800px', margin: '1rem auto' }}>
       <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>My Account</h1>
+        <span style={{
+          display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+          background: 'rgba(5,150,105,0.08)', border: '1px solid rgba(5,150,105,0.25)',
+          borderRadius: '100px', padding: '0.25rem 0.9rem',
+          fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.12em',
+          textTransform: 'uppercase', color: 'var(--color-primary)',
+          marginBottom: '0.75rem', display: 'block', width: 'fit-content'
+        }}>Account Settings</span>
+        <h1 style={{
+          fontFamily: "'Rubik', sans-serif", fontSize: 'clamp(1.75rem, 5vw, 2.4rem)',
+          fontWeight: 800, lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '0.5rem'
+        }}>My Account</h1>
         <p style={{ color: 'var(--color-muted-text)' }}>
           Manage your personal details, security credentials, and account settings.
         </p>

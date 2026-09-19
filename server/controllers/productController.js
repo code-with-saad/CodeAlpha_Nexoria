@@ -5,7 +5,7 @@ import Product from '../models/Product.js';
 // @access  Public
 export const getProducts = async (req, res, next) => {
   try {
-    const { search, keyword, category, page = 1, limit = 12 } = req.query;
+    const { search, keyword, category, isFeatured, page = 1, limit = 12 } = req.query;
     const filter = {};
 
     const searchTerm = search || keyword;
@@ -18,6 +18,10 @@ export const getProducts = async (req, res, next) => {
 
     if (category && category.trim() !== '') {
       filter.category = { $regex: `^${category.trim()}$`, $options: 'i' };
+    }
+
+    if (isFeatured !== undefined) {
+      filter.isFeatured = isFeatured === 'true' || isFeatured === true;
     }
 
     const pageNum = Math.max(1, parseInt(page, 10));
@@ -70,7 +74,7 @@ export const getProductById = async (req, res, next) => {
 // @access  Private/Admin
 export const createProduct = async (req, res, next) => {
   try {
-    const { name, description, price, image, category, stock } = req.body;
+    const { name, description, price, image, category, stock, isFeatured } = req.body;
 
     if (!name || !description || price === undefined || !image || !category || stock === undefined) {
       res.status(400);
@@ -83,7 +87,8 @@ export const createProduct = async (req, res, next) => {
       price: Number(price),
       image,
       category,
-      stock: Number(stock)
+      stock: Number(stock),
+      isFeatured: isFeatured === true || isFeatured === 'true'
     });
 
     res.status(201).json({
@@ -101,7 +106,7 @@ export const createProduct = async (req, res, next) => {
 // @access  Private/Admin
 export const updateProduct = async (req, res, next) => {
   try {
-    const { name, description, price, image, category, stock } = req.body;
+    const { name, description, price, image, category, stock, isFeatured } = req.body;
 
     const product = await Product.findById(req.params.id);
 
@@ -116,6 +121,9 @@ export const updateProduct = async (req, res, next) => {
     product.image = image !== undefined ? image : product.image;
     product.category = category !== undefined ? category : product.category;
     product.stock = stock !== undefined ? Number(stock) : product.stock;
+    if (isFeatured !== undefined) {
+      product.isFeatured = isFeatured === true || isFeatured === 'true';
+    }
 
     const updatedProduct = await product.save();
 

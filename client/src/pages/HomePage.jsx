@@ -64,6 +64,8 @@ function CountUp({ end = 12500, duration = 1800, suffix = '+' }) {
 
 export default function HomePage() {
   const [featured, setFeatured] = useState([]);
+  const [flagshipProduct, setFlagshipProduct] = useState(null);
+  const [totalProductsCount, setTotalProductsCount] = useState(24);
   const [loadingFeatured, setLoadingFeatured] = useState(true);
   const [wishlist, setWishlist] = useState(() => {
     try { return JSON.parse(localStorage.getItem('nexoria_wishlist') || '[]'); } catch { return []; }
@@ -73,14 +75,26 @@ export default function HomePage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchFeatured = async () => {
+    const fetchCatalogData = async () => {
       try {
-        const { data } = await api.get('/products', { params: { limit: 4 } });
-        if (data?.data) setFeatured(data.data.slice(0, 4));
-      } catch { /* silently fail — hero CTA still works */ }
-      finally { setLoadingFeatured(false); }
+        // Fetch products list and look for isFeatured product
+        const { data } = await api.get('/products', { params: { limit: 20 } });
+        if (data?.data) {
+          const allProds = data.data;
+          setTotalProductsCount(data.total || allProds.length);
+          
+          const flagship = allProds.find(p => p.isFeatured) || allProds[0];
+          setFlagshipProduct(flagship);
+          
+          setFeatured(allProds.slice(0, 4));
+        }
+      } catch {
+        /* fallback handled gracefully */
+      } finally {
+        setLoadingFeatured(false);
+      }
     };
-    fetchFeatured();
+    fetchCatalogData();
   }, []);
 
   const toggleWishlist = (e, prodId) => {
@@ -100,80 +114,104 @@ export default function HomePage() {
   return (
     <div className="home-page">
 
-      {/* ── ASYMMETRIC TWO-COLUMN HERO ──────────────────────────── */}
-      <section className="hero-asymmetric">
-        <div className="hero-content">
-          <div className="hero-pill">
-            <Zap size={14} fill="var(--color-accent)" stroke="var(--color-accent)" />
-            Curated 2026 Collection &bull; Free Worldwide Shipping over $50
-          </div>
-          <h1 className="hero-title">
-            Exceptional Design.<br />
-            <span className="hero-title-accent">Modern Performance.</span>
+      {/* ── FLAGSHIP EDITORIAL HERO SECTION ──────────────────────────── */}
+      <section className="flagship-hero" aria-label="Flagship Product Showcase">
+        <div>
+          {/* Eyebrow badge */}
+          <span className="eyebrow-badge">
+            flagship &middot; new arrival
+          </span>
+
+          {/* Two-line Signature Bold Headline with Stroke Text */}
+          <h1 className="flagship-headline-solid">
+            meet the piece
           </h1>
-          <p className="hero-subtitle">
-            Nexoria delivers meticulously crafted electronics, accessories, lifestyle gear, and smart home essentials designed to elevate your everyday standard.
+          <div className="flagship-headline-stroke">
+            we built nexoria around
+          </div>
+
+          {/* Short Supporting Paragraph */}
+          <p className="flagship-subtext">
+            {flagshipProduct ? (
+              <>the <strong>{flagshipProduct.name}</strong>. precision movement, sapphire crystal, a design that started the whole collection.</>
+            ) : (
+              'the aurora chronograph. precision movement, sapphire crystal, a design that started the whole collection.'
+            )}
           </p>
-          <div className="hero-actions">
-            <Link to="/products" className="btn btn-accent" style={{ fontSize: '1.05rem', padding: '0.9rem 2.2rem' }}>
-              Explore Collection
-              <ArrowRight size={18} />
+
+          {/* CTAs */}
+          <div className="flagship-actions">
+            <Link
+              to={flagshipProduct ? `/products/${flagshipProduct._id}` : '/products'}
+              className="btn btn-accent"
+              style={{ fontSize: '0.95rem', padding: '0.75rem 1.6rem', textTransform: 'lowercase' }}
+            >
+              shop this piece
             </Link>
-            <Link to="/products" className="btn btn-outline hero-outline-btn" style={{ padding: '0.9rem 1.85rem' }}>
-              View Catalog
+            <Link
+              to="/products"
+              className="btn flagship-outline-btn"
+              style={{ fontSize: '0.95rem', padding: '0.75rem 1.6rem', textTransform: 'lowercase' }}
+            >
+              full collection
             </Link>
           </div>
+
+          {/* Inline Flagship Product Card Inside Hero */}
+          {flagshipProduct && (
+            <Link
+              to={`/products/${flagshipProduct._id}`}
+              className="flagship-card"
+            >
+              <div className="flagship-thumb-box">
+                {flagshipProduct.image?.startsWith('http') ? (
+                  <img
+                    src={flagshipProduct.image}
+                    alt={flagshipProduct.name}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'flex';
+                    }}
+                  />
+                ) : null}
+                <div style={{ display: flagshipProduct.image?.startsWith('http') ? 'none' : 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Package size={26} color="var(--color-primary)" />
+                </div>
+              </div>
+
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div className="flagship-card-title">
+                  {flagshipProduct.name}
+                </div>
+                <div className="flagship-card-meta">
+                  4.9 rating &middot; 300+ sold
+                </div>
+              </div>
+
+              <div className="flagship-card-price">
+                ${Number(flagshipProduct.price || 0).toFixed(2)}
+              </div>
+            </Link>
+          )}
         </div>
 
-        {/* Right column: Tilted layer stack with real seeded products */}
-        <div className="hero-visual-stack">
-          {/* Card 1: Top Left - Backpack */}
-          <Link
-            to={featured[0] ? `/products/${featured[0]._id}` : '/products'}
-            className="hero-card-layer hero-card-layer-1"
-          >
-            <img
-              src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&q=80"
-              alt="Hardshell Travel Backpack"
-              className="hero-layer-img"
-            />
-            <div className="hero-layer-info">
-              <span className="hero-layer-title">Travel Backpack</span>
-              <span className="hero-layer-price">$148.00</span>
+        {/* Three-Column Stats Strip directly below hero */}
+        <div className="flagship-stats-strip">
+          <div className="flagship-stat-col">
+            <div className="flagship-stat-number">
+              <CountUp end={12500} suffix="+" />
             </div>
-          </Link>
-
-          {/* Card 2: Bottom Right - Cardholder */}
-          <Link
-            to={featured[2] ? `/products/${featured[2]._id}` : '/products'}
-            className="hero-card-layer hero-card-layer-2"
-          >
-            <img
-              src="https://images.unsplash.com/photo-1627123424574-724758594e93?w=500&q=80"
-              alt="Slim Cardholder Wallet"
-              className="hero-layer-img"
-            />
-            <div className="hero-layer-info">
-              <span className="hero-layer-title">Slim Cardholder</span>
-              <span className="hero-layer-price">$42.00</span>
-            </div>
-          </Link>
-
-          {/* Card Main: Center - Minimalist Watch */}
-          <Link
-            to={featured[1] ? `/products/${featured[1]._id}` : '/products'}
-            className="hero-card-layer hero-card-layer-main"
-          >
-            <img
-              src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80"
-              alt="Minimalist Chronograph Watch"
-              className="hero-layer-img"
-            />
-            <div className="hero-layer-info">
-              <span className="hero-layer-title">Minimalist Chronograph</span>
-              <span className="hero-layer-price">$189.00</span>
-            </div>
-          </Link>
+            <div className="flagship-stat-label">orders</div>
+          </div>
+          <div className="flagship-stat-col">
+            <div className="flagship-stat-number">4.9 / 5</div>
+            <div className="flagship-stat-label">rating</div>
+          </div>
+          <div className="flagship-stat-col">
+            <div className="flagship-stat-number">{totalProductsCount}+</div>
+            <div className="flagship-stat-label">products</div>
+          </div>
         </div>
       </section>
 

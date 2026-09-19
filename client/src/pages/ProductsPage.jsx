@@ -102,10 +102,13 @@ export default function ProductsPage() {
 
   return (
     <div className="products-page">
-      <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Explore Products</h1>
-        <p style={{ color: 'var(--color-muted-text)' }}>
-          {total > 0 ? `${total} products in our catalog` : 'Discover our curated collection of premium goods.'}
+      <div className="page-header">
+        <span className="eyebrow-badge eyebrow-badge-emerald">
+          Shop The Collection
+        </span>
+        <h1 className="page-title">Catalog &amp; Products</h1>
+        <p className="page-subtitle">
+          {total > 0 ? `${total} items meticulously engineered for performance and durability.` : 'Discover our curated collection of premium goods.'}
         </p>
       </div>
 

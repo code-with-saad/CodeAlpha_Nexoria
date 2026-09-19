@@ -1,4 +1,4 @@
-﻿import mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import Product from './models/Product.js';
 
@@ -91,7 +91,8 @@ const PRODUCTS = [
     price: 189.00,
     image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80',
     category: 'Lifestyle',
-    stock: 9
+    stock: 9,
+    isFeatured: true
   },
   {
     name: 'Ceramic Pour-Over Coffee Set',

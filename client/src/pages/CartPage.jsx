@@ -43,7 +43,18 @@ export default function CartPage() {
     return (
       <div className="cart-page">
         <div style={{ marginBottom: '2rem' }}>
-          <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Shopping Cart</h1>
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+            background: 'rgba(5,150,105,0.08)', border: '1px solid rgba(5,150,105,0.25)',
+            borderRadius: '100px', padding: '0.25rem 0.9rem',
+            fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.12em',
+            textTransform: 'uppercase', color: 'var(--color-primary)',
+            marginBottom: '0.75rem', display: 'block', width: 'fit-content'
+          }}>Bag</span>
+          <h1 style={{
+            fontFamily: "'Rubik', sans-serif", fontSize: 'clamp(1.75rem, 5vw, 2.4rem)',
+            fontWeight: 800, lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '0.5rem'
+          }}>Shopping Cart</h1>
           <p style={{ color: 'var(--color-muted-text)' }}>
             Review items, modify quantities, and proceed to secure checkout.
           </p>
@@ -67,9 +78,20 @@ export default function CartPage() {
 
   return (
     <div className="cart-page">
-      <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+      <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h1 style={{ fontSize: '2rem', marginBottom: '0.25rem' }}>Shopping Cart</h1>
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+            background: 'rgba(5,150,105,0.08)', border: '1px solid rgba(5,150,105,0.25)',
+            borderRadius: '100px', padding: '0.25rem 0.9rem',
+            fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.12em',
+            textTransform: 'uppercase', color: 'var(--color-primary)',
+            marginBottom: '0.5rem', display: 'block', width: 'fit-content'
+          }}>Bag</span>
+          <h1 style={{
+            fontFamily: "'Rubik', sans-serif", fontSize: 'clamp(1.75rem, 5vw, 2.4rem)',
+            fontWeight: 800, lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '0.25rem'
+          }}>Shopping Cart</h1>
           <p style={{ color: 'var(--color-muted-text)' }}>
             You have <strong>{totalItems}</strong> {totalItems === 1 ? 'item' : 'items'} in your cart.
           </p>

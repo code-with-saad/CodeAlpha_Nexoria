@@ -34,6 +34,10 @@ const productSchema = new mongoose.Schema(
       required: [true, 'Please specify stock quantity'],
       min: [0, 'Stock cannot be negative'],
       default: 0
+    },
+    isFeatured: {
+      type: Boolean,
+      default: false
     }
   },
   {

@@ -94,7 +94,13 @@ export default function RegisterPage() {
         <div style={{ display: 'inline-flex', background: 'var(--color-muted)', borderRadius: '50%', padding: '1rem', marginBottom: '0.75rem' }}>
           <UserPlus size={32} color="var(--color-primary)" />
         </div>
-        <h1>Create an Account</h1>
+        <span style={{
+          display: 'block',
+          fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.12em',
+          textTransform: 'uppercase', color: 'var(--color-primary)',
+          marginBottom: '0.4rem'
+        }}>New Member</span>
+        <h1 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: 800, fontSize: '1.75rem', marginBottom: '0.25rem' }}>Create an Account</h1>
         <p className="subtitle">Join Nexoria to discover exclusive products</p>
 
         {serverError && (

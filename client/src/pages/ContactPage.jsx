@@ -49,7 +49,30 @@ export default function ContactPage() {
   return (
     <div className="contact-page" style={{ maxWidth: '960px', margin: '1rem auto' }}>
       <div style={{ marginBottom: '2.5rem', textAlign: 'center' }}>
-        <h1 style={{ fontSize: '2.25rem', marginBottom: '0.75rem' }}>Contact &amp; Customer Support</h1>
+        <span style={{
+          display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+          background: 'rgba(5,150,105,0.08)',
+          border: '1px solid rgba(5,150,105,0.25)',
+          borderRadius: '100px',
+          padding: '0.25rem 0.9rem',
+          fontSize: '0.65rem',
+          fontWeight: 700,
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          color: 'var(--color-primary)',
+          marginBottom: '1rem',
+        }}>
+          <MessageSquare size={11} />
+          Support
+        </span>
+        <h1 style={{
+          fontFamily: "'Rubik', sans-serif",
+          fontSize: 'clamp(1.75rem, 5vw, 2.5rem)',
+          fontWeight: 800,
+          lineHeight: 1.1,
+          letterSpacing: '-0.02em',
+          marginBottom: '0.75rem'
+        }}>Contact &amp; Customer Support</h1>
         <p style={{ color: 'var(--color-muted-text)', fontSize: '1.05rem', maxWidth: '600px', margin: '0 auto' }}>
           Have a question regarding your order, shipping, or warranty? Our dedicated support team is here to assist you.
         </p>

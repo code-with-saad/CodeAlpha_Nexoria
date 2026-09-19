@@ -155,6 +155,25 @@ export default function ProductDetailPage() {
 
         {/* PRODUCT INFO */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
+
+          {/* Eyebrow label */}
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+            background: 'rgba(5,150,105,0.08)',
+            border: '1px solid rgba(5,150,105,0.25)',
+            borderRadius: '100px',
+            padding: '0.2rem 0.75rem',
+            fontSize: '0.65rem',
+            fontWeight: 700,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: 'var(--color-primary)',
+            marginBottom: '0.75rem',
+            width: 'fit-content'
+          }}>
+            Shop The Collection
+          </span>
+
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
             <span className="brand-badge">{product.category}</span>
             <span className={'status-pill ' + (isOutOfStock ? 'status-offline' : 'status-online')} style={{ fontSize: '0.75rem' }}>
@@ -163,7 +182,14 @@ export default function ProductDetailPage() {
             </span>
           </div>
 
-          <h1 style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>{product.name}</h1>
+          <h1 style={{
+            fontFamily: "'Rubik', sans-serif",
+            fontSize: 'clamp(1.6rem, 4vw, 2.2rem)',
+            fontWeight: 800,
+            lineHeight: 1.15,
+            marginBottom: '0.75rem',
+            letterSpacing: '-0.01em'
+          }}>{product.name}</h1>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', marginBottom: '1rem' }}>
             {[1,2,3,4,5].map(s => (

@@ -84,7 +84,18 @@ export default function OrderHistoryPage() {
     return (
       <div className="orders-page">
         <div style={{ marginBottom: '2rem' }}>
-          <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>My Order History</h1>
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+            background: 'rgba(5,150,105,0.08)', border: '1px solid rgba(5,150,105,0.25)',
+            borderRadius: '100px', padding: '0.25rem 0.9rem',
+            fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.12em',
+            textTransform: 'uppercase', color: 'var(--color-primary)',
+            marginBottom: '0.75rem', display: 'block', width: 'fit-content'
+          }}>Order History</span>
+          <h1 style={{
+            fontFamily: "'Rubik', sans-serif", fontSize: 'clamp(1.75rem, 5vw, 2.4rem)',
+            fontWeight: 800, lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '0.5rem'
+          }}>My Order History</h1>
           <p style={{ color: 'var(--color-muted-text)' }}>Loading your past purchases...</p>
         </div>
 
@@ -104,7 +115,18 @@ export default function OrderHistoryPage() {
     return (
       <div className="orders-page">
         <div style={{ marginBottom: '2rem' }}>
-          <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>My Order History</h1>
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+            background: 'rgba(5,150,105,0.08)', border: '1px solid rgba(5,150,105,0.25)',
+            borderRadius: '100px', padding: '0.25rem 0.9rem',
+            fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.12em',
+            textTransform: 'uppercase', color: 'var(--color-primary)',
+            marginBottom: '0.75rem', display: 'block', width: 'fit-content'
+          }}>Order History</span>
+          <h1 style={{
+            fontFamily: "'Rubik', sans-serif", fontSize: 'clamp(1.75rem, 5vw, 2.4rem)',
+            fontWeight: 800, lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '0.5rem'
+          }}>My Order History</h1>
           <p style={{ color: 'var(--color-muted-text)' }}>Track your recent purchases and receipts.</p>
         </div>
 
@@ -127,7 +149,18 @@ export default function OrderHistoryPage() {
   return (
     <div className="orders-page">
       <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>My Order History</h1>
+        <span style={{
+          display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+          background: 'rgba(5,150,105,0.08)', border: '1px solid rgba(5,150,105,0.25)',
+          borderRadius: '100px', padding: '0.25rem 0.9rem',
+          fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.12em',
+          textTransform: 'uppercase', color: 'var(--color-primary)',
+          marginBottom: '0.75rem', display: 'block', width: 'fit-content'
+        }}>Order History</span>
+        <h1 style={{
+          fontFamily: "'Rubik', sans-serif", fontSize: 'clamp(1.75rem, 5vw, 2.4rem)',
+          fontWeight: 800, lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '0.5rem'
+        }}>My Order History</h1>
         <p style={{ color: 'var(--color-muted-text)' }}>
           You have placed <strong>{orders.length}</strong> {orders.length === 1 ? 'order' : 'orders'} with Nexoria.
         </p>

@@ -70,8 +70,14 @@ export default function LoginPage() {
         <div style={{ display: 'inline-flex', background: 'var(--color-muted)', borderRadius: '50%', padding: '1rem', marginBottom: '0.75rem' }}>
           <LockKeyhole size={32} color="var(--color-primary)" />
         </div>
-        <h1>Welcome Back</h1>
-        <p className="subtitle">Sign in to your Nexoria account</p>
+        <span style={{
+          display: 'block',
+          fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.12em',
+          textTransform: 'uppercase', color: 'var(--color-primary)',
+          marginBottom: '0.4rem'
+        }}>Welcome Back</span>
+        <h1 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: 800, fontSize: '1.75rem', marginBottom: '0.25rem' }}>Sign In to Nexoria</h1>
+        <p className="subtitle">Enter your credentials to continue</p>
 
         {serverError && (
           <div className="form-alert form-alert-error" role="alert">
