@@ -140,6 +140,7 @@ All API routes return uniform JSON payloads with `{ success: true|false, ... }`.
 | `POST` | `/api/auth/register` | Public | Register a new user | `{ "name": "...", "email": "...", "password": "...", "role": "user" }` |
 | `POST` | `/api/auth/login` | Public | Authenticate user & get JWT | `{ "email": "...", "password": "..." }` |
 | `GET` | `/api/auth/profile` | Protected (`Bearer <token>`) | Get logged-in user profile | None |
+| `PUT` | `/api/auth/profile` | Protected (`Bearer <token>`) | Update user profile & password | `{ "name": "...", "email": "...", "currentPassword": "...", "newPassword": "..." }` |
 
 ### Product Endpoints (`/api/products`)
 

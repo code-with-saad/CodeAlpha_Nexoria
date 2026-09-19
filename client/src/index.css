@@ -695,17 +695,95 @@ button {
   gap: 0.85rem;
 }
 
+.user-dropdown-container {
+  position: relative;
+}
+
 .user-badge-pill {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   background: var(--color-muted);
   border: 1px solid var(--color-border);
-  padding: 0.35rem 0.75rem;
+  padding: 0.4rem 0.85rem;
   border-radius: var(--radius-full);
   font-size: 0.875rem;
   font-weight: 700;
   color: var(--color-foreground);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.user-badge-pill:hover {
+  border-color: var(--color-primary);
+}
+
+.user-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  min-width: 200px;
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 0.5rem;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  animation: fadeIn 0.15s ease-out;
+}
+
+[data-theme="dark"] .user-dropdown-menu {
+  background-color: #072318;
+  border-color: var(--color-border);
+}
+
+.user-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-foreground);
+  text-decoration: none;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.user-dropdown-item:hover {
+  background-color: var(--color-muted);
+  color: var(--color-primary);
+}
+
+[data-theme="dark"] .user-dropdown-item:hover {
+  background-color: #041a10;
+}
+
+.user-dropdown-item.destructive {
+  color: var(--color-destructive);
+}
+
+.user-dropdown-item.destructive:hover {
+  background-color: #fee2e2;
+  color: var(--color-destructive-hover);
+}
+
+[data-theme="dark"] .user-dropdown-item.destructive:hover {
+  background-color: rgba(220, 38, 38, 0.15);
+}
+
+.user-dropdown-divider {
+  height: 1px;
+  background-color: var(--color-border);
+  margin: 0.25rem 0;
 }
 
 .admin-tag {

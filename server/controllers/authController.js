@@ -104,3 +104,68 @@ export const getUserProfile = async (req, res, next) => {
     next(error);
   }
 };
+
+// @desc    Update current user profile (name, email, password)
+// @route   PUT /api/auth/profile
+// @access  Private (protected)
+export const updateUserProfile = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      res.status(404);
+      throw new Error('User not found');
+    }
+
+    const { name, email, currentPassword, newPassword } = req.body;
+
+    // Update name if provided
+    if (name && name.trim()) {
+      user.name = name.trim();
+    }
+
+    // Update email if provided and not taken by another user
+    if (email && email.toLowerCase() !== user.email) {
+      const emailTaken = await User.findOne({ email: email.toLowerCase(), _id: { $ne: user._id } });
+      if (emailTaken) {
+        res.status(400);
+        throw new Error('This email address is already in use by another account');
+      }
+      user.email = email.toLowerCase().trim();
+    }
+
+    // Handle password change
+    if (newPassword) {
+      if (!currentPassword) {
+        res.status(400);
+        throw new Error('Current password is required to set a new password');
+      }
+      const isMatch = await user.matchPassword(currentPassword);
+      if (!isMatch) {
+        res.status(401);
+        throw new Error('Current password is incorrect');
+      }
+      if (newPassword.length < 6) {
+        res.status(400);
+        throw new Error('New password must be at least 6 characters');
+      }
+      user.password = newPassword; // pre-save hook in User model will hash this
+    }
+
+    const updatedUser = await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Profile updated successfully',
+      data: {
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        role: updatedUser.role,
+        createdAt: updatedUser.createdAt
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};

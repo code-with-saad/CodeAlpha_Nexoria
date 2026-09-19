@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, User, LogOut, Sun, Moon, Store, ClipboardList, Heart } from 'lucide-react';
+import { ShoppingCart, User, LogOut, Sun, Moon, Store, Heart, Package, ChevronDown } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
@@ -12,6 +12,8 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const [dark, setDark] = useState(() => localStorage.getItem('nexoria_theme') === 'dark');
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -24,7 +26,19 @@ export default function Navbar() {
     }
   }, [dark]);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const handleLogout = () => {
+    setDropdownOpen(false);
     logout();
     toast.info('You have been logged out successfully.', { title: 'Logged Out' });
     navigate('/');
@@ -103,16 +117,57 @@ export default function Navbar() {
           </button>
 
           {isAuthenticated ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-              <div className="user-badge-pill">
+            <div className="user-dropdown-container" ref={dropdownRef}>
+              <button
+                type="button"
+                className="user-badge-pill"
+                onClick={() => setDropdownOpen((prev) => !prev)}
+                aria-expanded={dropdownOpen}
+                aria-label="User menu"
+              >
                 <User size={15} />
                 <span>{user?.name}</span>
                 {isAdmin && <span className="admin-tag">Admin</span>}
-              </div>
-              <button onClick={handleLogout} className="btn btn-ghost" title="Sign Out" style={{ gap: '0.35rem' }}>
-                <LogOut size={16} />
-                Logout
+                <ChevronDown size={14} style={{ transform: dropdownOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
               </button>
+
+              {dropdownOpen && (
+                <div className="user-dropdown-menu">
+                  <Link
+                    to="/profile"
+                    className="user-dropdown-item"
+                    onClick={() => setDropdownOpen(false)}
+                  >
+                    <User size={16} />
+                    <span>My Profile</span>
+                  </Link>
+                  <Link
+                    to="/orders"
+                    className="user-dropdown-item"
+                    onClick={() => setDropdownOpen(false)}
+                  >
+                    <Package size={16} />
+                    <span>My Orders</span>
+                  </Link>
+                  <Link
+                    to="/wishlist"
+                    className="user-dropdown-item"
+                    onClick={() => setDropdownOpen(false)}
+                  >
+                    <Heart size={16} />
+                    <span>Wishlist</span>
+                  </Link>
+                  <div className="user-dropdown-divider" />
+                  <button
+                    type="button"
+                    className="user-dropdown-item destructive"
+                    onClick={handleLogout}
+                  >
+                    <LogOut size={16} />
+                    <span>Logout</span>
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>

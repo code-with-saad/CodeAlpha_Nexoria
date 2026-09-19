@@ -16,6 +16,7 @@ import CheckoutPage from './pages/CheckoutPage';
 import OrderConfirmationPage from './pages/OrderConfirmationPage';
 import OrderHistoryPage from './pages/OrderHistoryPage';
 import WishlistPage from './pages/WishlistPage';
+import ProfilePage from './pages/ProfilePage';
 import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
                     <Route path="/order-confirmation/:id" element={<OrderConfirmationPage />} />
                     <Route path="/orders" element={<OrderHistoryPage />} />
                     <Route path="/wishlist" element={<WishlistPage />} />
+                    <Route path="/profile" element={<ProfilePage />} />
                     <Route path="*" element={<NotFoundPage />} />
                   </Routes>
                 </div>

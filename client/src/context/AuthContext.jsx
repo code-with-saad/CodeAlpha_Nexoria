@@ -102,6 +102,25 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // Update profile
+  const updateProfile = async (profileData) => {
+    setLoading(true);
+    try {
+      const response = await api.put('/auth/profile', profileData);
+      const updatedUser = response.data?.data;
+      if (updatedUser) {
+        const mergedUser = { ...user, ...updatedUser };
+        setUser(mergedUser);
+        localStorage.setItem('nexoria_user', JSON.stringify(mergedUser));
+      }
+      return { success: true, user: updatedUser, message: response.data?.message };
+    } catch (error) {
+      return { success: false, message: error.message };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Logout user
   const logout = () => {
     setUser(null);
@@ -118,6 +137,7 @@ export function AuthProvider({ children }) {
     isAdmin: user?.role === 'admin',
     login,
     register,
+    updateProfile,
     logout
   };
 
