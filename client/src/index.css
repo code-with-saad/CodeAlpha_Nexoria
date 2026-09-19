@@ -920,22 +920,23 @@
   padding: 0;
 }
 
-html, body {
-  width: 100%;
-  max-width: 100%;
+html {
   overflow-x: hidden;
   min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
   font-family: var(--font-body);
   background-color: var(--color-background);
   color: var(--color-foreground);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  margin: 0;
+  padding: 0;
 }
 
 #root {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -985,12 +986,9 @@ button {
 
 /* App Shell Layout */
 .app-layout {
-  width: 100%;
-  max-width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
 }
 
 .main-content {

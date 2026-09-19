@@ -129,7 +129,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="home-page" ref={pageRef} style={{ width: '100%', maxWidth: '100%', overflowX: 'hidden' }}>
+    <div className="home-page" ref={pageRef}>
 
       {/* ── FLAGSHIP EDITORIAL HERO — THEME-AWARE & FULL BLEED ────── */}
       <section className="flagship-hero" aria-label="Flagship Product Showcase">
