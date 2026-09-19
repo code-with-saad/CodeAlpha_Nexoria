@@ -13,33 +13,54 @@ export const sendContactMessage = async (req, res, next) => {
     }
 
     // Configure transporter
-    // If SMTP credentials exist in .env, use them; otherwise use ethereal / test transporter
-    let transporter;
-    const smtpHost = process.env.SMTP_HOST;
-    const smtpPort = process.env.SMTP_PORT || 587;
-    const smtpUser = process.env.SMTP_USER;
-    const smtpPass = process.env.SMTP_PASS;
-    const recipientEmail = process.env.CONTACT_RECEIVER_EMAIL || process.env.SMTP_USER || 'support@nexoriastore.com';
+    const smtpHost = process.env.SMTP_HOST?.trim();
+    const smtpPort = process.env.SMTP_PORT ? Number(process.env.SMTP_PORT) : 587;
+    const smtpUser = process.env.SMTP_USER?.trim();
+    const smtpPass = process.env.SMTP_PASS?.trim();
+    const smtpFrom = process.env.SMTP_FROM?.trim() || `"Nexoria Support" <${smtpUser || 'no-reply@nexoriastore.com'}>`;
+    const recipientEmail = process.env.CONTACT_RECEIVER_EMAIL?.trim() || smtpUser || 'support@nexoriastore.com';
 
-    if (smtpHost && smtpUser && smtpPass) {
-      transporter = nodemailer.createTransport({
-        host: smtpHost,
-        port: Number(smtpPort),
-        secure: Number(smtpPort) === 465,
-        auth: {
-          user: smtpUser,
-          pass: smtpPass
-        }
-      });
+    let transporter;
+
+    if (smtpUser && smtpPass) {
+      if (smtpHost) {
+        transporter = nodemailer.createTransport({
+          host: smtpHost,
+          port: smtpPort,
+          secure: smtpPort === 465,
+          auth: {
+            user: smtpUser,
+            pass: smtpPass
+          }
+        });
+      } else if (smtpUser.includes('@gmail.com')) {
+        // Automatically configure Gmail service if host is omitted
+        transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: smtpUser,
+            pass: smtpPass
+          }
+        });
+      } else {
+        transporter = nodemailer.createTransport({
+          host: 'smtp.gmail.com',
+          port: 587,
+          secure: false,
+          auth: {
+            user: smtpUser,
+            pass: smtpPass
+          }
+        });
+      }
     } else {
-      // Create ephemeral test account or jsonTransport in development
       transporter = nodemailer.createTransport({
         jsonTransport: true
       });
     }
 
     const mailOptions = {
-      from: `"Nexoria Contact" <${smtpUser || 'no-reply@nexoriastore.com'}>`,
+      from: smtpFrom,
       replyTo: `"${name}" <${email}>`,
       to: recipientEmail,
       subject: `[Nexoria Contact] ${subject || 'New Customer Inquiry from ' + name}`,
