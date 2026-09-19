@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, User, LogOut, Sun, Moon, Store, Heart, Package, ChevronDown } from 'lucide-react';
+import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
+import { ShoppingCart, User, LogOut, Sun, Moon, Store, Heart, Package, ChevronDown, Menu, X, Info, Phone, Home, ShoppingBag, Shield } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
@@ -10,9 +10,11 @@ export default function Navbar() {
   const { totalItems, openCart } = useCart();
   const toast = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [dark, setDark] = useState(() => localStorage.getItem('nexoria_theme') === 'dark');
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -37,8 +39,38 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Close mobile drawer when route changes
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  // Handle escape key to close mobile menu
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setMobileMenuOpen(false);
+        setDropdownOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Prevent background scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
   const handleLogout = () => {
     setDropdownOpen(false);
+    setMobileMenuOpen(false);
     logout();
     toast.info('You have been logged out successfully.', { title: 'Logged Out' });
     navigate('/');
@@ -53,8 +85,8 @@ export default function Navbar() {
           Nexoria
         </Link>
 
-        {/* NAV LINKS */}
-        <nav>
+        {/* DESKTOP NAV LINKS */}
+        <nav aria-label="Main Navigation">
           <ul className="nav-links">
             <li>
               <NavLink to="/" end className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')}>
@@ -189,8 +221,166 @@ export default function Navbar() {
               </Link>
             </div>
           )}
+
+          {/* Mobile Menu Hamburger Button */}
+          <button
+            type="button"
+            className="mobile-nav-toggle"
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            aria-expanded={mobileMenuOpen}
+            aria-label="Toggle navigation menu"
+            aria-controls="mobile-nav-menu"
+          >
+            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
         </div>
       </div>
+
+      {/* MOBILE NAVIGATION DRAWER & BACKDROP */}
+      {mobileMenuOpen && (
+        <div className="mobile-nav-backdrop" onClick={() => setMobileMenuOpen(false)}>
+          <div
+            id="mobile-nav-menu"
+            className="mobile-nav-drawer"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-label="Mobile Navigation Menu"
+          >
+            <div className="mobile-nav-header">
+              <Link to="/" className="brand-logo" onClick={() => setMobileMenuOpen(false)}>
+                <Store size={22} />
+                Nexoria
+              </Link>
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="Close menu"
+                style={{ padding: '0.4rem' }}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="mobile-nav-body">
+              <NavLink
+                to="/"
+                end
+                className={({ isActive }) => 'mobile-nav-link' + (isActive ? ' active' : '')}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Home size={18} />
+                <span>Home</span>
+              </NavLink>
+
+              <NavLink
+                to="/products"
+                className={({ isActive }) => 'mobile-nav-link' + (isActive ? ' active' : '')}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <ShoppingBag size={18} />
+                <span>Products Catalog</span>
+              </NavLink>
+
+              <NavLink
+                to="/about"
+                className={({ isActive }) => 'mobile-nav-link' + (isActive ? ' active' : '')}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Info size={18} />
+                <span>About Us</span>
+              </NavLink>
+
+              <NavLink
+                to="/contact"
+                className={({ isActive }) => 'mobile-nav-link' + (isActive ? ' active' : '')}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Phone size={18} />
+                <span>Contact &amp; Support</span>
+              </NavLink>
+
+              <NavLink
+                to="/wishlist"
+                className={({ isActive }) => 'mobile-nav-link' + (isActive ? ' active' : '')}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Heart size={18} />
+                <span>My Wishlist</span>
+              </NavLink>
+
+              {isAuthenticated && (
+                <>
+                  <NavLink
+                    to="/orders"
+                    className={({ isActive }) => 'mobile-nav-link' + (isActive ? ' active' : '')}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <Package size={18} />
+                    <span>My Orders</span>
+                  </NavLink>
+
+                  <NavLink
+                    to="/profile"
+                    className={({ isActive }) => 'mobile-nav-link' + (isActive ? ' active' : '')}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <User size={18} />
+                    <span>Account Profile</span>
+                  </NavLink>
+                </>
+              )}
+            </div>
+
+            <div className="mobile-nav-footer">
+              {isAuthenticated ? (
+                <>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', padding: '0.5rem 0.75rem', background: 'var(--color-muted)', borderRadius: 'var(--radius-md)' }}>
+                    <User size={18} color="var(--color-primary)" />
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--color-foreground)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {user?.name}
+                      </div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--color-muted-text)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {user?.email}
+                      </div>
+                    </div>
+                    {isAdmin && <span className="admin-tag">Admin</span>}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="btn btn-outline"
+                    style={{ width: '100%', justifyContent: 'center', color: 'var(--color-destructive)' }}
+                  >
+                    <LogOut size={16} />
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                  <Link
+                    to="/login"
+                    className="btn btn-outline"
+                    style={{ width: '100%', justifyContent: 'center' }}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="btn btn-primary"
+                    style={{ width: '100%', justifyContent: 'center' }}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Create Account
+                  </Link>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
