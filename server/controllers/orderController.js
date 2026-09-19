@@ -201,3 +201,65 @@ export const updateOrderToPaid = async (req, res, next) => {
     next(error);
   }
 };
+
+// @desc    Get all orders (Admin only)
+// @route   GET /api/orders
+// @access  Private/Admin
+export const getAllOrders = async (req, res, next) => {
+  try {
+    const orders = await Order.find()
+      .populate('user', 'name email')
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: orders.length,
+      data: orders
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Update order fulfillment status (Admin only)
+// @route   PUT /api/orders/:id/status
+// @access  Private/Admin
+export const updateOrderStatus = async (req, res, next) => {
+  try {
+    const { status } = req.body;
+
+    const validStatuses = ['Pending', 'Processing', 'Paid', 'Shipped', 'Delivered', 'Cancelled'];
+    if (!status || !validStatuses.includes(status)) {
+      res.status(400);
+      throw new Error(`Invalid status. Must be one of: ${validStatuses.join(', ')}`);
+    }
+
+    const order = await Order.findById(req.params.id).populate('user', 'name email');
+
+    if (!order) {
+      res.status(404);
+      throw new Error('Order not found');
+    }
+
+    order.status = status;
+
+    if (status === 'Delivered') {
+      order.isDelivered = true;
+      order.deliveredAt = new Date();
+    } else if (status === 'Paid') {
+      order.isPaid = true;
+      if (!order.paidAt) order.paidAt = new Date();
+    }
+
+    const updatedOrder = await order.save();
+
+    res.status(200).json({
+      success: true,
+      message: `Order status successfully updated to ${status}`,
+      data: updatedOrder
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+

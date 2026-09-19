@@ -144,7 +144,21 @@ export default function HomePage() {
 
               {/* Two-line Signature Bold Headline with Stroke Text */}
               <h1 className="flagship-headline-solid reveal" data-delay="80">
-                Meet The Piece
+                MeetBuild Phase 5: Admin Dashboard for Nexoria.
+
+1. Protected admin route (/admin) — only accessible to users with role: 'admin' (redirect non-admins to home with a toast). Add an "Admin" link in the Navbar user dropdown, visible only to admin users.
+
+2. Admin Dashboard overview page: summary cards showing total products, total orders, total revenue (sum of paid orders), and total registered users — pulled from existing backend data via new admin-only aggregate endpoints (e.g. GET /api/admin/stats).
+
+3. Product management tab: table/grid listing all products with inline actions — edit (opens a form with all product fields including the isFeatured toggle from the flagship feature), delete (with confirmation), and "Add New Product" button opening a creation form. Wire to the existing admin-protected product CRUD endpoints.
+
+4. Order management tab: table listing all orders (not just the logged-in user's) with customer name, date, total, payment status, and current fulfillment status. Allow the admin to update fulfillment status (Pending → Processing → Shipped → Delivered, or Cancelled) via a dropdown or action buttons — add a new PUT /api/orders/:id/status admin-only backend endpoint for this if it doesn't exist yet.
+
+5. Use the existing design system (rust/terracotta palette, current typography) for all admin UI — tables, forms, and tabs should feel consistent with the rest of the site, not like a bolted-on separate admin theme.
+
+6. All success/error feedback through the existing toast system, no browser alerts or confirm() — use a proper confirmation modal/dialog component for destructive actions like product/order deletion.
+
+Explain the admin route protection approach and the new backend endpoints before implementing, then build tab by tab: overview stats first, then product management, then order management. Update PROGRESS.md marking Phase 5 in progress, and README.md with the new admin endpoints documented. The Piece
               </h1>
               <div className="flagship-headline-stroke reveal" data-delay="160">
                 We Built Nexoria Around

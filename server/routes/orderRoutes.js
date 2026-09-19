@@ -4,9 +4,11 @@ import {
   createOrder,
   getMyOrders,
   getOrderById,
-  updateOrderToPaid
+  updateOrderToPaid,
+  getAllOrders,
+  updateOrderStatus
 } from '../controllers/orderController.js';
-import { protect } from '../middleware/authMiddleware.js';
+import { protect, admin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -16,7 +18,8 @@ router.post('/create-payment-intent', protect, createPaymentIntent);
 // Order CRUD endpoints
 router
   .route('/')
-  .post(protect, createOrder);
+  .post(protect, createOrder)
+  .get(protect, admin, getAllOrders);
 
 router.get('/myorders', protect, getMyOrders);
 
@@ -25,5 +28,7 @@ router
   .get(protect, getOrderById);
 
 router.put('/:id/pay', protect, updateOrderToPaid);
+router.put('/:id/status', protect, admin, updateOrderStatus);
 
 export default router;
+

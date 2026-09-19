@@ -183,6 +183,17 @@ export default function Navbar() {
                     <User size={16} />
                     <span>My Profile</span>
                   </Link>
+                  {isAdmin && (
+                    <Link
+                      to="/admin"
+                      className="user-dropdown-item"
+                      style={{ color: 'var(--color-primary)', fontWeight: 700 }}
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      <Shield size={16} />
+                      <span>Admin Portal</span>
+                    </Link>
+                  )}
                   <Link
                     to="/orders"
                     className="user-dropdown-item"
@@ -311,6 +322,18 @@ export default function Navbar() {
 
               {isAuthenticated && (
                 <>
+                  {isAdmin && (
+                    <NavLink
+                      to="/admin"
+                      className={({ isActive }) => 'mobile-nav-link' + (isActive ? ' active' : '')}
+                      style={{ color: 'var(--color-primary)', fontWeight: 700 }}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <Shield size={18} />
+                      <span>Admin Portal</span>
+                    </NavLink>
+                  )}
+
                   <NavLink
                     to="/orders"
                     className={({ isActive }) => 'mobile-nav-link' + (isActive ? ' active' : '')}

@@ -164,6 +164,14 @@ All API routes return uniform JSON payloads with `{ success: true|false, ... }`.
 | `GET` | `/api/orders/myorders` | Protected (`Bearer <token>`) | Get user order history | None |
 | `GET` | `/api/orders/:id` | Protected (`Bearer <token>`) | Get order detail by ID | None |
 | `PUT` | `/api/orders/:id/pay` | Protected (`Bearer <token>`) | Mark order as paid | `{ "id": "pi_...", "status": "succeeded" }` |
+| `GET` | `/api/orders` | Private / Admin (`Bearer <token>`) | List all customer orders | None |
+| `PUT` | `/api/orders/:id/status` | Private / Admin (`Bearer <token>`) | Update order fulfillment status | `{ "status": "Shipped" }` |
+
+### Administrative & Analytics Endpoints (`/api/admin`)
+
+| Method | Endpoint | Access | Description | Request Body |
+| :--- | :--- | :--- | :--- | :--- |
+| `GET` | `/api/admin/stats` | Private / Admin (`Bearer <token>`) | Get store analytics (revenue, order counts, stock alerts, user counts) | None |
 
 ### Contact & Support Endpoints (`/api/contact`)
 

@@ -19,6 +19,8 @@ import WishlistPage from './pages/WishlistPage';
 import ProfilePage from './pages/ProfilePage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
+import AdminDashboardPage from './pages/AdminDashboardPage';
+import AdminRoute from './components/AdminRoute';
 import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
@@ -43,6 +45,16 @@ function App() {
                   <Route path="/orders" element={<div className="container" style={{ paddingTop: '2.5rem', paddingBottom: '2.5rem' }}><OrderHistoryPage /></div>} />
                   <Route path="/wishlist" element={<div className="container" style={{ paddingTop: '2.5rem', paddingBottom: '2.5rem' }}><WishlistPage /></div>} />
                   <Route path="/profile" element={<div className="container" style={{ paddingTop: '2.5rem', paddingBottom: '2.5rem' }}><ProfilePage /></div>} />
+                  <Route
+                    path="/admin"
+                    element={
+                      <AdminRoute>
+                        <div className="container" style={{ paddingTop: '2.5rem', paddingBottom: '3.5rem' }}>
+                          <AdminDashboardPage />
+                        </div>
+                      </AdminRoute>
+                    }
+                  />
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/contact" element={<div className="container" style={{ paddingTop: '2.5rem', paddingBottom: '2.5rem' }}><ContactPage /></div>} />
                   <Route path="*" element={<div className="container" style={{ paddingTop: '2.5rem', paddingBottom: '2.5rem' }}><NotFoundPage /></div>} />
