@@ -11,10 +11,10 @@ import { useToast } from '../context/ToastContext';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
 const CATEGORY_DATA = [
-  { name: 'Electronics', Icon: Smartphone, color: '#0f766e', bgClass: 'cat-card-electronics', desc: 'Cutting-edge tech & gadgets' },
+  { name: 'Electronics', Icon: Smartphone, color: '#996515', bgClass: 'cat-card-electronics', desc: 'Cutting-edge tech & gadgets' },
   { name: 'Accessories', Icon: Headphones, color: '#d84315', bgClass: 'cat-card-accessories', desc: 'Elevate your everyday setup' },
-  { name: 'Lifestyle', Icon: Sparkles, color: '#ea580c', bgClass: 'cat-card-lifestyle', desc: 'Refined goods for modern life' },
-  { name: 'Home', Icon: HomeIcon, color: '#115e59', bgClass: 'cat-card-home', desc: 'Smart living essentials' }
+  { name: 'Lifestyle', Icon: Sparkles, color: '#c25e00', bgClass: 'cat-card-lifestyle', desc: 'Refined goods for modern life' },
+  { name: 'Home', Icon: HomeIcon, color: '#7e520f', bgClass: 'cat-card-home', desc: 'Smart living essentials' }
 ];
 
 /* ── Marquee strip content ──────────────────────────────── */

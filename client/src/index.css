@@ -11,14 +11,15 @@
   --color-primary-light: rgba(216, 67, 21, 0.12);
   --color-on-primary: #ffffff;
 
-  /* Deep Teal Secondary / Accent */
-  --color-secondary: #0f766e;
-  --color-secondary-hover: #115e59;
-  --color-secondary-light: rgba(15, 118, 110, 0.12);
+  /* Warm Gold-Brown Secondary / Accent (#996515 family) */
+  --color-secondary: #996515;
+  --color-secondary-hover: #7e520f;
+  --color-secondary-light: rgba(153, 101, 21, 0.12);
   --color-on-secondary: #ffffff;
 
-  --color-accent: #0f766e;
-  --color-accent-hover: #115e59;
+  --color-accent: #996515;
+  --color-accent-hover: #7e520f;
+  --color-accent-light: rgba(153, 101, 21, 0.12);
   --color-on-accent: #ffffff;
 
   /* Warm Neutrals (Light Mode) */
@@ -39,12 +40,13 @@
 
   --color-success: #16a34a;
   --color-warning: #d97706;
-  --color-info: #0f766e;
+  --color-info: #996515;
   --color-ring: #d84315;
   --color-navbar-bg: rgba(250, 247, 245, 0.92);
 
   /* Typography Scale */
-  --font-heading: 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Syne', 'Outfit', sans-serif;
+  --font-heading: 'Outfit', 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-body: 'Nunito Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
   /* Elevation Shadows */
@@ -60,7 +62,7 @@
   --shadow-section-dark: 0 12px 36px rgba(0, 0, 0, 0.6);
   --shadow-float: 0 24px 44px rgba(0, 0, 0, 0.35);
   --shadow-drawer: -4px 0 24px rgba(0, 0, 0, 0.15);
-  --shadow-accent-glow: 0 4px 20px -2px rgba(15, 118, 110, 0.35);
+  --shadow-accent-glow: 0 4px 20px -2px rgba(153, 101, 21, 0.3);
 
   /* Radius */
   --radius-sm: 6px;
@@ -83,12 +85,13 @@
   --color-primary-hover: #ff8a65;
   --color-primary-light: rgba(255, 112, 67, 0.18);
 
-  --color-secondary: #2dd4bf;
-  --color-secondary-hover: #14b8a6;
-  --color-secondary-light: rgba(45, 212, 191, 0.15);
+  --color-secondary: #e5a950;
+  --color-secondary-hover: #f3be70;
+  --color-secondary-light: rgba(229, 169, 80, 0.16);
 
-  --color-accent: #2dd4bf;
-  --color-accent-hover: #14b8a6;
+  --color-accent: #e5a950;
+  --color-accent-hover: #f3be70;
+  --color-accent-light: rgba(229, 169, 80, 0.16);
 
   --color-card: #271b17;
   --color-card-foreground: #faede8;
@@ -98,6 +101,7 @@
 
   --color-muted: #241814;
 
+  --color-info: #e5a950;
   --color-ring: #ff7043;
   --color-navbar-bg: rgba(28, 19, 16, 0.94);
 
@@ -105,6 +109,7 @@
   --shadow-glow: 0 4px 20px -2px rgba(255, 112, 67, 0.3);
   --shadow-section: 0 12px 36px rgba(0, 0, 0, 0.6);
   --shadow-focus: 0 0 0 3px rgba(255, 112, 67, 0.3);
+  --shadow-accent-glow: 0 4px 20px -2px rgba(229, 169, 80, 0.3);
 }
 
 [data-theme="dark"] body,
@@ -212,9 +217,9 @@
 }
 
 [data-theme="dark"] .status-online {
-  background-color: rgba(45, 212, 191, 0.18);
-  color: #2dd4bf;
-  border: 1px solid rgba(45, 212, 191, 0.35);
+  background-color: rgba(229, 169, 80, 0.18);
+  color: var(--color-secondary);
+  border: 1px solid rgba(229, 169, 80, 0.35);
 }
 
 [data-theme="dark"] .status-offline {
@@ -393,13 +398,14 @@
   gap: 0.4rem;
   background: rgba(216, 67, 21, 0.12);
   color: var(--color-primary);
-  font-size: 0.78rem;
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
   font-weight: 700;
-  padding: 0.35rem 0.9rem;
+  padding: 0.35rem 0.95rem;
   border-radius: var(--radius-full);
   margin-bottom: 1.25rem;
   text-transform: uppercase;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.12em;
   border: 1px solid rgba(216, 67, 21, 0.25);
 }
 
@@ -410,7 +416,7 @@
 }
 
 .flagship-headline-solid {
-  font-family: var(--font-heading);
+  font-family: var(--font-display);
   font-size: clamp(2.4rem, 5vw, 3.6rem);
   font-weight: 800;
   line-height: 1.08;
@@ -420,7 +426,7 @@
 }
 
 .flagship-headline-stroke {
-  font-family: var(--font-heading);
+  font-family: var(--font-display);
   font-size: clamp(2.4rem, 5vw, 3.6rem);
   font-weight: 800;
   line-height: 1.08;
@@ -471,7 +477,7 @@
   max-width: 380px;
   aspect-ratio: 1 / 1;
   border-radius: var(--radius-lg);
-  background: radial-gradient(circle, rgba(15, 118, 110, 0.15) 0%, rgba(216, 67, 21, 0.08) 70%, transparent 100%);
+  background: radial-gradient(circle, rgba(153, 101, 21, 0.15) 0%, rgba(216, 67, 21, 0.08) 70%, transparent 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -479,7 +485,7 @@
 }
 
 [data-theme="dark"] .flagship-hero-visual-frame {
-  background: radial-gradient(circle, rgba(45, 212, 191, 0.18) 0%, rgba(255, 112, 67, 0.12) 70%, transparent 100%);
+  background: radial-gradient(circle, rgba(229, 169, 80, 0.18) 0%, rgba(255, 112, 67, 0.12) 70%, transparent 100%);
 }
 
 .flagship-hero-img {
@@ -564,12 +570,12 @@
   display: flex;
   border-top: 2px solid var(--color-secondary);
   margin: 2.5rem calc(-1 * max(1.5rem, calc((100vw - 1200px) / 2 + 1.5rem))) 0;
-  background: rgba(15, 118, 110, 0.05);
+  background: rgba(153, 101, 21, 0.05);
 }
 
 [data-theme="dark"] .flagship-stats-strip {
   border-top-color: var(--color-secondary);
-  background: rgba(45, 212, 191, 0.04);
+  background: rgba(229, 169, 80, 0.05);
 }
 
 .flagship-stat-col {
@@ -596,11 +602,12 @@
 }
 
 .flagship-stat-label {
-  font-size: 0.78rem;
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
   font-weight: 700;
   color: var(--color-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.12em;
 }
 
 @media (max-width: 860px) {
@@ -936,14 +943,15 @@ button {
 }
 
 .brand-badge {
-  background-color: rgba(15, 118, 110, 0.12);
+  background-color: var(--color-secondary-light);
   color: var(--color-secondary);
-  font-size: 0.75rem;
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
   font-weight: 700;
-  padding: 0.15rem 0.5rem;
+  padding: 0.15rem 0.55rem;
   border-radius: var(--radius-full);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.08em;
 }
 
 .nav-links {
@@ -1362,7 +1370,7 @@ button {
 }
 
 .status-online {
-  background-color: rgba(15, 118, 110, 0.12);
+  background-color: var(--color-secondary-light);
   color: var(--color-secondary);
 }
 
@@ -1931,20 +1939,23 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.8rem;
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
   font-weight: 700;
   color: var(--color-secondary);
-  background: rgba(15, 118, 110, 0.08);
-  padding: 0.4rem 0.75rem;
+  background: var(--color-secondary-light);
+  padding: 0.35rem 0.75rem;
   border-radius: var(--radius-sm);
-  border: 1px solid rgba(15, 118, 110, 0.25);
+  border: 1px solid rgba(153, 101, 21, 0.25);
   width: fit-content;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 [data-theme="dark"] .footer-trust-badge {
-  background: rgba(45, 212, 191, 0.12);
-  border-color: rgba(45, 212, 191, 0.25);
-  color: #2dd4bf;
+  background: var(--color-secondary-light);
+  border-color: rgba(229, 169, 80, 0.25);
+  color: var(--color-secondary);
 }
 
 .footer-heading {
@@ -2059,17 +2070,20 @@ button {
   background-color: var(--color-card);
 }
 
-/* Cart drawer item quantity controls */
+/* Shared Cart item quantity controls (CartDrawer & CartPage) */
 .cart-qty-btn {
-  padding: 0.18rem 0.55rem;
+  padding: 0.35rem 0.75rem;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 1rem;
   background: var(--color-muted);
   color: var(--color-foreground);
   border: none;
   cursor: pointer;
-  transition: background-color var(--transition-fast), color var(--transition-fast);
+  transition: background-color var(--transition-fast), color var(--transition-fast), opacity var(--transition-fast);
   line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cart-qty-btn:hover:not(:disabled) {
@@ -2078,8 +2092,10 @@ button {
 }
 
 .cart-qty-btn:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
+  opacity: 0.28 !important;
+  cursor: not-allowed !important;
+  background: var(--color-muted) !important;
+  color: var(--color-muted-text) !important;
 }
 
 [data-theme="dark"] .cart-qty-btn {
@@ -2090,6 +2106,12 @@ button {
 [data-theme="dark"] .cart-qty-btn:hover:not(:disabled) {
   background: var(--color-primary);
   color: #ffffff;
+}
+
+[data-theme="dark"] .cart-qty-btn:disabled {
+  background: #241814 !important;
+  color: #786b66 !important;
+  opacity: 0.28 !important;
 }
 
 /* Cart drawer item row */
@@ -2205,7 +2227,7 @@ button {
 }
 
 [data-theme="dark"] .cta-banner-desc {
-  color: #d1fae5;
+  color: #faede8;
 }
 
 .cta-banner-check-row {
@@ -2221,7 +2243,7 @@ button {
 }
 
 .cta-banner-check-icon {
-  color: #2dd4bf;
+  color: var(--color-secondary);
   flex-shrink: 0;
 }
 

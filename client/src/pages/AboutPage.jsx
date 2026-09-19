@@ -26,7 +26,7 @@ export default function AboutPage() {
         <div style={{
           position: 'absolute', top: '-80px', left: '50%', transform: 'translateX(-50%)',
           width: '450px', height: '450px',
-          background: 'radial-gradient(circle, rgba(216,67,21,0.12) 0%, rgba(15,118,110,0.06) 50%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(216,67,21,0.12) 0%, rgba(153,101,21,0.08) 50%, transparent 70%)',
           pointerEvents: 'none'
         }} />
 
@@ -37,7 +37,7 @@ export default function AboutPage() {
           style={{ marginBottom: '1.75rem' }}
         >
           <Store size={13} />
-          Our Story &amp; Mission
+          OUR STORY &amp; MISSION
         </span>
 
         {/* Two-line editorial headline */}
@@ -45,7 +45,7 @@ export default function AboutPage() {
           className="reveal"
           data-delay="100"
           style={{
-            fontFamily: "var(--font-heading)",
+            fontFamily: "var(--font-display)",
             fontWeight: 900,
             lineHeight: 1.05,
             margin: '0 0 1.5rem',
@@ -94,10 +94,10 @@ export default function AboutPage() {
         {/* ── BRAND STORY & MISSION ────────────────────────────────────── */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', marginBottom: '3.5rem' }}>
           <div className="card reveal" data-delay="0" style={{ padding: '2rem' }}>
-            <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', background: 'rgba(216, 67, 21, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem', color: 'var(--color-primary)' }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', background: 'var(--color-primary-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem', color: 'var(--color-primary)' }}>
               <Sparkles size={24} />
             </div>
-            <h2 style={{ fontSize: '1.35rem', marginBottom: '0.75rem' }}>Our Story</h2>
+            <h2 style={{ fontSize: '1.35rem', marginBottom: '0.75rem', fontFamily: 'var(--font-heading)' }}>Our Story</h2>
             <p style={{ color: 'var(--color-muted-text)', lineHeight: 1.65, fontSize: '0.95rem' }}>
               Founded with a passion for minimalism and premium craftsmanship, Nexoria started as an endeavor
               to eliminate cluttered marketplaces and replace them with a strictly verified selection of tech
@@ -110,10 +110,10 @@ export default function AboutPage() {
           </div>
 
           <div className="card reveal" data-delay="100" style={{ padding: '2rem' }}>
-            <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', background: 'rgba(15, 118, 110, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem', color: 'var(--color-secondary)' }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', background: 'var(--color-secondary-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem', color: 'var(--color-secondary)' }}>
               <HeartHandshake size={24} />
             </div>
-            <h2 style={{ fontSize: '1.35rem', marginBottom: '0.75rem' }}>Our Mission</h2>
+            <h2 style={{ fontSize: '1.35rem', marginBottom: '0.75rem', fontFamily: 'var(--font-heading)' }}>Our Mission</h2>
             <p style={{ color: 'var(--color-muted-text)', lineHeight: 1.65, fontSize: '0.95rem' }}>
               Our mission is simple: empower modern creators, professionals, and tastemakers with authentic
               products backed by responsive customer support, clear warranties, and transparent pricing.
@@ -127,7 +127,7 @@ export default function AboutPage() {
 
         {/* ── CORE PILLARS / VALUES ─────────────────────────────────────── */}
         <div style={{ marginBottom: '3.5rem' }}>
-          <h2 className="reveal" style={{ fontSize: '1.85rem', textAlign: 'center', marginBottom: '2rem' }}>
+          <h2 className="reveal" style={{ fontSize: '1.85rem', textAlign: 'center', marginBottom: '2rem', fontFamily: 'var(--font-display)' }}>
             Why Customers Choose Nexoria
           </h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem' }}>
@@ -137,10 +137,10 @@ export default function AboutPage() {
               { Icon: Award, title: '30-Day Guarantee', desc: 'Hassle-free 30-day return policy on all eligible purchases with immediate refund processing.' },
             ].map(({ Icon, title, desc }, i) => (
               <div key={title} className="card reveal" data-delay={String(i * 80)} style={{ padding: '1.75rem', textAlign: 'center' }}>
-                <div style={{ width: '56px', height: '56px', borderRadius: 'var(--radius-md)', background: 'rgba(15, 118, 110, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem', color: 'var(--color-secondary)' }}>
+                <div style={{ width: '56px', height: '56px', borderRadius: 'var(--radius-md)', background: 'var(--color-secondary-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem', color: 'var(--color-secondary)' }}>
                   <Icon size={28} />
                 </div>
-                <h3 style={{ fontSize: '1.15rem', marginBottom: '0.5rem' }}>{title}</h3>
+                <h3 style={{ fontSize: '1.15rem', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>{title}</h3>
                 <p style={{ fontSize: '0.875rem', color: 'var(--color-muted-text)', lineHeight: 1.6 }}>{desc}</p>
               </div>
             ))}

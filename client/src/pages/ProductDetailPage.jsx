@@ -157,20 +157,7 @@ export default function ProductDetailPage() {
         <div style={{ display: 'flex', flexDirection: 'column' }}>
 
           {/* Eyebrow label */}
-          <span style={{
-            display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
-            background: 'rgba(5,150,105,0.08)',
-            border: '1px solid rgba(5,150,105,0.25)',
-            borderRadius: '100px',
-            padding: '0.2rem 0.75rem',
-            fontSize: '0.65rem',
-            fontWeight: 700,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color: 'var(--color-primary)',
-            marginBottom: '0.75rem',
-            width: 'fit-content'
-          }}>
+          <span className="eyebrow-badge" style={{ marginBottom: '0.75rem' }}>
             Shop The Collection
           </span>
 
@@ -183,7 +170,7 @@ export default function ProductDetailPage() {
           </div>
 
           <h1 style={{
-            fontFamily: "'Rubik', sans-serif",
+            fontFamily: "var(--font-display)",
             fontSize: 'clamp(1.6rem, 4vw, 2.2rem)',
             fontWeight: 800,
             lineHeight: 1.15,

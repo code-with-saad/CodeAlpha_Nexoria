@@ -48,7 +48,7 @@ function ToastItem({ toast, onRemove }) {
         return <AlertTriangle size={18} color="#d97706" />;
       case 'info':
       default:
-        return <Info size={18} color="#0f766e" />;
+        return <Info size={18} color="#996515" />;
     }
   };
 

@@ -43,16 +43,11 @@ export default function CartPage() {
     return (
       <div className="cart-page">
         <div style={{ marginBottom: '2rem' }}>
-          <span style={{
-            display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
-            background: 'rgba(5,150,105,0.08)', border: '1px solid rgba(5,150,105,0.25)',
-            borderRadius: '100px', padding: '0.25rem 0.9rem',
-            fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.12em',
-            textTransform: 'uppercase', color: 'var(--color-primary)',
-            marginBottom: '0.75rem', display: 'block', width: 'fit-content'
-          }}>Bag</span>
+          <span className="eyebrow-badge" style={{ marginBottom: '0.75rem' }}>
+            Shopping Bag
+          </span>
           <h1 style={{
-            fontFamily: "'Rubik', sans-serif", fontSize: 'clamp(1.75rem, 5vw, 2.4rem)',
+            fontFamily: "var(--font-display)", fontSize: 'clamp(1.75rem, 5vw, 2.4rem)',
             fontWeight: 800, lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '0.5rem'
           }}>Shopping Cart</h1>
           <p style={{ color: 'var(--color-muted-text)' }}>
@@ -64,7 +59,7 @@ export default function CartPage() {
           <div style={{ display: 'inline-flex', padding: '1.25rem', background: 'var(--color-muted)', borderRadius: '50%', marginBottom: '1.25rem' }}>
             <ShoppingBag size={48} color="var(--color-muted-text)" />
           </div>
-          <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Your Cart is Empty</h2>
+          <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>Your Cart is Empty</h2>
           <p style={{ color: 'var(--color-muted-text)', maxWidth: '450px', margin: '0 auto 2rem' }}>
             Looks like you haven't added anything to your cart yet. Explore our product catalog to discover trending items!
           </p>
@@ -80,16 +75,11 @@ export default function CartPage() {
     <div className="cart-page">
       <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <span style={{
-            display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
-            background: 'rgba(5,150,105,0.08)', border: '1px solid rgba(5,150,105,0.25)',
-            borderRadius: '100px', padding: '0.25rem 0.9rem',
-            fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.12em',
-            textTransform: 'uppercase', color: 'var(--color-primary)',
-            marginBottom: '0.5rem', display: 'block', width: 'fit-content'
-          }}>Bag</span>
+          <span className="eyebrow-badge" style={{ marginBottom: '0.5rem' }}>
+            Shopping Bag
+          </span>
           <h1 style={{
-            fontFamily: "'Rubik', sans-serif", fontSize: 'clamp(1.75rem, 5vw, 2.4rem)',
+            fontFamily: "var(--font-display)", fontSize: 'clamp(1.75rem, 5vw, 2.4rem)',
             fontWeight: 800, lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '0.25rem'
           }}>Shopping Cart</h1>
           <p style={{ color: 'var(--color-muted-text)' }}>
@@ -160,10 +150,10 @@ export default function CartPage() {
 
               {/* Product Info */}
               <div style={{ flex: '1 1 200px' }}>
-                <div style={{ fontSize: '0.75rem', color: 'var(--color-primary)', fontWeight: 700, textTransform: 'uppercase' }}>
+                <div style={{ fontSize: '0.72rem', color: 'var(--color-primary)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.2rem' }}>
                   {item.category || 'Product'}
                 </div>
-                <h3 style={{ fontSize: '1.05rem', marginBottom: '0.25rem' }}>
+                <h3 style={{ fontSize: '1.05rem', marginBottom: '0.25rem', fontFamily: 'var(--font-heading)' }}>
                   <Link to={`/products/${item.product}`} style={{ color: 'var(--color-foreground)' }}>
                     {item.name}
                   </Link>
@@ -174,24 +164,13 @@ export default function CartPage() {
               </div>
 
               {/* Quantity Controls */}
-              <div
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  border: '1px solid var(--color-border)',
-                  borderRadius: 'var(--radius-md)',
-                  overflow: 'hidden'
-                }}
-              >
+              <div className="cart-qty-wrapper">
                 <button
                   type="button"
+                  className="cart-qty-btn"
                   onClick={() => updateQuantity(item.product, item.quantity - 1)}
-                  style={{
-                    padding: '0.35rem 0.75rem',
-                    background: 'var(--color-muted)',
-                    fontSize: '1rem',
-                    fontWeight: 700
-                  }}
+                  disabled={item.quantity <= 1}
+                  aria-label="Decrease quantity"
                 >
                   −
                 </button>
@@ -200,22 +179,19 @@ export default function CartPage() {
                     padding: '0.35rem 0.85rem',
                     fontWeight: 700,
                     fontSize: '0.9rem',
-                    minWidth: '2rem',
-                    textAlign: 'center'
+                    minWidth: '2.2rem',
+                    textAlign: 'center',
+                    color: 'var(--color-foreground)'
                   }}
                 >
                   {item.quantity}
                 </span>
                 <button
                   type="button"
+                  className="cart-qty-btn"
                   onClick={() => updateQuantity(item.product, item.quantity + 1)}
                   disabled={item.quantity >= (item.stock || 99)}
-                  style={{
-                    padding: '0.35rem 0.75rem',
-                    background: 'var(--color-muted)',
-                    fontSize: '1rem',
-                    fontWeight: 700
-                  }}
+                  aria-label="Increase quantity"
                 >
                   +
                 </button>
@@ -228,7 +204,7 @@ export default function CartPage() {
                 </div>
                 <button
                   onClick={() => removeFromCart(item.product)}
-                  style={{ color: 'var(--color-destructive)', padding: '0.35rem', display: 'flex', alignItems: 'center' }}
+                  style={{ color: 'var(--color-destructive)', padding: '0.35rem', display: 'flex', alignItems: 'center', background: 'transparent', border: 'none', cursor: 'pointer' }}
                   title="Remove item"
                   aria-label="Remove item"
                 >

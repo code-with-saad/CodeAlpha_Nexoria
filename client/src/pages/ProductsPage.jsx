@@ -61,7 +61,8 @@ export default function ProductsPage() {
   useEffect(() => { setPage(1); }, [search, category, maxPrice, inStockOnly, limit]);
 
   useEffect(() => {
-    const debounce = setTimeout(() => fetchProducts(1, limit), search ? 300 : 0);
+    // Debounce 300ms for continuous search input and maxPrice slider dragging
+    const debounce = setTimeout(() => fetchProducts(1, limit), 300);
     return () => clearTimeout(debounce);
   }, [search, category, maxPrice, inStockOnly, limit]);
 
@@ -191,8 +192,8 @@ export default function ProductsPage() {
     <div className="products-page">
       {/* Page Header */}
       <div className="page-header">
-        <span className="eyebrow-badge eyebrow-badge-emerald">Shop The Collection</span>
-        <h1 className="page-title">Catalog &amp; Products</h1>
+        <span className="eyebrow-badge">Shop The Collection</span>
+        <h1 className="page-title" style={{ fontFamily: 'var(--font-display)' }}>Catalog &amp; Products</h1>
         <p className="page-subtitle">
           {total > 0 ? `${total} items meticulously engineered for performance and durability.` : 'Discover our curated collection of premium goods.'}
         </p>

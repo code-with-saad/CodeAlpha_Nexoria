@@ -105,23 +105,24 @@ The design system for **Nexoria** is crafted for high-trust e-commerce conversio
 | :--- | :--- | :--- | :--- |
 | **Primary** | `--color-primary` | `#D84315` / `#FF7043` (Dark) | Brand identity, primary buttons, active states, text stroke |
 | **Primary Light / Dark** | `--color-primary-light` / `-dark` | `#FF8A65` / `#BF360C` | Button hover/active states, soft badge backgrounds |
-| **Secondary / Accent** | `--color-secondary` | `#0F766E` / `#2DD4BF` (Dark) | Deep Teal secondary actions, secondary badges, stat top borders |
-| **Accent Dark / Light** | `--color-secondary-dark` / `-light`| `#14514A` / `#E6FFFA` | Deep teal borders in dark mode, light teal pill tints |
+| **Secondary / Accent** | `--color-secondary` | `#996515` / `#E5A950` (Dark) | Warm gold-brown secondary actions, secondary badges, stat top borders |
+| **Accent Hover / Light** | `--color-secondary-hover` / `-light`| `#7E520F` / `rgba(153,101,21,0.12)` | Gold-brown hover states, luminous soft badge backdrops |
 | **Background** | `--color-background` | `#FAF7F5` / `#1C1310` (Dark) | Warm neutral page background (off-white / warm near-black) |
-| **Foreground / Text** | `--color-foreground` | `#2D231E` / `#F5EFEB` (Dark) | Primary body and heading text |
-| **Surface / Card** | `--color-card` | `#FFFFFF` / `#241814` (Dark) | Elevated cards and containers |
-| **Muted / Footer** | `--color-muted` | `#F4ECE8` / `#281B16` (Dark) | Footer, borders, disabled states, subtle container backgrounds |
-| **Navbar Background** | `--color-navbar-bg` | `rgba(250, 247, 245, 0.85)` / `rgba(28, 19, 16, 0.90)` (Dark) | Translucent blurred glass navbar matching page tone |
+| **Foreground / Text** | `--color-foreground` | `#231714` / `#FAEDE8` (Dark) | Primary body and heading text |
+| **Surface / Card** | `--color-card` | `#FFFFFF` / `#271B17` (Dark) | Elevated cards and containers |
+| **Muted / Footer** | `--color-muted` | `#F4ECE8` / `#241814` (Dark) | Footer, borders, disabled states, subtle container backgrounds |
+| **Navbar Background** | `--color-navbar-bg` | `rgba(250, 247, 245, 0.92)` / `rgba(28, 19, 16, 0.94)` (Dark) | Translucent blurred glass navbar matching page tone |
 | **Destructive / Alert**| `--color-destructive` | `#DC2626` | Errors, removals, cancellation alerts |
 
 ### 3. Typography Pairing
-- **Headings**: `Rubik` (Weights: 500, 600, 700) — Bold, geometric, clean modern commerce aesthetic.
-- **Body & Subtext**: `Nunito Sans` (Weights: 300, 400, 500, 600) — Highly legible and open proportions for product titles, descriptions, and pricing tables.
+- **Editorial Display**: `Syne` (Weights: 600, 700, 800) — Bold, high-character display for hero headlines and signature typography.
+- **Headings & Badges**: `Outfit` / `Rubik` (Weights: 500, 600, 700, 800) — Modern, crisp headings with uppercase letter-spaced eyebrow badges.
+- **Body & Subtext**: `Nunito Sans` (Weights: 300, 400, 500, 600) — Highly legible and open proportions for product descriptions, forms, and pricing.
 - **Google Fonts Import**:
   ```html
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;500;600;700&family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300..800;1,6..12,300..800&family=Outfit:wght@400;500;600;700;800;900&family=Rubik:ital,wght@0,300..900;1,300..900&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
   ```
 
 ### 4. Toast Notification System
