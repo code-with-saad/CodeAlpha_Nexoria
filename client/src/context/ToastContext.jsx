@@ -106,7 +106,11 @@ export function ToastProvider({ children }) {
       title: options.title || null
     };
 
-    setToasts((prev) => [...prev, newToast]);
+    setToasts((prev) => {
+      const updated = [...prev, newToast];
+      // Cap at maximum 3 visible toasts — immediately drop oldest when exceeded
+      return updated.length > 3 ? updated.slice(updated.length - 3) : updated;
+    });
     return id;
   };
 

@@ -144,10 +144,10 @@ export default function HomePage() {
 
             {/* Two-line Signature Bold Headline with Stroke Text */}
             <h1 className="flagship-headline-solid reveal" data-delay="80">
-              meet the piece
+              Meet The Piece
             </h1>
             <div className="flagship-headline-stroke reveal" data-delay="160">
-              we built nexoria around
+              We Built Nexoria Around
             </div>
 
             {/* Short Supporting Paragraph */}
