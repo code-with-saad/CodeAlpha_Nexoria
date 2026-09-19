@@ -48,6 +48,22 @@
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
   --shadow-glow: 0 4px 20px -2px rgba(5, 150, 105, 0.18);
 
+  /* Extended shadow tokens — purpose-named for reuse */
+  /* Focus ring: input/form focus state */
+  --shadow-focus: 0 0 0 3px rgba(5, 150, 105, 0.15);
+  /* Focus ring (dark mode override, applied via [data-theme=dark]) */
+  --shadow-focus-dark: 0 0 0 3px rgba(107, 250, 205, 0.2);
+  /* Section shadow: hero, CTA banners — large block elevation */
+  --shadow-section: 0 12px 36px rgba(4, 47, 36, 0.2);
+  /* Section shadow in dark mode */
+  --shadow-section-dark: 0 12px 36px rgba(0, 0, 0, 0.5);
+  /* Float shadow: card hover on dark overlapping canvas elements */
+  --shadow-float: 0 24px 44px rgba(0, 0, 0, 0.35);
+  /* Drawer shadow: directional, slides in from right — not replaceable by standard token */
+  --shadow-drawer: -4px 0 24px rgba(0, 0, 0, 0.15);
+  /* Accent glow: CTA button (amber/orange) hover premium signal */
+  --shadow-accent-glow: 0 4px 20px -2px rgba(234, 88, 12, 0.35);
+
   /* Radius */
   --radius-sm: 6px;
   --radius-md: 10px;
@@ -84,6 +100,14 @@
   --color-muted: #041a10;
 
   --color-ring: #6bfacd;
+
+  /* Shadow tokens redefined for dark mode */
+  /* Glow uses mint-green primary instead of emerald green */
+  --shadow-glow: 0 4px 20px -2px rgba(107, 250, 205, 0.22);
+  /* Section shadow is pure black on dark backgrounds */
+  --shadow-section: 0 12px 36px rgba(0, 0, 0, 0.4);
+  /* Focus ring uses mint-green */
+  --shadow-focus: 0 0 0 3px rgba(107, 250, 205, 0.2);
 }
 
 [data-theme="dark"] body,
@@ -134,7 +158,8 @@
 [data-theme="dark"] .form-input:focus,
 [data-theme="dark"] .form-select:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(107, 250, 205, 0.2);
+  /* --shadow-focus auto-adapts to mint-green in dark mode via token override */
+  box-shadow: var(--shadow-focus);
 }
 
 [data-theme="dark"] .form-label {
@@ -260,12 +285,12 @@
 [data-theme="dark"] .category-showcase-card {
   background: #072318;
   border-color: #0d3826;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-md);
 }
 
 [data-theme="dark"] .category-showcase-card:hover {
   border-color: var(--color-primary);
-  box-shadow: 0 10px 30px rgba(107, 250, 205, 0.15);
+  box-shadow: var(--shadow-glow);
 }
 
 [data-theme="dark"] .category-icon-wrapper {
@@ -283,7 +308,7 @@
   padding: 4rem 3.5rem;
   border-radius: var(--radius-lg);
   margin-bottom: 3rem;
-  box-shadow: 0 12px 36px rgba(4, 47, 36, 0.2);
+  box-shadow: var(--shadow-section);
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
   align-items: center;
@@ -295,7 +320,7 @@
 [data-theme="dark"] .hero-asymmetric {
   background: linear-gradient(135deg, #02120b 0%, #042116 50%, #073523 100%);
   border: 1px solid #0d3826;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-section-dark);
 }
 
 .hero-content {
@@ -355,7 +380,7 @@
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
   padding: 0.85rem;
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
+  box-shadow: var(--shadow-lg);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
   text-decoration: none;
@@ -364,7 +389,7 @@
 
 .hero-card-layer:hover {
   transform: translateY(-8px) scale(1.03) !important;
-  box-shadow: 0 24px 44px rgba(0, 0, 0, 0.35);
+  box-shadow: var(--shadow-float);
   z-index: 10 !important;
 }
 
@@ -717,23 +742,25 @@ button {
 .btn-primary {
   background-color: var(--color-primary);
   color: var(--color-on-primary);
-  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover:not(:disabled) {
   background-color: var(--color-primary-hover);
   transform: translateY(-1px);
+  box-shadow: var(--shadow-glow);
 }
 
 .btn-accent {
   background-color: var(--color-accent);
   color: var(--color-on-accent);
-  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.25);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-accent:hover:not(:disabled) {
   background-color: var(--color-accent-hover);
   transform: translateY(-1px);
+  box-shadow: var(--shadow-accent-glow);
 }
 
 .btn-outline {
@@ -805,7 +832,7 @@ button {
 .form-input:focus, .form-select:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+  box-shadow: var(--shadow-focus);
 }
 
 .form-error-text {
@@ -1052,7 +1079,7 @@ button {
 }
 
 .toast-item:hover {
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-lg);
   transform: translateY(-2px);
 }
 
@@ -1318,7 +1345,7 @@ button {
   height: 100vh;
   background-color: var(--color-card);
   border-left: 1px solid var(--color-border);
-  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-drawer);
   display: flex;
   flex-direction: column;
   animation: slideInRight 0.25s ease-out;
