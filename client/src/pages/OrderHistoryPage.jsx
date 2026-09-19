@@ -49,14 +49,14 @@ export default function OrderHistoryPage() {
         );
       case 'Shipped':
         return (
-          <span className="status-pill" style={{ background: '#e0f2fe', color: '#0369a1', fontSize: '0.75rem' }}>
+          <span className="status-pill status-shipped" style={{ fontSize: '0.75rem' }}>
             <Truck size={13} />
             Shipped
           </span>
         );
       case 'Processing':
         return (
-          <span className="status-pill" style={{ background: '#fef3c7', color: '#b45309', fontSize: '0.75rem' }}>
+          <span className="status-pill status-processing" style={{ fontSize: '0.75rem' }}>
             <Clock size={13} />
             Processing
           </span>

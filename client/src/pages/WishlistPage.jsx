@@ -32,10 +32,14 @@ export default function WishlistPage() {
 
     try {
       setLoading(true);
-      const res = await api.get('/products?limit=100');
-      const allProducts = res.data.products || [];
-      const matched = allProducts.filter(p => wishlistIds.includes(p._id));
-      setProducts(matched);
+      // Fetch each wishlisted product individually by its _id for accuracy
+      const results = await Promise.allSettled(
+        wishlistIds.map(id => api.get(`/products/${id}`))
+      );
+      const fetched = results
+        .filter(r => r.status === 'fulfilled' && r.value?.data?.data)
+        .map(r => r.value.data.data);
+      setProducts(fetched);
     } catch (err) {
       console.error('Failed to load wishlist items', err);
       toast.error('Could not load your wishlist items.', { title: 'Wishlist Error' });

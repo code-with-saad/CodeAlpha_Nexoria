@@ -67,7 +67,7 @@ export default function LoginPage() {
   return (
     <div className="auth-wrapper">
       <div className="card auth-card">
-        <div style={{ display: 'inline-flex', background: '#d1fae5', borderRadius: '50%', padding: '1rem', marginBottom: '0.75rem' }}>
+        <div style={{ display: 'inline-flex', background: 'var(--color-muted)', borderRadius: '50%', padding: '1rem', marginBottom: '0.75rem' }}>
           <LockKeyhole size={32} color="var(--color-primary)" />
         </div>
         <h1>Welcome Back</h1>

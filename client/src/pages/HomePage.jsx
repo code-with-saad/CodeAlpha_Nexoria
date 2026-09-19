@@ -104,12 +104,12 @@ export default function HomePage() {
       <section className="hero-asymmetric">
         <div className="hero-content">
           <div className="hero-pill">
-            <Zap size={14} fill="#fbbf24" stroke="#fbbf24" />
+            <Zap size={14} fill="var(--color-accent)" stroke="var(--color-accent)" />
             Curated 2026 Collection &bull; Free Worldwide Shipping over $50
           </div>
           <h1 className="hero-title">
             Exceptional Design.<br />
-            <span style={{ color: '#6ee7b7' }}>Modern Performance.</span>
+            <span className="hero-title-accent">Modern Performance.</span>
           </h1>
           <p className="hero-subtitle">
             Nexoria delivers meticulously crafted electronics, accessories, lifestyle gear, and smart home essentials designed to elevate your everyday standard.
@@ -119,7 +119,7 @@ export default function HomePage() {
               Explore Collection
               <ArrowRight size={18} />
             </Link>
-            <Link to="/products" className="btn btn-outline" style={{ borderColor: 'rgba(255,255,255,0.35)', color: '#ffffff', padding: '0.9rem 1.85rem' }}>
+            <Link to="/products" className="btn btn-outline hero-outline-btn" style={{ padding: '0.9rem 1.85rem' }}>
               View Catalog
             </Link>
           </div>
@@ -348,18 +348,18 @@ export default function HomePage() {
       {/* ── DISTINCT SPLIT CTA BANNER ───────────────────────────── */}
       <section className="cta-split-banner">
         <div>
-          <h2 style={{ fontSize: '1.9rem', marginBottom: '0.85rem', color: '#ffffff', lineHeight: 1.25 }}>
+          <h2 className="cta-banner-heading">
             Upgrade Your Everyday Setup with Nexoria
           </h2>
-          <p style={{ color: '#d1fae5', marginBottom: '1.5rem', fontSize: '1rem', lineHeight: 1.6, maxWidth: '500px' }}>
+          <p className="cta-banner-desc">
             Experience seamless checkout, premium build quality, and direct buyer protection on every item.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '0.5rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#a7f3d0', fontSize: '0.9rem' }}>
-              <Check size={16} color="#6ee7b7" /> 30-Day Risk-Free Trial &amp; Free Returns
+            <div className="cta-banner-check-row">
+              <Check size={16} className="cta-banner-check-icon" /> 30-Day Risk-Free Trial &amp; Free Returns
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#a7f3d0', fontSize: '0.9rem' }}>
-              <Check size={16} color="#6ee7b7" /> Real-time order tracking &amp; Instant dispatch
+            <div className="cta-banner-check-row">
+              <Check size={16} className="cta-banner-check-icon" /> Real-time order tracking &amp; Instant dispatch
             </div>
           </div>
         </div>

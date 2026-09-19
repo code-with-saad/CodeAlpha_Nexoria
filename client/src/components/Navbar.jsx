@@ -92,7 +92,7 @@ export default function Navbar() {
             Cart
             {totalItems > 0 && (
               <span style={{
-                background: 'var(--color-accent)', color: '#ffffff',
+                background: 'var(--color-accent)', color: 'var(--color-on-accent)',
                 fontSize: '0.72rem', fontWeight: 800,
                 borderRadius: 'var(--radius-full)', padding: '0.1rem 0.45rem',
                 minWidth: '20px', textAlign: 'center', lineHeight: '1.4'

@@ -103,7 +103,7 @@ export default function CartPage() {
                 style={{
                   width: '90px',
                   height: '90px',
-                  background: '#f1f5f9',
+                  background: 'var(--color-muted)',
                   borderRadius: 'var(--radius-md)',
                   display: 'flex',
                   alignItems: 'center',

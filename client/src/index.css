@@ -1158,7 +1158,7 @@ button {
 
 /* Footer */
 .footer {
-  background-color: var(--color-muted);
+  background-color: #edf2f7;
   color: var(--color-muted-text);
   padding: 3.5rem 0 2rem;
   border-top: 1px solid var(--color-border);
@@ -1354,3 +1354,283 @@ button {
   to { transform: translateX(0); }
 }
 
+/* ── Design Token Extensions ───────────────────────────── */
+:root {
+  --color-warning-text: #b45309;
+  --color-shipped-bg: #e0f2fe;
+  --color-shipped-text: #0369a1;
+  --color-processing-bg: #fef3c7;
+  --color-processing-text: #b45309;
+}
+
+[data-theme="dark"] {
+  --color-warning-text: #fcd34d;
+  --color-shipped-bg: rgba(14, 165, 233, 0.15);
+  --color-shipped-text: #7dd3fc;
+  --color-processing-bg: rgba(245, 158, 11, 0.15);
+  --color-processing-text: #fcd34d;
+}
+
+/* ── Hero CSS Classes (replaces inline hex) ────────────── */
+.hero-title-accent {
+  color: #6ee7b7; /* on dark hero gradient — stays consistent both themes */
+}
+
+/* Hero "View Catalog" outline button on dark hero section */
+.hero-outline-btn {
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  color: #ffffff !important;
+}
+.hero-outline-btn:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* ── CTA Banner Text Classes (on dark green background) ── */
+.cta-banner-heading {
+  font-size: 1.9rem;
+  margin-bottom: 0.85rem;
+  color: #ffffff;
+  line-height: 1.25;
+}
+
+.cta-banner-desc {
+  color: #d1fae5;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 500px;
+}
+
+[data-theme="dark"] .cta-banner-desc {
+  color: #a7f3d0;
+}
+
+.cta-banner-check-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #a7f3d0;
+  font-size: 0.9rem;
+}
+
+[data-theme="dark"] .cta-banner-check-row {
+  color: #6ee7b7;
+}
+
+.cta-banner-check-icon {
+  color: #6ee7b7;
+  flex-shrink: 0;
+}
+
+/* ── Status Pill Variants (Order History) ───────────────── */
+.status-shipped {
+  background: var(--color-shipped-bg);
+  color: var(--color-shipped-text);
+}
+
+.status-processing {
+  background: var(--color-processing-bg);
+  color: var(--color-processing-text);
+}
+
+/* ── Responsive Breakpoints ─────────────────────────────── */
+
+/* ── Tablet (768px) ─────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Navbar */
+  .nav-links {
+    display: none; /* hidden on tablet; hamburger not yet implemented */
+  }
+
+  .nav-actions {
+    gap: 0.5rem;
+  }
+
+  /* Products page grid */
+  .filters-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .category-pills {
+    flex-wrap: wrap;
+  }
+
+  /* Checkout / Cart forms */
+  .checkout-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .cart-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── Mobile (600px) ─────────────────────────────────────── */
+@media (max-width: 600px) {
+  /* Container padding */
+  .container {
+    padding: 0 1rem;
+  }
+
+  /* Main content breathing room */
+  .main-content {
+    padding: 1.5rem 0;
+  }
+
+  /* Hero section — single column, reduced padding */
+  .hero-asymmetric {
+    padding: 2.25rem 1.5rem !important;
+    border-radius: var(--radius-md) !important;
+    gap: 1.75rem;
+  }
+
+  .hero-title {
+    font-size: 1.85rem !important;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem !important;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.85rem 1.5rem !important;
+  }
+
+  .hero-visual-stack {
+    display: none !important;
+  }
+
+  /* Product grid — single column */
+  [style*="minmax(270px"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [style*="minmax(260px"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [style*="minmax(290px"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Section headings */
+  h2[style*="1.85rem"] {
+    font-size: 1.5rem !important;
+  }
+
+  /* Trust bar — single column */
+  .trust-bar {
+    grid-template-columns: 1fr;
+    padding: 1.25rem;
+  }
+
+  /* CTA split banner */
+  .cta-split-banner {
+    padding: 2rem 1.25rem !important;
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  .cta-banner-heading {
+    font-size: 1.5rem !important;
+  }
+
+  /* Navbar */
+  .brand-logo {
+    font-size: 1.35rem;
+  }
+
+  .nav-links {
+    display: none !important;
+  }
+
+  .nav-actions {
+    gap: 0.4rem;
+  }
+
+  .user-badge-pill span {
+    display: none; /* hide username text, keep icon */
+  }
+
+  /* Cart drawer full-width on mobile */
+  .cart-drawer {
+    width: 100vw !important;
+    max-width: 100vw !important;
+  }
+
+  /* Category cards */
+  .category-showcase-card {
+    padding: 1.5rem 1rem !important;
+  }
+
+  /* Footer grid → 1 column */
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Auth cards */
+  .auth-card {
+    padding: 1.5rem !important;
+  }
+
+  /* Pagination */
+  .pagination-pages {
+    gap: 0.4rem;
+  }
+
+  /* Product card stack */
+  .product-card {
+    padding: 1rem !important;
+  }
+
+  /* Order history */
+  .order-card {
+    padding: 1rem !important;
+  }
+}
+
+/* ── Small Mobile (480px) ───────────────────────────────── */
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 1.6rem !important;
+  }
+
+  .hero-asymmetric {
+    padding: 1.75rem 1.1rem !important;
+  }
+
+  .hero-pill {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.8rem;
+  }
+
+  .footer-grid {
+    gap: 1.5rem !important;
+  }
+
+  /* Cart page item row */
+  .cart-item-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  /* Order items row */
+  .order-item-row {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Checkout page form */
+  .checkout-form-section {
+    padding: 1.25rem !important;
+  }
+}

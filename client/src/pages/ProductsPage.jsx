@@ -227,7 +227,7 @@ export default function ProductsPage() {
                 </div>
 
                 {prod.stock > 0 && prod.stock <= 5 && (
-                  <div style={{ fontSize: '0.75rem', color: '#b45309', fontWeight: 700, marginTop: '0.5rem', textAlign: 'right' }}>
+                <div style={{ fontSize: '0.75rem', color: 'var(--color-warning-text)', fontWeight: 700, marginTop: '0.5rem', textAlign: 'right' }}>
                     Only {prod.stock} left!
                   </div>
                 )}
