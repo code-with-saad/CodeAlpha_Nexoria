@@ -183,16 +183,26 @@ export default function ProductDetailPage() {
           {/* QUANTITY */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '1.75rem' }}>
             <label className="form-label" style={{ marginBottom: 0 }}>Quantity:</label>
-            <div style={{ display: 'inline-flex', alignItems: 'center', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', overflow: 'hidden' }}>
-              <button type="button" onClick={() => handleQuantityChange(-1)} disabled={quantity <= 1 || isOutOfStock}
-                style={{ padding: '0.5rem 1rem', background: 'var(--color-muted)', fontSize: '1.1rem', fontWeight: 700 }}>
+            <div className="quantity-counter">
+              <button
+                type="button"
+                onClick={() => handleQuantityChange(-1)}
+                disabled={quantity <= 1 || isOutOfStock}
+                className="quantity-btn"
+                aria-label="Decrease quantity"
+              >
                 −
               </button>
-              <span style={{ padding: '0.5rem 1.25rem', fontWeight: 700, fontSize: '1rem', minWidth: '2.5rem', textAlign: 'center' }}>
+              <span className="quantity-value">
                 {quantity}
               </span>
-              <button type="button" onClick={() => handleQuantityChange(1)} disabled={quantity >= product.stock || isOutOfStock}
-                style={{ padding: '0.5rem 1rem', background: 'var(--color-muted)', fontSize: '1.1rem', fontWeight: 700 }}>
+              <button
+                type="button"
+                onClick={() => handleQuantityChange(1)}
+                disabled={quantity >= product.stock || isOutOfStock}
+                className="quantity-btn"
+                aria-label="Increase quantity"
+              >
                 +
               </button>
             </div>

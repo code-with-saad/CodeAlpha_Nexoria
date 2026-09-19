@@ -77,37 +77,34 @@
 
 /* ── Dark Mode Token Overrides ────────────────────────── */
 [data-theme="dark"] {
-  --color-background: #02120b;
-  --color-foreground: #b3f9e7;
-  --color-muted-text: #6ee7b7;
+  --color-background: #0b131e;
+  --color-foreground: #f1f5f9;
+  --color-muted-text: #94a3b8;
 
-  --color-primary: #6bfacd;
-  --color-primary-hover: #48efb7;
-  --color-primary-light: rgba(107, 250, 205, 0.12);
+  --color-primary: #10b981;
+  --color-primary-hover: #34d399;
+  --color-primary-light: rgba(16, 185, 129, 0.15);
 
-  --color-secondary: #48efb7;
-  --color-secondary-hover: #6bfacd;
+  --color-secondary: #34d399;
+  --color-secondary-hover: #10b981;
 
-  --color-accent: #f36416;
+  --color-accent: #f97316;
   --color-accent-hover: #ea580c;
 
-  --color-card: #072318;
-  --color-card-foreground: #b3f9e7;
+  --color-card: #131f2e;
+  --color-card-foreground: #f1f5f9;
 
-  --color-border: #0d3826;
-  --color-border-hover: #48efb766;
+  --color-border: #1e293b;
+  --color-border-hover: #334155;
 
-  --color-muted: #041a10;
+  --color-muted: #1e293b;
 
-  --color-ring: #6bfacd;
+  --color-ring: #10b981;
 
   /* Shadow tokens redefined for dark mode */
-  /* Glow uses mint-green primary instead of emerald green */
-  --shadow-glow: 0 4px 20px -2px rgba(107, 250, 205, 0.22);
-  /* Section shadow is pure black on dark backgrounds */
-  --shadow-section: 0 12px 36px rgba(0, 0, 0, 0.4);
-  /* Focus ring uses mint-green */
-  --shadow-focus: 0 0 0 3px rgba(107, 250, 205, 0.2);
+  --shadow-glow: 0 4px 20px -2px rgba(16, 185, 129, 0.25);
+  --shadow-section: 0 12px 36px rgba(0, 0, 0, 0.5);
+  --shadow-focus: 0 0 0 3px rgba(16, 185, 129, 0.25);
 }
 
 [data-theme="dark"] body,
@@ -117,22 +114,22 @@
 }
 
 [data-theme="dark"] .navbar {
-  background-color: rgba(2, 18, 11, 0.92);
+  background-color: rgba(11, 19, 30, 0.95);
   border-bottom-color: var(--color-border);
 }
 
 [data-theme="dark"] .nav-link {
-  color: #b3f9e7;
+  color: var(--color-muted-text);
 }
 
 [data-theme="dark"] .nav-link:hover {
   color: var(--color-primary);
-  background-color: rgba(107, 250, 205, 0.08);
+  background-color: var(--color-primary-light);
 }
 
 [data-theme="dark"] .nav-link.active {
   color: var(--color-primary);
-  background-color: rgba(107, 250, 205, 0.15);
+  background-color: var(--color-primary-light);
 }
 
 [data-theme="dark"] .brand-name {
@@ -150,7 +147,7 @@
 
 [data-theme="dark"] .form-input,
 [data-theme="dark"] .form-select {
-  background-color: #041a10;
+  background-color: #0b131e;
   border-color: var(--color-border);
   color: var(--color-foreground);
 }
@@ -158,12 +155,11 @@
 [data-theme="dark"] .form-input:focus,
 [data-theme="dark"] .form-select:focus {
   border-color: var(--color-primary);
-  /* --shadow-focus auto-adapts to mint-green in dark mode via token override */
   box-shadow: var(--shadow-focus);
 }
 
 [data-theme="dark"] .form-label {
-  color: #b3f9e7;
+  color: var(--color-foreground);
 }
 
 [data-theme="dark"] .filters-bar {
@@ -172,11 +168,11 @@
 }
 
 [data-theme="dark"] .product-image-container {
-  background-color: #041a10;
+  background-color: var(--color-muted);
 }
 
 [data-theme="dark"] .skeleton {
-  background: linear-gradient(90deg, #072318 25%, #0e3b29 50%, #072318 75%);
+  background: linear-gradient(90deg, #131f2e 25%, #1e293b 50%, #131f2e 75%);
   background-size: 200% 100%;
 }
 
@@ -186,45 +182,63 @@
 }
 
 [data-theme="dark"] .footer {
-  background-color: #010a06;
-  border-top-color: #0d3826;
+  background-color: #080e16;
+  border-top-color: var(--color-border);
 }
 
 [data-theme="dark"] .user-badge-pill {
-  background: #041a10;
+  background: var(--color-muted);
   border-color: var(--color-border);
-  color: #b3f9e7;
+  color: var(--color-foreground);
 }
 
 [data-theme="dark"] .category-pill {
-  background: #041a10;
+  background: var(--color-muted);
   border-color: var(--color-border);
-  color: #6ee7b7;
+  color: var(--color-muted-text);
 }
 
 [data-theme="dark"] .category-pill.active {
   background-color: var(--color-primary);
   border-color: var(--color-primary);
-  color: #02120b;
+  color: #ffffff;
   font-weight: 700;
 }
 
+[data-theme="dark"] .brand-badge {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+[data-theme="dark"] .status-online {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: #6ee7b7;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+[data-theme="dark"] .status-offline {
+  background-color: rgba(220, 38, 38, 0.2);
+  color: #fca5a5;
+  border: 1px solid rgba(220, 38, 38, 0.35);
+}
+
 [data-theme="dark"] .toast-item {
-  background: #072318;
+  background: var(--color-card);
   border-color: var(--color-border);
   color: var(--color-foreground);
 }
 
 [data-theme="dark"] .toast-title {
-  color: #b3f9e7;
+  color: var(--color-foreground);
 }
 
 [data-theme="dark"] .toast-message {
-  color: #6ee7b7;
+  color: var(--color-muted-text);
 }
 
 [data-theme="dark"] .toast-progress-track {
-  background-color: #0d3826;
+  background-color: var(--color-border);
 }
 
 [data-theme="dark"] .btn-outline {
@@ -233,19 +247,19 @@
 }
 
 [data-theme="dark"] .btn-outline:hover:not(:disabled) {
-  background-color: #041a10;
+  background-color: var(--color-muted);
   border-color: var(--color-primary);
   color: var(--color-primary);
 }
 
 [data-theme="dark"] .btn-primary {
   background-color: var(--color-primary);
-  color: #02120b;
+  color: #ffffff;
   font-weight: 700;
 }
 
 [data-theme="dark"] .btn-primary:hover:not(:disabled) {
-  background-color: var(--color-secondary);
+  background-color: var(--color-primary-hover);
 }
 
 [data-theme="dark"] .btn-accent {
@@ -255,6 +269,50 @@
 
 [data-theme="dark"] .btn-accent:hover:not(:disabled) {
   background-color: var(--color-accent-hover);
+}
+
+/* Quantity Counter Component */
+.quantity-counter {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-color: var(--color-card);
+}
+
+.quantity-btn {
+  padding: 0.55rem 1.15rem;
+  background-color: var(--color-muted);
+  color: var(--color-foreground);
+  font-size: 1.15rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.quantity-btn:hover:not(:disabled) {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.quantity-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.quantity-value {
+  padding: 0.55rem 1.25rem;
+  font-weight: 700;
+  font-size: 1.05rem;
+  min-width: 3rem;
+  text-align: center;
+  color: var(--color-foreground);
+  background-color: var(--color-card);
 }
 
 /* Category Showcase Card */
@@ -1263,7 +1321,7 @@ button {
 
 /* Footer */
 .footer {
-  background-color: #edf2f7;
+  background-color: var(--color-muted);
   color: var(--color-muted-text);
   padding: 3.5rem 0 2rem;
   border-top: 1px solid var(--color-border);

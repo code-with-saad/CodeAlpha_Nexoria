@@ -27,10 +27,9 @@ export default function Footer() {
           <ul className="footer-links">
             <li><Link to="/">Home</Link></li>
             <li><Link to="/products">All Products</Link></li>
-            <li><Link to="/products?category=Electronics">Electronics</Link></li>
-            <li><Link to="/products?category=Accessories">Accessories</Link></li>
-            <li><Link to="/products?category=Lifestyle">Lifestyle</Link></li>
-            <li><Link to="/products?category=Home">Smart Home</Link></li>
+            <li><Link to="/about">About Us</Link></li>
+            <li><Link to="/contact">Contact Support</Link></li>
+            <li><Link to="/wishlist">My Wishlist</Link></li>
           </ul>
         </div>
 
@@ -40,9 +39,9 @@ export default function Footer() {
           <ul className="footer-links">
             <li><Link to="/cart">Shopping Cart</Link></li>
             <li><Link to="/orders">Track Order</Link></li>
-            <li><Link to="/products">Shipping &amp; Delivery</Link></li>
-            <li><Link to="/products">30-Day Returns Policy</Link></li>
-            <li><Link to="/products">Terms of Service</Link></li>
+            <li><Link to="/contact">Returns &amp; Warranty</Link></li>
+            <li><Link to="/about">Why Shop With Us</Link></li>
+            <li><Link to="/products">Shipping Information</Link></li>
           </ul>
         </div>
 
@@ -52,7 +51,7 @@ export default function Footer() {
           <ul className="footer-contact-list">
             <li>
               <Mail size={16} />
-              <span>support@nexoriastore.com</span>
+              <Link to="/contact" style={{ color: 'inherit' }}>support@nexoriastore.com</Link>
             </li>
             <li>
               <Phone size={16} />

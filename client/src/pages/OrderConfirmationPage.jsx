@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
-import { CheckCircle2, Package, ShoppingBag, ArrowRight } from 'lucide-react';
+import { CheckCircle2, Package, ShoppingBag, ArrowRight, Download } from 'lucide-react';
 import api from '../services/api';
+import { generateOrderReceiptPDF } from '../utils/generateReceipt';
 
 export default function OrderConfirmationPage() {
   const { id } = useParams();
@@ -71,9 +72,20 @@ export default function OrderConfirmationPage() {
       {/* ORDER DETAILS BREAKDOWN */}
       {order && (
         <div className="card" style={{ padding: '2rem', marginBottom: '2rem' }}>
-          <h2 style={{ fontSize: '1.35rem', marginBottom: '1.25rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '0.75rem' }}>
-            Order Summary
-          </h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '0.75rem', marginBottom: '1.25rem' }}>
+            <h2 style={{ fontSize: '1.35rem', margin: 0 }}>
+              Order Summary
+            </h2>
+            <button
+              type="button"
+              className="btn btn-outline"
+              onClick={() => generateOrderReceiptPDF(order)}
+              style={{ padding: '0.45rem 1rem', fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+            >
+              <Download size={15} />
+              Download Receipt (PDF)
+            </button>
+          </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', marginBottom: '1.75rem' }}>
             <div>
@@ -142,7 +154,18 @@ export default function OrderConfirmationPage() {
 
       {/* ACTION BUTTONS */}
       <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-        <Link to="/orders" className="btn btn-primary" style={{ padding: '0.85rem 1.75rem' }}>
+        {order && (
+          <button
+            type="button"
+            onClick={() => generateOrderReceiptPDF(order)}
+            className="btn btn-primary"
+            style={{ padding: '0.85rem 1.75rem' }}
+          >
+            <Download size={17} />
+            Download Receipt (PDF)
+          </button>
+        )}
+        <Link to="/orders" className="btn btn-outline" style={{ padding: '0.85rem 1.75rem' }}>
           <Package size={17} />
           View My Orders
         </Link>

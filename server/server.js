@@ -6,6 +6,7 @@ import { connectDB } from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
+import contactRoutes from './routes/contactRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 // Load environment variables
@@ -64,6 +65,7 @@ app.get('/api/health/db', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/contact', contactRoutes);
 
 // Error Handling Middlewares (Must be defined last)
 app.use(notFound);

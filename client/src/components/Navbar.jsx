@@ -67,6 +67,16 @@ export default function Navbar() {
               </NavLink>
             </li>
             <li>
+              <NavLink to="/about" className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')}>
+                About Us
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/contact" className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')}>
+                Contact
+              </NavLink>
+            </li>
+            <li>
               <NavLink to="/wishlist" className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')}>
                 Wishlist
               </NavLink>

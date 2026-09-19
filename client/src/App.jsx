@@ -17,6 +17,8 @@ import OrderConfirmationPage from './pages/OrderConfirmationPage';
 import OrderHistoryPage from './pages/OrderHistoryPage';
 import WishlistPage from './pages/WishlistPage';
 import ProfilePage from './pages/ProfilePage';
+import AboutPage from './pages/AboutPage';
+import ContactPage from './pages/ContactPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
@@ -42,6 +44,8 @@ function App() {
                     <Route path="/orders" element={<OrderHistoryPage />} />
                     <Route path="/wishlist" element={<WishlistPage />} />
                     <Route path="/profile" element={<ProfilePage />} />
+                    <Route path="/about" element={<AboutPage />} />
+                    <Route path="/contact" element={<ContactPage />} />
                     <Route path="*" element={<NotFoundPage />} />
                   </Routes>
                 </div>

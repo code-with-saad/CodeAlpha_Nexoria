@@ -162,6 +162,12 @@ All API routes return uniform JSON payloads with `{ success: true|false, ... }`.
 | `GET` | `/api/orders/:id` | Protected (`Bearer <token>`) | Get order detail by ID | None |
 | `PUT` | `/api/orders/:id/pay` | Protected (`Bearer <token>`) | Mark order as paid | `{ "id": "pi_...", "status": "succeeded" }` |
 
+### Contact & Support Endpoints (`/api/contact`)
+
+| Method | Endpoint | Access | Description | Request Body |
+| :--- | :--- | :--- | :--- | :--- |
+| `POST` | `/api/contact` | Public | Send contact form message via Nodemailer | `{ "name": "...", "email": "...", "subject": "...", "message": "..." }` |
+
 ---
 
 ## 🛠️ Setup Instructions
@@ -225,10 +231,14 @@ Nexoria/
 │   │   │   ├── ProductsPage.jsx    # Catalog with search, category filter, items-per-page
 │   │   │   ├── ProductDetailPage.jsx # Product detail + related products section
 │   │   │   ├── WishlistPage.jsx    # /wishlist — saved items with Move-to-Cart action
+│   │   │   ├── ProfilePage.jsx     # /profile — user details & password update
+│   │   │   ├── AboutPage.jsx       # /about — brand story & company mission
+│   │   │   ├── ContactPage.jsx     # /contact — interactive support & contact form
 │   │   │   ├── CartPage.jsx        # /cart — full-page cart fallback
 │   │   │   ├── CheckoutPage.jsx    # Stripe checkout form
-│   │   │   ├── OrderConfirmationPage.jsx
-│   │   │   └── OrderHistoryPage.jsx # Order list with thumbnails & dual status badges
+│   │   │   ├── OrderConfirmationPage.jsx # Order receipt with PDF download
+│   │   │   └── OrderHistoryPage.jsx # Order list with PDF download & dual status badges
+│   │   ├── utils/              # Client utilities (generateReceipt.js PDF generator)
 │   │   ├── services/           # Axios instance & HTTP interceptors (api.js)
 │   │   ├── App.jsx             # React Router routing skeleton & Context Providers
 │   │   ├── index.css           # Design tokens, cart drawer, toast, skeletons & layout

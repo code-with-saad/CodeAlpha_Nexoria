@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Package, FileText, ShoppingBag, ArrowRight, Truck, Clock, CheckCircle, XCircle } from 'lucide-react';
+import { Package, FileText, ShoppingBag, ArrowRight, Truck, Clock, CheckCircle, XCircle, Download } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { generateOrderReceiptPDF } from '../utils/generateReceipt';
 
 export default function OrderHistoryPage() {
   const [orders, setOrders] = useState([]);
@@ -191,11 +192,21 @@ export default function OrderHistoryPage() {
                 </div>
               </div>
 
-              <div>
+              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                <button
+                  type="button"
+                  onClick={() => generateOrderReceiptPDF(order)}
+                  className="btn btn-outline"
+                  style={{ padding: '0.45rem 0.85rem', fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+                  title="Download PDF Invoice"
+                >
+                  <Download size={15} />
+                  <span>PDF</span>
+                </button>
                 <Link
                   to={`/order-confirmation/${order._id}`}
                   className="btn btn-outline"
-                  style={{ padding: '0.45rem 1rem', fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+                  style={{ padding: '0.45rem 0.85rem', fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
                 >
                   <FileText size={15} />
                   <span>View Receipt</span>
