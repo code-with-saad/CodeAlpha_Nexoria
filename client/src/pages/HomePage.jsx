@@ -11,10 +11,10 @@ import { useToast } from '../context/ToastContext';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
 const CATEGORY_DATA = [
-  { name: 'Electronics', Icon: Smartphone, color: '#3b82f6', bgClass: 'cat-card-electronics', desc: 'Cutting-edge tech & gadgets' },
-  { name: 'Accessories', Icon: Headphones, color: '#8b5cf6', bgClass: 'cat-card-accessories', desc: 'Elevate your everyday setup' },
-  { name: 'Lifestyle', Icon: Sparkles, color: '#f36416', bgClass: 'cat-card-lifestyle', desc: 'Refined goods for modern life' },
-  { name: 'Home', Icon: HomeIcon, color: '#10b981', bgClass: 'cat-card-home', desc: 'Smart living essentials' }
+  { name: 'Electronics', Icon: Smartphone, color: '#0f766e', bgClass: 'cat-card-electronics', desc: 'Cutting-edge tech & gadgets' },
+  { name: 'Accessories', Icon: Headphones, color: '#d84315', bgClass: 'cat-card-accessories', desc: 'Elevate your everyday setup' },
+  { name: 'Lifestyle', Icon: Sparkles, color: '#ea580c', bgClass: 'cat-card-lifestyle', desc: 'Refined goods for modern life' },
+  { name: 'Home', Icon: HomeIcon, color: '#115e59', bgClass: 'cat-card-home', desc: 'Smart living essentials' }
 ];
 
 /* ── Marquee strip content ──────────────────────────────── */
@@ -92,7 +92,7 @@ export default function HomePage() {
 
   /* Scroll-reveal root is the whole page body content */
   const pageRef = useRef(null);
-  useScrollReveal(pageRef);
+  useScrollReveal(pageRef, { deps: [featured, flagshipProduct] });
 
   useEffect(() => {
     const fetchCatalogData = async () => {
@@ -132,98 +132,122 @@ export default function HomePage() {
     /* NOTE: hero + marquee sit OUTSIDE the container div — they are full-bleed */
     <div className="home-page" ref={pageRef}>
 
-      {/* ── FLAGSHIP EDITORIAL HERO — FULL BLEED ──────────────────── */}
+      {/* ── FLAGSHIP EDITORIAL HERO — THEME-AWARE & FULL BLEED ────── */}
       <section className="flagship-hero" aria-label="Flagship Product Showcase">
-        <div>
-          {/* Eyebrow badge */}
-          <span className="eyebrow-badge reveal" data-delay="0">
-            flagship &middot; new arrival
-          </span>
+        <div className="flagship-hero-grid">
+          {/* Left Column: Headlines & Actions */}
+          <div>
+            {/* Eyebrow badge */}
+            <span className="eyebrow-badge reveal" data-delay="0">
+              flagship &middot; new arrival
+            </span>
 
-          {/* Two-line Signature Bold Headline with Stroke Text */}
-          <h1 className="flagship-headline-solid reveal" data-delay="80">
-            meet the piece
-          </h1>
-          <div className="flagship-headline-stroke reveal" data-delay="160">
-            we built nexoria around
-          </div>
+            {/* Two-line Signature Bold Headline with Stroke Text */}
+            <h1 className="flagship-headline-solid reveal" data-delay="80">
+              meet the piece
+            </h1>
+            <div className="flagship-headline-stroke reveal" data-delay="160">
+              we built nexoria around
+            </div>
 
-          {/* Short Supporting Paragraph */}
-          <p className="flagship-subtext reveal" data-delay="240">
-            {flagshipProduct ? (
-              <>the <strong>{flagshipProduct.name}</strong>. precision movement, sapphire crystal, a design that started the whole collection.</>
-            ) : (
-              'the aurora chronograph. precision movement, sapphire crystal, a design that started the whole collection.'
-            )}
-          </p>
+            {/* Short Supporting Paragraph */}
+            <p className="flagship-subtext reveal" data-delay="240">
+              {flagshipProduct ? (
+                <>the <strong>{flagshipProduct.name}</strong>. precision movement, sapphire crystal, a design that started the whole collection.</>
+              ) : (
+                'the aurora chronograph. precision movement, sapphire crystal, a design that started the whole collection.'
+              )}
+            </p>
 
-          {/* CTAs */}
-          <div className="flagship-actions reveal" data-delay="320">
-            <Link
-              to={flagshipProduct ? `/products/${flagshipProduct._id}` : '/products'}
-              className="btn btn-accent"
-              style={{ fontSize: '0.95rem', padding: '0.75rem 1.6rem', textTransform: 'lowercase' }}
-            >
-              shop this piece
-            </Link>
-            <Link
-              to="/products"
-              className="btn flagship-outline-btn"
-              style={{ fontSize: '0.95rem', padding: '0.75rem 1.6rem', textTransform: 'lowercase' }}
-            >
-              full collection
-            </Link>
-          </div>
+            {/* CTAs */}
+            <div className="flagship-actions reveal" data-delay="320">
+              <Link
+                to={flagshipProduct ? `/products/${flagshipProduct._id}` : '/products'}
+                className="btn btn-primary"
+                style={{ fontSize: '0.95rem', padding: '0.75rem 1.6rem', textTransform: 'lowercase' }}
+              >
+                shop this piece
+              </Link>
+              <Link
+                to="/products"
+                className="btn flagship-outline-btn"
+                style={{ fontSize: '0.95rem', padding: '0.75rem 1.6rem', textTransform: 'lowercase' }}
+              >
+                full collection
+              </Link>
+            </div>
 
-          {/* Inline Flagship Product Card Inside Hero */}
-          {flagshipProduct && (
-            <Link
-              to={`/products/${flagshipProduct._id}`}
-              className="flagship-card reveal"
-              data-delay="400"
-            >
-              <div className="flagship-thumb-box">
-                {flagshipProduct.image?.startsWith('http') ? (
-                  <img
-                    src={flagshipProduct.image}
-                    alt={flagshipProduct.name}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    onError={(e) => {
-                      e.target.style.display = 'none';
-                      e.target.nextSibling.style.display = 'flex';
-                    }}
-                  />
-                ) : null}
-                <div style={{ display: flagshipProduct.image?.startsWith('http') ? 'none' : 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Package size={26} color="var(--color-primary)" />
+            {/* Inline Flagship Product Card Inside Hero */}
+            {flagshipProduct && (
+              <Link
+                to={`/products/${flagshipProduct._id}`}
+                className="flagship-card reveal"
+                data-delay="400"
+              >
+                <div className="flagship-thumb-box">
+                  {flagshipProduct.image?.startsWith('http') ? (
+                    <img
+                      src={flagshipProduct.image}
+                      alt={flagshipProduct.name}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'flex';
+                      }}
+                    />
+                  ) : null}
+                  <div style={{ display: flagshipProduct.image?.startsWith('http') ? 'none' : 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Package size={24} color="var(--color-primary)" />
+                  </div>
                 </div>
-              </div>
 
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div className="flagship-card-title">{flagshipProduct.name}</div>
-                <div className="flagship-card-meta">4.9 rating &middot; 300+ sold</div>
-              </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div className="flagship-card-title">{flagshipProduct.name}</div>
+                  <div className="flagship-card-meta">4.9 rating &middot; 300+ sold</div>
+                </div>
 
-              <div className="flagship-card-price">
-                ${Number(flagshipProduct.price || 0).toFixed(2)}
-              </div>
-            </Link>
-          )}
+                <div className="flagship-card-price">
+                  ${Number(flagshipProduct.price || 0).toFixed(2)}
+                </div>
+              </Link>
+            )}
+          </div>
+
+          {/* Right Column: Visual Element with subtle rotation and framing */}
+          <div className="flagship-hero-visual reveal" data-delay="200">
+            <div className="flagship-hero-visual-frame">
+              {flagshipProduct?.image?.startsWith('http') ? (
+                <img
+                  src={flagshipProduct.image}
+                  alt={flagshipProduct.name}
+                  className="flagship-hero-img"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                  }}
+                />
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem', color: 'var(--color-primary)' }}>
+                  <Package size={72} />
+                  <span style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--color-muted-text)' }}>Nexoria Flagship</span>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
-        {/* Three-Column Stats Strip */}
+        {/* Dedicated Styled Stats Strip */}
         <div className="flagship-stats-strip">
           <div className="flagship-stat-col">
             <div className="flagship-stat-number"><CountUp end={12500} suffix="+" /></div>
-            <div className="flagship-stat-label">orders</div>
+            <div className="flagship-stat-label">orders delivered</div>
           </div>
           <div className="flagship-stat-col">
             <div className="flagship-stat-number">4.9 / 5</div>
-            <div className="flagship-stat-label">rating</div>
+            <div className="flagship-stat-label">customer rating</div>
           </div>
           <div className="flagship-stat-col">
             <div className="flagship-stat-number">{totalProductsCount}+</div>
-            <div className="flagship-stat-label">products</div>
+            <div className="flagship-stat-label">curated products</div>
           </div>
         </div>
       </section>

@@ -41,14 +41,14 @@ function ToastItem({ toast, onRemove }) {
   const renderIcon = (type) => {
     switch (type) {
       case 'success':
-        return <CheckCircle2 size={18} color="#059669" />;
+        return <CheckCircle2 size={18} color="#16a34a" />;
       case 'error':
         return <AlertCircle size={18} color="#dc2626" />;
       case 'warning':
         return <AlertTriangle size={18} color="#d97706" />;
       case 'info':
       default:
-        return <Info size={18} color="#2563eb" />;
+        return <Info size={18} color="#0f766e" />;
     }
   };
 

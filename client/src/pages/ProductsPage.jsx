@@ -29,7 +29,7 @@ export default function ProductsPage() {
   const { addToCart } = useCart();
   const navigate = useNavigate();
   const gridRef = useRef(null);
-  useScrollReveal(gridRef);
+  useScrollReveal(gridRef, { deps: [products] });
 
   /* ── Data Fetching ──────────────────────────────────────────────── */
   const fetchProducts = useCallback(async (pg = 1, currentLimit = limit) => {

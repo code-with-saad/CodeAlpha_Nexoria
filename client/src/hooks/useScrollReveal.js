@@ -5,9 +5,12 @@ import { useEffect } from 'react';
  * inside `containerRef`. Adds the class `revealedClass` when they enter
  * the viewport. Supports a `data-delay` attribute (ms) for stagger.
  *
+ * Re-runs whenever `deps` (e.g., loaded products data or children) change,
+ * ensuring dynamically rendered/async elements are observed and revealed.
+ *
  * Usage:
  *   const containerRef = useRef(null);
- *   useScrollReveal(containerRef);
+ *   useScrollReveal(containerRef, { deps: [products] });
  *   // In JSX: <div ref={containerRef}><p className="reveal">...</p></div>
  */
 export function useScrollReveal(
@@ -17,6 +20,7 @@ export function useScrollReveal(
     revealedClass = 'revealed',
     threshold = 0.12,
     rootMargin = '0px 0px -40px 0px',
+    deps = [],
   } = {}
 ) {
   useEffect(() => {
@@ -39,7 +43,13 @@ export function useScrollReveal(
       { threshold, rootMargin }
     );
 
-    elements.forEach((el) => observer.observe(el));
+    elements.forEach((el) => {
+      // If element is already revealed, no need to re-observe
+      if (!el.classList.contains(revealedClass)) {
+        observer.observe(el);
+      }
+    });
+
     return () => observer.disconnect();
-  }, []);
+  }, [containerRef, selector, revealedClass, threshold, rootMargin, ...deps]);
 }

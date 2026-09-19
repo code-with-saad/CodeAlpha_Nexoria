@@ -21,8 +21,8 @@ export function generateOrderReceiptPDF(order) {
     day: 'numeric'
   });
 
-  // Header / Brand
-  doc.setFillColor(5, 150, 105); // #059669 Nexoria Primary
+  // Header / Brand (Rust Primary: #D84315 -> rgb(216, 67, 21))
+  doc.setFillColor(216, 67, 21);
   doc.rect(0, 0, 210, 28, 'F');
 
   doc.setTextColor(255, 255, 255);
@@ -35,14 +35,14 @@ export function generateOrderReceiptPDF(order) {
   doc.text('Official Order Receipt & Tax Invoice', 130, 18);
 
   // Order Details block
-  doc.setTextColor(15, 23, 42);
+  doc.setTextColor(35, 23, 20);
   doc.setFontSize(14);
   doc.setFont('helvetica', 'bold');
   doc.text('Order Summary', 15, 42);
 
   doc.setFontSize(9);
   doc.setFont('helvetica', 'normal');
-  doc.setTextColor(100, 116, 139);
+  doc.setTextColor(120, 107, 102);
   doc.text(`Order Reference: #${orderId}`, 15, 49);
   doc.text(`Date of Purchase: ${orderDate}`, 15, 54);
   doc.text(`Payment Status: ${order.isPaid ? 'PAID via Stripe' : 'Pending Payment'}`, 15, 59);
@@ -50,12 +50,12 @@ export function generateOrderReceiptPDF(order) {
   // Customer / Shipping Address
   doc.setFontSize(11);
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(15, 23, 42);
+  doc.setTextColor(35, 23, 20);
   doc.text('Shipped To:', 125, 42);
 
   doc.setFontSize(9);
   doc.setFont('helvetica', 'normal');
-  doc.setTextColor(100, 116, 139);
+  doc.setTextColor(120, 107, 102);
   const addr = order.shippingAddress || {};
   doc.text(`${addr.address || 'Standard Shipping Address'}`, 125, 49);
   doc.text(`${addr.city || 'City'}, ${addr.postalCode || 'Postal Code'}`, 125, 54);
@@ -76,14 +76,14 @@ export function generateOrderReceiptPDF(order) {
     body: tableData,
     theme: 'striped',
     headStyles: {
-      fillColor: [5, 150, 105],
+      fillColor: [216, 67, 21], // Rust primary
       textColor: 255,
       fontStyle: 'bold',
       fontSize: 9
     },
     bodyStyles: {
       fontSize: 9,
-      textColor: [15, 23, 42]
+      textColor: [35, 23, 20]
     },
     columnStyles: {
       0: { cellWidth: 12, halign: 'center' },
@@ -105,7 +105,7 @@ export function generateOrderReceiptPDF(order) {
   const startCalcY = finalY + 10;
   doc.setFontSize(9);
   doc.setFont('helvetica', 'normal');
-  doc.setTextColor(100, 116, 139);
+  doc.setTextColor(120, 107, 102);
 
   doc.text('Subtotal:', 135, startCalcY);
   doc.text(`$${subtotal.toFixed(2)}`, 195, startCalcY, { align: 'right' });
@@ -116,19 +116,19 @@ export function generateOrderReceiptPDF(order) {
   doc.text('Estimated Tax (8%):', 135, startCalcY + 12);
   doc.text(`$${estimatedTax.toFixed(2)}`, 195, startCalcY + 12, { align: 'right' });
 
-  doc.setDrawColor(226, 232, 240);
+  doc.setDrawColor(237, 228, 223);
   doc.line(135, startCalcY + 16, 195, startCalcY + 16);
 
   doc.setFontSize(11);
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(5, 150, 105);
+  doc.setTextColor(216, 67, 21);
   doc.text('Total Paid:', 135, startCalcY + 23);
   doc.text(`$${total.toFixed(2)}`, 195, startCalcY + 23, { align: 'right' });
 
   // Footer Note
   doc.setFontSize(8);
   doc.setFont('helvetica', 'normal');
-  doc.setTextColor(148, 163, 184);
+  doc.setTextColor(150, 138, 133);
   doc.text('Thank you for shopping with Nexoria! For questions, please contact support@nexoriastore.com.', 105, 280, { align: 'center' });
 
   // Save the PDF

@@ -103,13 +103,15 @@ The design system for **Nexoria** is crafted for high-trust e-commerce conversio
 
 | Token | CSS Variable | Hex Code | Purpose |
 | :--- | :--- | :--- | :--- |
-| **Primary** | `--color-primary` | `#059669` | Brand identity, trust accents, active states |
-| **Secondary** | `--color-secondary` | `#10B981` | Highlights, badges, secondary actions |
-| **Accent / CTA** | `--color-accent` | `#EA580C` | High-urgency buttons ("Add to Cart", "Buy Now", promotions) |
-| **Background** | `--color-background` | `#ECFDF5` / `#0B132B` (Dark) | Page background |
-| **Foreground / Text** | `--color-foreground` | `#064E3B` / `#F8FAFC` (Dark) | Primary body text |
-| **Surface / Card** | `--color-card` | `#FFFFFF` / `#1E293B` (Dark) | Elevated cards and containers |
-| **Muted** | `--color-muted` | `#E8F1F3` / `#334155` (Dark) | Borders, disabled states, subtle backgrounds |
+| **Primary** | `--color-primary` | `#D84315` / `#FF7043` (Dark) | Brand identity, primary buttons, active states, text stroke |
+| **Primary Light / Dark** | `--color-primary-light` / `-dark` | `#FF8A65` / `#BF360C` | Button hover/active states, soft badge backgrounds |
+| **Secondary / Accent** | `--color-secondary` | `#0F766E` / `#2DD4BF` (Dark) | Deep Teal secondary actions, secondary badges, stat top borders |
+| **Accent Dark / Light** | `--color-secondary-dark` / `-light`| `#14514A` / `#E6FFFA` | Deep teal borders in dark mode, light teal pill tints |
+| **Background** | `--color-background` | `#FAF7F5` / `#1C1310` (Dark) | Warm neutral page background (off-white / warm near-black) |
+| **Foreground / Text** | `--color-foreground` | `#2D231E` / `#F5EFEB` (Dark) | Primary body and heading text |
+| **Surface / Card** | `--color-card` | `#FFFFFF` / `#241814` (Dark) | Elevated cards and containers |
+| **Muted / Footer** | `--color-muted` | `#F4ECE8` / `#281B16` (Dark) | Footer, borders, disabled states, subtle container backgrounds |
+| **Navbar Background** | `--color-navbar-bg` | `rgba(250, 247, 245, 0.85)` / `rgba(28, 19, 16, 0.90)` (Dark) | Translucent blurred glass navbar matching page tone |
 | **Destructive / Alert**| `--color-destructive` | `#DC2626` | Errors, removals, cancellation alerts |
 
 ### 3. Typography Pairing
