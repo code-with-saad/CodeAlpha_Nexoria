@@ -261,10 +261,10 @@ export default function HomePage() {
       <MarqueeStrip />
 
       {/* ── MAIN PAGE SECTIONS — inside container padding ─────────── */}
-      <div className="container" style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 1.5rem' }}>
+      <div className="container mx-auto px-4 sm:px-6 w-full max-w-[1200px]">
 
         {/* ── SOCIAL PROOF / TRUST SIGNALS BAR ────────────────────── */}
-        <section className="trust-bar reveal" aria-label="Store Benefits & Guarantees">
+        <section className="trust-bar reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" aria-label="Store Benefits & Guarantees">
           <div className="trust-item">
             <div className="trust-icon-box"><Truck size={22} /></div>
             <div>
@@ -296,12 +296,12 @@ export default function HomePage() {
         </section>
 
         {/* ── CATEGORY SHOWCASE ───────────────────────────────────── */}
-        <section style={{ marginBottom: '4rem' }}>
-          <div style={{ textAlign: 'center', marginBottom: '2rem' }} className="reveal">
-            <h2 style={{ fontSize: '1.85rem', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>Shop by Category</h2>
+        <section className="home-section">
+          <div className="text-center mb-8 reveal">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-2" style={{ fontFamily: 'var(--font-heading)' }}>Shop by Category</h2>
             <p style={{ color: 'var(--color-muted-text)' }}>Find exactly what you need in our curated sections</p>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {CATEGORY_DATA.map(({ name, Icon, color, desc }, i) => (
               <Link
                 key={name}
@@ -309,9 +309,8 @@ export default function HomePage() {
                 style={{ textDecoration: 'none' }}
               >
                 <div
-                  className={`category-showcase-card reveal`}
+                  className="category-showcase-card reveal text-center p-6 cursor-pointer h-full"
                   data-delay={String(i * 80)}
-                  style={{ textAlign: 'center', padding: '2.25rem 1.5rem', cursor: 'pointer' }}
                 >
                   <div
                     className="category-icon-wrapper"
@@ -328,10 +327,10 @@ export default function HomePage() {
         </section>
 
         {/* ── FEATURED PRODUCTS ───────────────────────────────────── */}
-        <section style={{ marginBottom: '4rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }} className="reveal">
+        <section className="home-section">
+          <div className="flex justify-between items-center mb-8 flex-wrap gap-4 reveal">
             <div>
-              <h2 style={{ fontSize: '1.85rem', marginBottom: '0.25rem', fontFamily: 'var(--font-heading)' }}>Featured Products</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-1" style={{ fontFamily: 'var(--font-heading)' }}>Featured Products</h2>
               <p style={{ color: 'var(--color-muted-text)', fontSize: '0.95rem' }}>Top picks from our latest collection</p>
             </div>
             <Link to="/products" className="btn btn-outline" style={{ gap: '0.4rem' }}>
@@ -340,7 +339,7 @@ export default function HomePage() {
           </div>
 
           {loadingFeatured ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '1.75rem' }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {[1,2,3,4].map(i => (
                 <div key={i} className="skeleton-card">
                   <div className="skeleton skeleton-img" />
@@ -352,13 +351,12 @@ export default function HomePage() {
               ))}
             </div>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '1.75rem' }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {featured.map((prod, i) => (
                 <div
                   key={prod._id}
-                  className="card product-card reveal"
+                  className="card product-card reveal cursor-pointer relative flex flex-col h-full"
                   data-delay={String(i * 80)}
-                  style={{ cursor: 'pointer', position: 'relative', display: 'flex', flexDirection: 'column', height: '100%' }}
                   onClick={() => navigate('/products/' + prod._id)}
                 >
                   {/* Wishlist */}
@@ -432,7 +430,7 @@ export default function HomePage() {
         </section>
 
         {/* ── DISTINCT SPLIT CTA BANNER ───────────────────────────── */}
-        <section className="cta-split-banner reveal">
+        <section className="cta-split-banner reveal grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-8">
           <div>
             <h2 className="cta-banner-heading">
               Upgrade Your Everyday Setup with Nexoria
@@ -469,3 +467,4 @@ export default function HomePage() {
     </div>
   );
 }
+

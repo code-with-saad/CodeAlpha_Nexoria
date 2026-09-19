@@ -1,28 +1,97 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import { useAuth } from './AuthContext';
 import { useToast } from './ToastContext';
 
 const CartContext = createContext(null);
 
+const getCartKey = (uid) => (uid ? `nexoria_cart_${uid}` : 'nexoria_cart_guest');
+
+function loadCartFromStorage(uid) {
+  try {
+    const key = getCartKey(uid);
+    const saved = localStorage.getItem(key);
+    if (saved) return JSON.parse(saved);
+    // If guest, check legacy key for backward compatibility
+    if (!uid) {
+      const legacy = localStorage.getItem('nexoria_cart');
+      if (legacy) return JSON.parse(legacy);
+    }
+    return [];
+  } catch {
+    return [];
+  }
+}
+
+function mergeCarts(baseItems, incomingItems) {
+  if (!incomingItems || incomingItems.length === 0) return baseItems;
+  const result = [...baseItems];
+  for (const item of incomingItems) {
+    const idx = result.findIndex((r) => r.product === item.product);
+    if (idx > -1) {
+      const maxStock = item.stock || result[idx].stock || 99;
+      result[idx] = {
+        ...result[idx],
+        quantity: Math.min(result[idx].quantity + item.quantity, maxStock),
+        stock: maxStock
+      };
+    } else {
+      result.push(item);
+    }
+  }
+  return result;
+}
+
 export function CartProvider({ children }) {
+  const { user } = useAuth();
   const toast = useToast();
 
+  const userId = user?._id || user?.id || null;
+  const prevUserIdRef = useRef(userId);
+
   const [cartItems, setCartItems] = useState(() => {
-    try {
-      const saved = localStorage.getItem('nexoria_cart');
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
+    return loadCartFromStorage(userId);
   });
 
-  // Save to localStorage whenever cart changes
+  // Watch authenticated user's ID to reload, merge, or clear the cart
+  useEffect(() => {
+    const prevId = prevUserIdRef.current;
+    if (prevId === userId) return;
+
+    if (userId && !prevId) {
+      // Guest -> Logged in: merge guest cart into user's account-scoped cart
+      const guestCart = loadCartFromStorage(null);
+      const userCart = loadCartFromStorage(userId);
+      const merged = mergeCarts(userCart, guestCart);
+
+      // Clean up guest cart keys from localStorage
+      localStorage.removeItem('nexoria_cart_guest');
+      localStorage.removeItem('nexoria_cart');
+
+      // Persist merged user cart
+      localStorage.setItem(getCartKey(userId), JSON.stringify(merged));
+      setCartItems(merged);
+    } else if (!userId && prevId) {
+      // Logged in -> Logout: clear active cart from in-memory state
+      // (previous user's cart is safely kept under nexoria_cart_<prevId>)
+      setCartItems([]);
+    } else if (userId && prevId && userId !== prevId) {
+      // User A -> User B switch: load User B's cart
+      const userCart = loadCartFromStorage(userId);
+      setCartItems(userCart);
+    }
+
+    prevUserIdRef.current = userId;
+  }, [userId]);
+
+  // Save to user-scoped localStorage whenever cart or user changes
   useEffect(() => {
     try {
-      localStorage.setItem('nexoria_cart', JSON.stringify(cartItems));
+      const key = getCartKey(userId);
+      localStorage.setItem(key, JSON.stringify(cartItems));
     } catch (e) {
       console.error('Failed to persist cart items to localStorage', e);
     }
-  }, [cartItems]);
+  }, [cartItems, userId]);
 
   // Add item to cart
   const addToCart = (product, quantity = 1) => {
@@ -93,7 +162,11 @@ export function CartProvider({ children }) {
   // Clear entire cart
   const clearCart = () => {
     setCartItems([]);
-    localStorage.removeItem('nexoria_cart');
+    const key = getCartKey(userId);
+    localStorage.removeItem(key);
+    if (!userId) {
+      localStorage.removeItem('nexoria_cart');
+    }
   };
 
   // Calculations
@@ -139,3 +212,4 @@ export const useCart = () => {
   }
   return context;
 };
+

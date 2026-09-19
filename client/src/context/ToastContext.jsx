@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { CheckCircle2, AlertCircle, AlertTriangle, Info, X } from 'lucide-react';
 
 const ToastContext = createContext(null);
@@ -92,11 +92,11 @@ function ToastItem({ toast, onRemove }) {
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
 
-  const removeToast = (id) => {
+  const removeToast = useCallback((id) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
-  };
+  }, []);
 
-  const addToast = (message, type = 'info', options = {}) => {
+  const addToast = useCallback((message, type = 'info', options = {}) => {
     const id = Date.now().toString() + Math.random().toString(36).substring(2, 7);
     const newToast = {
       id,
@@ -108,15 +108,15 @@ export function ToastProvider({ children }) {
 
     setToasts(() => [newToast]);
     return id;
-  };
+  }, []);
 
-  const toast = {
+  const toast = useMemo(() => ({
     success: (msg, opts) => addToast(msg, 'success', opts),
     error: (msg, opts) => addToast(msg, 'error', opts),
     warning: (msg, opts) => addToast(msg, 'warning', opts),
     info: (msg, opts) => addToast(msg, 'info', opts),
     dismiss: removeToast
-  };
+  }), [addToast, removeToast]);
 
   return (
     <ToastContext.Provider value={toast}>

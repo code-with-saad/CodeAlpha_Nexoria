@@ -1,3 +1,5 @@
+@import "tailwindcss/utilities";
+
 /* ==========================================================================
    Nexoria Design System — Generated via ui-ux-pro-max
    Theme: Vibrant & Block-based / Clean E-commerce Showcase
@@ -364,6 +366,17 @@
   background: rgba(255, 112, 67, 0.22);
 }
 
+/* ── Section Spacing ────────────────────────────────────────────── */
+.home-section {
+  margin-bottom: 4.5rem;
+}
+
+@media (max-width: 640px) {
+  .home-section {
+    margin-bottom: 3rem;
+  }
+}
+
 /* ── Flagship Editorial Hero Section — THEME-AWARE & FULL BLEED ── */
 .flagship-hero {
   background: linear-gradient(145deg, #fdf6f3 0%, #faede8 45%, #f4dfd8 100%);
@@ -427,23 +440,27 @@
 
 .flagship-headline-solid {
   font-family: var(--font-display);
-  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  font-size: clamp(1.75rem, 5.5vw, 3.4rem);
   font-weight: 800;
   line-height: 1.08;
   color: var(--color-foreground);
   margin: 0;
   letter-spacing: -0.03em;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .flagship-headline-stroke {
   font-family: var(--font-display);
-  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  font-size: clamp(1.75rem, 5.5vw, 3.4rem);
   font-weight: 800;
   line-height: 1.08;
   color: transparent;
   -webkit-text-stroke: 1.8px var(--color-primary);
   margin: 0 0 1.25rem 0;
   letter-spacing: -0.03em;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .flagship-subtext {
@@ -904,6 +921,9 @@
 }
 
 html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   min-height: 100%;
   font-family: var(--font-body);
   background-color: var(--color-background);
@@ -912,11 +932,22 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 700;
   line-height: 1.25;
   color: var(--color-foreground);
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 a {
@@ -939,21 +970,35 @@ button {
 
 /* Layout Container */
 .container {
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1.5rem;
+  box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 0 1rem;
+  }
 }
 
 /* App Shell Layout */
 .app-layout {
+  width: 100%;
+  max-width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 
 .main-content {
   flex: 1;
+  width: 100%;
+  max-width: 100%;
   padding: 2.5rem 0;
+  box-sizing: border-box;
 }
 
 /* Navigation */
@@ -2313,7 +2358,7 @@ button {
 
 /* ── Responsive Breakpoints ─────────────────────────────── */
 
-/* ── Tablet (768px) ─────────────────────────────────────── */
+/* ── Tablet (768px) ────────────────────────────────────── */
 @media (max-width: 768px) {
   /* Navbar */
   .nav-links {
@@ -2326,6 +2371,21 @@ button {
 
   .nav-actions {
     gap: 0.5rem;
+  }
+
+  /* Flagship hero — collapse to single col + shrink text */
+  .flagship-hero-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem;
+  }
+
+  .flagship-hero-visual {
+    display: none;
+  }
+
+  .flagship-headline-solid,
+  .flagship-headline-stroke {
+    font-size: clamp(2rem, 6vw, 3rem) !important;
   }
 
   /* Products sidebar collapses — show mobile trigger */
@@ -2353,9 +2413,22 @@ button {
   .cart-grid {
     grid-template-columns: 1fr !important;
   }
+
+  /* Admin form modal grid */
+  .admin-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-form-group.span-2 {
+    grid-column: span 1;
+  }
+
+  .admin-order-meta-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
-/* ── Mobile (600px) ─────────────────────────────────────── */
+/* ── Mobile (600px) ────────────────────────────────────── */
 @media (max-width: 600px) {
   /* Container padding */
   .container {
@@ -2409,6 +2482,11 @@ button {
     grid-template-columns: 1fr !important;
   }
 
+  /* Category grid: 2 columns on medium mobile */
+  [style*="minmax(220px"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
   /* Section headings */
   h2[style*="1.85rem"] {
     font-size: 1.5rem !important;
@@ -2434,10 +2512,6 @@ button {
   /* Navbar */
   .brand-logo {
     font-size: 1.35rem;
-  }
-
-  .nav-links {
-    display: none !important;
   }
 
   .nav-actions {
@@ -2474,7 +2548,7 @@ button {
     gap: 0.4rem;
   }
 
-  /* Product card stack */
+  /* Product card */
   .product-card {
     padding: 1rem !important;
   }
@@ -2482,6 +2556,81 @@ button {
   /* Order history */
   .order-card {
     padding: 1rem !important;
+  }
+
+  /* Flagship hero mobile */
+  .flagship-hero {
+    padding-top: 2rem;
+  }
+
+  .flagship-hero-inner {
+    padding: 0 1rem;
+  }
+
+  .flagship-headline-solid,
+  .flagship-headline-stroke {
+    font-size: clamp(1.75rem, 7vw, 2.4rem) !important;
+  }
+
+  .flagship-subtext {
+    font-size: 0.92rem !important;
+  }
+
+  .flagship-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .flagship-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .flagship-card {
+    padding: 0.85rem 1rem !important;
+  }
+
+  .flagship-stats-strip {
+    grid-template-columns: repeat(2, 1fr) !important;
+    display: grid !important;
+  }
+
+  /* Admin responsive */
+  .admin-controls-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-search-wrap {
+    max-width: 100%;
+  }
+
+  .admin-tabs-nav {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .admin-tab-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 0.55rem 0.5rem;
+    font-size: 0.82rem;
+  }
+
+  .admin-header-title {
+    font-size: 1.6rem;
+  }
+
+  .admin-metrics-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .admin-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-form-group.span-2 {
+    grid-column: span 1;
   }
 }
 
@@ -2519,6 +2668,22 @@ button {
   /* Checkout page form */
   .checkout-form-section {
     padding: 1.25rem !important;
+  }
+
+  /* Flagship headline tighter */
+  .flagship-headline-solid,
+  .flagship-headline-stroke {
+    font-size: 1.65rem !important;
+  }
+
+  /* Category grid: single column on very small screens */
+  [style*="minmax(220px"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Admin metrics: single col */
+  .admin-metrics-grid {
+    grid-template-columns: 1fr;
   }
 }
 

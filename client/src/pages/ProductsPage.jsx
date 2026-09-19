@@ -124,7 +124,7 @@ function FilterPanel({
 /* ── Skeleton Grid ───────────────────────────────────────────── */
 function SkeletonGrid({ limit }) {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '1.75rem' }}>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {Array.from({ length: Math.min(limit, 12) }).map((_, i) => (
         <div key={i} className="skeleton-card">
           <div className="skeleton skeleton-img" />
@@ -335,7 +335,7 @@ export default function ProductsPage() {
                 Showing {products.length} of {total} results
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '1.5rem' }}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {products.map((prod, i) => (
                   <div
                     key={prod._id}
