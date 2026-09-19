@@ -129,125 +129,130 @@ export default function HomePage() {
   };
 
   return (
-    /* NOTE: hero + marquee sit OUTSIDE the container div — they are full-bleed */
-    <div className="home-page" ref={pageRef}>
+    <div className="home-page" ref={pageRef} style={{ width: '100%', maxWidth: '100%', overflowX: 'hidden' }}>
 
       {/* ── FLAGSHIP EDITORIAL HERO — THEME-AWARE & FULL BLEED ────── */}
       <section className="flagship-hero" aria-label="Flagship Product Showcase">
-        <div className="flagship-hero-grid">
-          {/* Left Column: Headlines & Actions */}
-          <div>
-            {/* Eyebrow badge */}
-            <span className="eyebrow-badge reveal" data-delay="0">
-              flagship &middot; new arrival
-            </span>
+        <div className="flagship-hero-inner">
+          <div className="flagship-hero-grid">
+            {/* Left Column: Headlines & Actions */}
+            <div>
+              {/* Eyebrow badge */}
+              <span className="eyebrow-badge reveal" data-delay="0">
+                FLAGSHIP &middot; NEW ARRIVAL
+              </span>
 
-            {/* Two-line Signature Bold Headline with Stroke Text */}
-            <h1 className="flagship-headline-solid reveal" data-delay="80">
-              Meet The Piece
-            </h1>
-            <div className="flagship-headline-stroke reveal" data-delay="160">
-              We Built Nexoria Around
-            </div>
+              {/* Two-line Signature Bold Headline with Stroke Text */}
+              <h1 className="flagship-headline-solid reveal" data-delay="80">
+                Meet The Piece
+              </h1>
+              <div className="flagship-headline-stroke reveal" data-delay="160">
+                We Built Nexoria Around
+              </div>
 
-            {/* Short Supporting Paragraph */}
-            <p className="flagship-subtext reveal" data-delay="240">
-              {flagshipProduct ? (
-                <>the <strong>{flagshipProduct.name}</strong>. precision movement, sapphire crystal, a design that started the whole collection.</>
-              ) : (
-                'the aurora chronograph. precision movement, sapphire crystal, a design that started the whole collection.'
-              )}
-            </p>
+              {/* Short Supporting Paragraph */}
+              <p className="flagship-subtext reveal" data-delay="240">
+                {flagshipProduct ? (
+                  <>The <strong>{flagshipProduct.name}</strong>. Precision movement, sapphire crystal, a design that started the whole collection.</>
+                ) : (
+                  'The aurora chronograph. Precision movement, sapphire crystal, a design that started the whole collection.'
+                )}
+              </p>
 
-            {/* CTAs */}
-            <div className="flagship-actions reveal" data-delay="320">
-              <Link
-                to={flagshipProduct ? `/products/${flagshipProduct._id}` : '/products'}
-                className="btn btn-primary"
-                style={{ fontSize: '0.95rem', padding: '0.75rem 1.6rem', textTransform: 'lowercase' }}
-              >
-                shop this piece
-              </Link>
-              <Link
-                to="/products"
-                className="btn flagship-outline-btn"
-                style={{ fontSize: '0.95rem', padding: '0.75rem 1.6rem', textTransform: 'lowercase' }}
-              >
-                full collection
-              </Link>
-            </div>
+              {/* CTAs */}
+              <div className="flagship-actions reveal" data-delay="320">
+                <Link
+                  to={flagshipProduct ? `/products/${flagshipProduct._id}` : '/products'}
+                  className="btn btn-primary"
+                  style={{ fontSize: '0.95rem', padding: '0.75rem 1.6rem' }}
+                >
+                  Shop This Piece
+                </Link>
+                <Link
+                  to="/products"
+                  className="btn flagship-outline-btn"
+                  style={{ fontSize: '0.95rem', padding: '0.75rem 1.6rem' }}
+                >
+                  Full Collection
+                </Link>
+              </div>
 
-            {/* Inline Flagship Product Card Inside Hero */}
-            {flagshipProduct && (
-              <Link
-                to={`/products/${flagshipProduct._id}`}
-                className="flagship-card reveal"
-                data-delay="400"
-              >
-                <div className="flagship-thumb-box">
-                  {flagshipProduct.image?.startsWith('http') ? (
-                    <img
-                      src={flagshipProduct.image}
-                      alt={flagshipProduct.name}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                        e.target.nextSibling.style.display = 'flex';
-                      }}
-                    />
-                  ) : null}
-                  <div style={{ display: flagshipProduct.image?.startsWith('http') ? 'none' : 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Package size={24} color="var(--color-primary)" />
+              {/* Inline Flagship Product Card Inside Hero */}
+              {flagshipProduct && (
+                <Link
+                  to={`/products/${flagshipProduct._id}`}
+                  className="flagship-card reveal"
+                  data-delay="400"
+                >
+                  <div className="flagship-thumb-box">
+                    {flagshipProduct.image?.startsWith('http') ? (
+                      <img
+                        src={flagshipProduct.image}
+                        alt={flagshipProduct.name}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.nextSibling.style.display = 'flex';
+                        }}
+                      />
+                    ) : null}
+                    <div style={{ display: flagshipProduct.image?.startsWith('http') ? 'none' : 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <Package size={24} color="var(--color-primary)" />
+                    </div>
                   </div>
-                </div>
 
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div className="flagship-card-title">{flagshipProduct.name}</div>
-                  <div className="flagship-card-meta">4.9 rating &middot; 300+ sold</div>
-                </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div className="flagship-card-title">{flagshipProduct.name}</div>
+                    <div className="flagship-card-meta">4.9 rating &middot; 300+ sold</div>
+                  </div>
 
-                <div className="flagship-card-price">
-                  ${Number(flagshipProduct.price || 0).toFixed(2)}
-                </div>
-              </Link>
-            )}
-          </div>
-
-          {/* Right Column: Visual Element with subtle rotation and framing */}
-          <div className="flagship-hero-visual reveal" data-delay="200">
-            <div className="flagship-hero-visual-frame">
-              {flagshipProduct?.image?.startsWith('http') ? (
-                <img
-                  src={flagshipProduct.image}
-                  alt={flagshipProduct.name}
-                  className="flagship-hero-img"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                  }}
-                />
-              ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem', color: 'var(--color-primary)' }}>
-                  <Package size={72} />
-                  <span style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--color-muted-text)' }}>Nexoria Flagship</span>
-                </div>
+                  <div className="flagship-card-price">
+                    ${Number(flagshipProduct.price || 0).toFixed(2)}
+                  </div>
+                </Link>
               )}
             </div>
-          </div>
-        </div>
 
-        {/* Dedicated Styled Stats Strip */}
-        <div className="flagship-stats-strip">
-          <div className="flagship-stat-col">
-            <div className="flagship-stat-number"><CountUp end={12500} suffix="+" /></div>
-            <div className="flagship-stat-label">orders delivered</div>
+            {/* Right Column: Visual Element with subtle rotation and framing */}
+            <div className="flagship-hero-visual reveal" data-delay="200">
+              <div className="flagship-hero-visual-frame">
+                {flagshipProduct?.image?.startsWith('http') ? (
+                  <img
+                    src={flagshipProduct.image}
+                    alt={flagshipProduct.name}
+                    className="flagship-hero-img"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                    }}
+                  />
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem', color: 'var(--color-primary)' }}>
+                    <Package size={72} />
+                    <span style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--color-muted-text)' }}>Nexoria Flagship</span>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
-          <div className="flagship-stat-col">
-            <div className="flagship-stat-number">4.9 / 5</div>
-            <div className="flagship-stat-label">customer rating</div>
-          </div>
-          <div className="flagship-stat-col">
-            <div className="flagship-stat-number">{totalProductsCount}+</div>
-            <div className="flagship-stat-label">curated products</div>
+
+          {/* Dedicated Styled Stats Strip — Theme-Aware */}
+          <div className="flagship-stats-strip reveal" data-delay="450">
+            <div className="flagship-stat-col">
+              <div className="flagship-stat-number"><CountUp end={12500} suffix="+" /></div>
+              <div className="flagship-stat-label">orders delivered</div>
+            </div>
+            <div className="flagship-stat-col">
+              <div className="flagship-stat-number"><CountUp end={99} duration={1200} suffix="%" /></div>
+              <div className="flagship-stat-label">satisfaction rate</div>
+            </div>
+            <div className="flagship-stat-col">
+              <div className="flagship-stat-number">4.9 / 5</div>
+              <div className="flagship-stat-label">customer rating</div>
+            </div>
+            <div className="flagship-stat-col">
+              <div className="flagship-stat-number"><CountUp end={totalProductsCount} duration={1000} suffix="+" /></div>
+              <div className="flagship-stat-label">curated products</div>
+            </div>
           </div>
         </div>
       </section>
@@ -256,7 +261,7 @@ export default function HomePage() {
       <MarqueeStrip />
 
       {/* ── MAIN PAGE SECTIONS — inside container padding ─────────── */}
-      <div style={{ padding: '0 max(1.5rem, calc((100vw - 1200px) / 2 + 1.5rem))' }}>
+      <div className="container" style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 1.5rem' }}>
 
         {/* ── SOCIAL PROOF / TRUST SIGNALS BAR ────────────────────── */}
         <section className="trust-bar reveal" aria-label="Store Benefits & Guarantees">
@@ -293,7 +298,7 @@ export default function HomePage() {
         {/* ── CATEGORY SHOWCASE ───────────────────────────────────── */}
         <section style={{ marginBottom: '4rem' }}>
           <div style={{ textAlign: 'center', marginBottom: '2rem' }} className="reveal">
-            <h2 style={{ fontSize: '1.85rem', marginBottom: '0.5rem' }}>Shop by Category</h2>
+            <h2 style={{ fontSize: '1.85rem', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>Shop by Category</h2>
             <p style={{ color: 'var(--color-muted-text)' }}>Find exactly what you need in our curated sections</p>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem' }}>
@@ -314,7 +319,7 @@ export default function HomePage() {
                   >
                     <Icon size={32} color={color} strokeWidth={2.2} />
                   </div>
-                  <h3 style={{ fontSize: '1.15rem', marginBottom: '0.4rem', color: 'var(--color-foreground)', fontWeight: 700 }}>{name}</h3>
+                  <h3 style={{ fontSize: '1.15rem', marginBottom: '0.4rem', color: 'var(--color-foreground)', fontWeight: 700, fontFamily: 'var(--font-heading)' }}>{name}</h3>
                   <p style={{ fontSize: '0.85rem', color: 'var(--color-muted-text)', margin: 0 }}>{desc}</p>
                 </div>
               </Link>
@@ -326,7 +331,7 @@ export default function HomePage() {
         <section style={{ marginBottom: '4rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }} className="reveal">
             <div>
-              <h2 style={{ fontSize: '1.85rem', marginBottom: '0.25rem' }}>Featured Products</h2>
+              <h2 style={{ fontSize: '1.85rem', marginBottom: '0.25rem', fontFamily: 'var(--font-heading)' }}>Featured Products</h2>
               <p style={{ color: 'var(--color-muted-text)', fontSize: '0.95rem' }}>Top picks from our latest collection</p>
             </div>
             <Link to="/products" className="btn btn-outline" style={{ gap: '0.4rem' }}>
@@ -353,7 +358,7 @@ export default function HomePage() {
                   key={prod._id}
                   className="card product-card reveal"
                   data-delay={String(i * 80)}
-                  style={{ cursor: 'pointer', position: 'relative' }}
+                  style={{ cursor: 'pointer', position: 'relative', display: 'flex', flexDirection: 'column', height: '100%' }}
                   onClick={() => navigate('/products/' + prod._id)}
                 >
                   {/* Wishlist */}
@@ -365,7 +370,7 @@ export default function HomePage() {
                     <Heart size={17} fill={wishlist.includes(prod._id) ? '#ef4444' : 'none'} stroke={wishlist.includes(prod._id) ? '#ef4444' : 'var(--color-muted-text)'} />
                   </button>
 
-                  <div className="product-image-container">
+                  <div className="product-image-container" style={{ marginBottom: '1rem' }}>
                     {prod.image?.startsWith('http') ? (
                       <img src={prod.image} alt={prod.name} className="product-image" loading="lazy" onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }} />
                     ) : null}
@@ -374,25 +379,50 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  <div style={{ fontSize: '0.72rem', color: 'var(--color-primary)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.3rem' }}>
+                  <div style={{ fontSize: '0.72rem', color: 'var(--color-primary)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.3rem' }}>
                     {prod.category}
                   </div>
-                  <h3 style={{ fontSize: '1rem', marginBottom: '0.45rem' }}>{prod.name}</h3>
+                  <h3
+                    style={{
+                      fontSize: '1rem',
+                      fontFamily: 'var(--font-heading)',
+                      fontWeight: 700,
+                      marginBottom: '0.45rem',
+                      lineHeight: 1.35,
+                      minHeight: '2.7rem',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      color: 'var(--color-foreground)'
+                    }}
+                  >
+                    {prod.name}
+                  </h3>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginBottom: '0.75rem' }}>
                     {[1,2,3,4,5].map(s => <Star key={s} size={13} fill={s<=4?'#f59e0b':'none'} stroke='#f59e0b' />)}
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.85rem', borderTop: '1px solid var(--color-border)', marginTop: 'auto' }}>
-                    <span style={{ fontSize: '1.25rem', fontWeight: 800 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.85rem', borderTop: '1px solid var(--color-border)', marginTop: 'auto', gap: '0.5rem' }}>
+                    <span style={{ fontSize: '1.25rem', fontWeight: 800, whiteSpace: 'nowrap' }}>
                       ${Number(prod.price || 0).toFixed(2)}
                     </span>
                     <button
                       onClick={e => handleAddToCart(e, prod)}
                       className="btn btn-accent"
-                      style={{ padding: '0.45rem 0.9rem', fontSize: '0.83rem' }}
+                      style={{
+                        padding: '0.45rem 0.85rem',
+                        fontSize: '0.82rem',
+                        whiteSpace: 'nowrap',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.4rem',
+                        fontWeight: 700,
+                        flexShrink: 0
+                      }}
                       disabled={prod.stock <= 0}
                     >
                       <ShoppingCart size={14} />
-                      Add to Cart
+                      {prod.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
                     </button>
                   </div>
                 </div>
@@ -435,7 +465,7 @@ export default function HomePage() {
           </div>
         </section>
 
-      </div>{/* end container padding */}
+      </div>{/* end container */}
     </div>
   );
 }
