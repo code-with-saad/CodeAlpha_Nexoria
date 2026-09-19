@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, User, LogOut, Sun, Moon, Store, ClipboardList } from 'lucide-react';
+import { ShoppingCart, User, LogOut, Sun, Moon, Store, ClipboardList, Heart } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
 
 export default function Navbar() {
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
-  const { totalItems } = useCart();
+  const { totalItems, openCart } = useCart();
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -52,6 +52,11 @@ export default function Navbar() {
                 Products
               </NavLink>
             </li>
+            <li>
+              <NavLink to="/wishlist" className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')}>
+                Wishlist
+              </NavLink>
+            </li>
             {isAuthenticated && (
               <li>
                 <NavLink to="/orders" className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')}>
@@ -70,15 +75,18 @@ export default function Navbar() {
             className="btn btn-ghost"
             style={{ padding: '0.45rem', borderRadius: 'var(--radius-md)' }}
             title={dark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            aria-label="Toggle dark mode"
           >
             {dark ? <Sun size={19} /> : <Moon size={19} />}
           </button>
 
-          {/* Cart */}
-          <Link
-            to="/cart"
+          {/* Cart Drawer Trigger */}
+          <button
+            type="button"
+            onClick={openCart}
             className="btn btn-outline"
             style={{ padding: '0.45rem 0.95rem', fontSize: '0.875rem', position: 'relative', gap: '0.4rem' }}
+            aria-label="Open cart drawer"
           >
             <ShoppingCart size={18} />
             Cart
@@ -92,7 +100,7 @@ export default function Navbar() {
                 {totalItems}
               </span>
             )}
-          </Link>
+          </button>
 
           {isAuthenticated ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>

@@ -6,13 +6,13 @@ import { useToast } from '../context/ToastContext';
 import { useCart } from '../context/CartContext';
 
 const CATEGORIES = ['All', 'Electronics', 'Accessories', 'Lifestyle', 'Home'];
-const LIMIT = 12;
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All');
+  const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
@@ -24,10 +24,10 @@ export default function ProductsPage() {
   const { addToCart } = useCart();
   const navigate = useNavigate();
 
-  const fetchProducts = useCallback(async (pg = 1) => {
+  const fetchProducts = useCallback(async (pg = 1, currentLimit = limit) => {
     setLoading(true);
     try {
-      const params = { page: pg, limit: LIMIT };
+      const params = { page: pg, limit: currentLimit };
       if (search.trim()) params.search = search.trim();
       if (category !== 'All') params.category = category;
       const { data } = await api.get('/products', { params });
@@ -43,17 +43,17 @@ export default function ProductsPage() {
     } finally {
       setLoading(false);
     }
-  }, [search, category]);
+  }, [search, category, limit]);
 
-  // Reset to page 1 when filters change
+  // Reset to page 1 when filters or limit change
   useEffect(() => {
     setPage(1);
-  }, [search, category]);
+  }, [search, category, limit]);
 
   useEffect(() => {
-    const debounce = setTimeout(() => fetchProducts(1), search ? 300 : 0);
+    const debounce = setTimeout(() => fetchProducts(1, limit), search ? 300 : 0);
     return () => clearTimeout(debounce);
-  }, [search, category]);
+  }, [search, category, limit]);
 
   useEffect(() => {
     if (page > 1) fetchProducts(page);
@@ -87,7 +87,7 @@ export default function ProductsPage() {
 
   const SkeletonGrid = () => (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(270px, 1fr))', gap: '1.75rem' }}>
-      {Array.from({ length: LIMIT }).map((_, i) => (
+      {Array.from({ length: Math.min(limit, 12) }).map((_, i) => (
         <div key={i} className="skeleton-card">
           <div className="skeleton skeleton-img" />
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', padding: '0.25rem' }}>
@@ -235,44 +235,66 @@ export default function ProductsPage() {
             ))}
           </div>
 
-          {/* PAGINATION */}
-          {totalPages > 1 && (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.75rem', marginTop: '3rem' }}>
-              <button
-                className="btn btn-outline"
-                onClick={() => handlePageChange(page - 1)}
-                disabled={page <= 1}
-                style={{ padding: '0.5rem 0.85rem' }}
+          {/* PAGINATION & ITEMS PER PAGE */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem', marginTop: '3.5rem', borderTop: '1px solid var(--color-border)', paddingTop: '1.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <span style={{ fontSize: '0.875rem', color: 'var(--color-muted-text)', fontWeight: 600 }}>
+                Items per page:
+              </span>
+              <select
+                value={limit}
+                onChange={(e) => setLimit(Number(e.target.value))}
+                className="form-select"
+                style={{ width: 'auto', padding: '0.4rem 0.85rem', fontSize: '0.875rem' }}
+                aria-label="Items per page"
               >
-                <ChevronLeft size={18} />
-              </button>
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(pg => (
-                <button
-                  key={pg}
-                  onClick={() => handlePageChange(pg)}
-                  style={{
-                    width: '38px', height: '38px', borderRadius: 'var(--radius-md)',
-                    background: pg === page ? 'var(--color-primary)' : 'transparent',
-                    color: pg === page ? '#fff' : 'var(--color-foreground)',
-                    border: '1px solid',
-                    borderColor: pg === page ? 'var(--color-primary)' : 'var(--color-border)',
-                    fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer',
-                    transition: 'all 0.2s'
-                  }}
-                >
-                  {pg}
-                </button>
-              ))}
-              <button
-                className="btn btn-outline"
-                onClick={() => handlePageChange(page + 1)}
-                disabled={page >= totalPages}
-                style={{ padding: '0.5rem 0.85rem' }}
-              >
-                <ChevronRight size={18} />
-              </button>
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+                <option value={30}>30</option>
+                <option value={50}>50</option>
+              </select>
             </div>
-          )}
+
+            {totalPages > 1 && (
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.75rem' }}>
+                <button
+                  className="btn btn-outline"
+                  onClick={() => handlePageChange(page - 1)}
+                  disabled={page <= 1}
+                  style={{ padding: '0.5rem 0.85rem' }}
+                  aria-label="Previous page"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(pg => (
+                  <button
+                    key={pg}
+                    onClick={() => handlePageChange(pg)}
+                    style={{
+                      width: '38px', height: '38px', borderRadius: 'var(--radius-md)',
+                      background: pg === page ? 'var(--color-primary)' : 'transparent',
+                      color: pg === page ? '#fff' : 'var(--color-foreground)',
+                      border: '1px solid',
+                      borderColor: pg === page ? 'var(--color-primary)' : 'var(--color-border)',
+                      fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    {pg}
+                  </button>
+                ))}
+                <button
+                  className="btn btn-outline"
+                  onClick={() => handlePageChange(page + 1)}
+                  disabled={page >= totalPages}
+                  style={{ padding: '0.5rem 0.85rem' }}
+                  aria-label="Next page"
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </div>
+            )}
+          </div>
         </>
       )}
     </div>

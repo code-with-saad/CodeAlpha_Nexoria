@@ -107,6 +107,11 @@ export function CartProvider({ children }) {
   const taxPrice = Number((0.08 * itemsPrice).toFixed(2));
   const totalPrice = Number((itemsPrice + shippingPrice + taxPrice).toFixed(2));
 
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  const openCart = () => setIsCartOpen(true);
+  const closeCart = () => setIsCartOpen(false);
+
   const value = {
     cartItems,
     totalItems,
@@ -114,6 +119,10 @@ export function CartProvider({ children }) {
     shippingPrice,
     taxPrice,
     totalPrice,
+    isCartOpen,
+    setIsCartOpen,
+    openCart,
+    closeCart,
     addToCart,
     updateQuantity,
     removeFromCart,

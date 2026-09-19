@@ -16,6 +16,52 @@ const CATEGORY_DATA = [
   { name: 'Home', Icon: HomeIcon, color: '#10b981', bgClass: 'cat-card-home', desc: 'Smart living essentials' }
 ];
 
+function CountUp({ end = 12500, duration = 1800, suffix = '+' }) {
+  const [count, setCount] = useState(0);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const elementRef = React.useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !hasAnimated) {
+          setHasAnimated(true);
+          let startTime = null;
+
+          const animate = (currentTime) => {
+            if (!startTime) startTime = currentTime;
+            const progress = Math.min((currentTime - startTime) / duration, 1);
+            // Ease out quad
+            const easeProgress = 1 - (1 - progress) * (1 - progress);
+            setCount(Math.floor(easeProgress * end));
+
+            if (progress < 1) {
+              requestAnimationFrame(animate);
+            } else {
+              setCount(end);
+            }
+          };
+
+          requestAnimationFrame(animate);
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (elementRef.current) {
+      observer.observe(elementRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [end, duration, hasAnimated]);
+
+  return (
+    <span ref={elementRef}>
+      {count.toLocaleString()}{suffix}
+    </span>
+  );
+}
+
 export default function HomePage() {
   const [featured, setFeatured] = useState([]);
   const [loadingFeatured, setLoadingFeatured] = useState(true);
@@ -319,7 +365,9 @@ export default function HomePage() {
         </div>
 
         <div className="cta-stat-card">
-          <div className="cta-stat-num">12,500+</div>
+          <div className="cta-stat-num">
+            <CountUp end={12500} suffix="+" />
+          </div>
           <div className="cta-stat-label">Orders safely delivered worldwide</div>
           <Link
             to="/products"

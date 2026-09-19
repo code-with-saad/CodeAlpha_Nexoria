@@ -1,6 +1,6 @@
 # Nexoria — E-commerce Store
 
-**Nexoria** is a modern, full-stack MERN e-commerce web application engineered for speed, high visual polish, and seamless online shopping experiences. It features a curated product catalog, shopping cart, secure authentication, order lifecycle tracking, and an administrative management dashboard.
+**Nexoria** is a modern, full-stack MERN e-commerce web application engineered for speed, high visual polish, and seamless online shopping experiences. It features a curated product catalog, a slide-in cart drawer, a dedicated wishlist page, secure authentication, Stripe-powered checkout, order lifecycle tracking, related product recommendations, scroll-triggered count-up animations, and an administrative management dashboard.
 
 ---
 
@@ -217,12 +217,20 @@ Nexoria/
 ├── client/                     # Frontend React + Vite application
 │   ├── public/                 # Static public assets
 │   ├── src/                    # React source code (components, pages, styles)
-│   │   ├── components/         # Reusable UI components (Navbar, Footer)
+│   │   ├── components/         # Reusable UI components (Navbar, Footer, CartDrawer)
 │   │   ├── context/            # Global React Contexts (AuthContext, CartContext, ToastContext)
-│   │   ├── pages/              # Routed view pages (Home, Products, Details, Login, Register, Cart, Checkout, Confirmation, Orders)
+│   │   ├── pages/              # Routed view pages
+│   │   │   ├── HomePage.jsx        # Landing, featured products, count-up stats
+│   │   │   ├── ProductsPage.jsx    # Catalog with search, category filter, items-per-page
+│   │   │   ├── ProductDetailPage.jsx # Product detail + related products section
+│   │   │   ├── WishlistPage.jsx    # /wishlist — saved items with Move-to-Cart action
+│   │   │   ├── CartPage.jsx        # /cart — full-page cart fallback
+│   │   │   ├── CheckoutPage.jsx    # Stripe checkout form
+│   │   │   ├── OrderConfirmationPage.jsx
+│   │   │   └── OrderHistoryPage.jsx # Order list with thumbnails & dual status badges
 │   │   ├── services/           # Axios instance & HTTP interceptors (api.js)
 │   │   ├── App.jsx             # React Router routing skeleton & Context Providers
-│   │   ├── index.css           # Design tokens, toast animations, skeletons & CSS layout
+│   │   ├── index.css           # Design tokens, cart drawer, toast, skeletons & layout
 │   │   └── main.jsx            # Entry point
 │   ├── index.html              # HTML entry point with Google Fonts
 │   ├── package.json            # Client dependencies & scripts

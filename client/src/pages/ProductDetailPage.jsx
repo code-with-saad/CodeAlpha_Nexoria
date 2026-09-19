@@ -8,7 +8,9 @@ import { useCart } from '../context/CartContext';
 export default function ProductDetailPage() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingRelated, setLoadingRelated] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState(null);
   const [wished, setWished] = useState(() => {
@@ -29,7 +31,26 @@ export default function ProductDetailPage() {
       try {
         const response = await api.get('/products/' + id);
         if (response.data?.data) {
-          setProduct(response.data.data);
+          const current = response.data.data;
+          setProduct(current);
+
+          // Fetch related products
+          if (current.category) {
+            setLoadingRelated(true);
+            try {
+              const relRes = await api.get('/products', {
+                params: { category: current.category, limit: 5 }
+              });
+              if (relRes.data?.data) {
+                const filtered = relRes.data.data.filter(p => p._id !== id).slice(0, 4);
+                setRelatedProducts(filtered);
+              }
+            } catch {
+              setRelatedProducts([]);
+            } finally {
+              setLoadingRelated(false);
+            }
+          }
         }
       } catch (err) {
         const msg = err.response?.data?.message || err.message || 'Product not found';
@@ -115,7 +136,7 @@ export default function ProductDetailPage() {
         </button>
       </div>
 
-      <div className="card" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '3rem', padding: '2.5rem' }}>
+      <div className="card" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '3rem', padding: '2.5rem', marginBottom: '4rem' }}>
 
         {/* PRODUCT IMAGE */}
         <div style={{ minHeight: '380px', background: 'var(--color-muted)', borderRadius: 'var(--radius-lg)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', position: 'relative' }}>
@@ -148,11 +169,11 @@ export default function ProductDetailPage() {
             {[1,2,3,4,5].map(s => (
               <Star key={s} size={16} fill={s <= 4 ? '#f59e0b' : 'none'} stroke='#f59e0b' />
             ))}
-            <span style={{ color: 'var(--color-muted-text)', fontSize: '0.85rem', marginLeft: '0.25rem' }}>4.0 rating</span>
+            <span style={{ color: 'var(--color-muted-text)', fontSize: '0.85rem', marginLeft: '0.25rem' }}>4.8 rating</span>
           </div>
 
           <div style={{ fontSize: '2.2rem', fontWeight: 800, color: 'var(--color-primary)', marginBottom: '1.25rem' }}>
-            
+            ${Number(product.price || 0).toFixed(2)}
           </div>
 
           <p style={{ color: 'var(--color-muted-text)', lineHeight: '1.7', marginBottom: '2rem', flex: 1 }}>
@@ -203,6 +224,71 @@ export default function ProductDetailPage() {
           </div>
         </div>
       </div>
+
+      {/* RELATED PRODUCTS SECTION */}
+      {relatedProducts.length > 0 && (
+        <section style={{ marginTop: '2rem' }}>
+          <div style={{ marginBottom: '1.75rem' }}>
+            <h2 style={{ fontSize: '1.6rem', marginBottom: '0.35rem' }}>Related Products</h2>
+            <p style={{ color: 'var(--color-muted-text)', fontSize: '0.95rem' }}>
+              More from the <strong>{product.category}</strong> category
+            </p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '1.75rem' }}>
+            {relatedProducts.map(rel => (
+              <div
+                key={rel._id}
+                className="card product-card"
+                style={{ cursor: 'pointer', position: 'relative' }}
+                onClick={() => {
+                  navigate(`/products/${rel._id}`);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+              >
+                <div className="product-image-container" style={{ marginBottom: '1rem' }}>
+                  {rel.image?.startsWith('http') ? (
+                    <img
+                      src={rel.image}
+                      alt={rel.name}
+                      className="product-image"
+                      loading="lazy"
+                      onError={e => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
+                    />
+                  ) : null}
+                  <div style={{ display: rel.image?.startsWith('http') ? 'none' : 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+                    <Package size={56} color="var(--color-muted-text)" />
+                  </div>
+                </div>
+
+                <div style={{ fontSize: '0.72rem', color: 'var(--color-primary)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.3rem' }}>
+                  {rel.category}
+                </div>
+                <h3 style={{ fontSize: '1rem', marginBottom: '0.45rem', lineHeight: 1.35 }}>
+                  {rel.name}
+                </h3>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.85rem', borderTop: '1px solid var(--color-border)', marginTop: 'auto' }}>
+                  <span style={{ fontSize: '1.2rem', fontWeight: 800 }}>
+                    ${Number(rel.price || 0).toFixed(2)}
+                  </span>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addToCart(rel, 1);
+                    }}
+                    className="btn btn-accent"
+                    style={{ padding: '0.45rem 0.9rem', fontSize: '0.83rem', gap: '0.4rem' }}
+                    disabled={rel.stock <= 0}
+                  >
+                    <ShoppingCart size={14} />
+                    Add
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }
