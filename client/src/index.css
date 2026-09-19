@@ -307,15 +307,14 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(8px);
-  padding: 0.4rem 1rem;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 0.45rem 1.1rem;
   border-radius: var(--radius-full);
   margin-bottom: 1.5rem;
   font-size: 0.85rem;
-  font-weight: 600;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #a7f3d0;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
 }
 
 .hero-title {
@@ -500,9 +499,11 @@
   border-color: #0d3826;
 }
 
+
+
 .cta-stat-card {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: var(--radius-md);
   padding: 1.75rem;
   text-align: center;
@@ -514,17 +515,26 @@
 }
 
 .cta-stat-num {
-  font-size: 2.2rem;
+  font-size: 2.25rem;
   font-weight: 800;
-  color: #6ee7b7;
+  color: #ffffff;
   line-height: 1.1;
   margin-bottom: 0.35rem;
 }
 
+[data-theme="dark"] .cta-stat-num {
+  color: #6bfacd;
+}
+
 .cta-stat-label {
-  font-size: 0.85rem;
-  color: #d1fae5;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ffffff;
   margin-bottom: 1.25rem;
+}
+
+[data-theme="dark"] .cta-stat-label {
+  color: #b3f9e7;
 }
 
 @media (max-width: 840px) {
@@ -1148,16 +1158,141 @@ button {
 
 /* Footer */
 .footer {
-  background-color: #0f172a;
-  color: #94a3b8;
-  padding: 3rem 0 2rem;
-  border-top: 1px solid #1e293b;
+  background-color: var(--color-card);
+  color: var(--color-muted-text);
+  padding: 3.5rem 0 2rem;
+  border-top: 1px solid var(--color-border);
   margin-top: auto;
+  transition: background-color var(--transition-normal), border-color var(--transition-normal);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.25fr;
+  gap: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+@media (max-width: 900px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 540px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-bottom: 0.85rem;
+}
+
+.footer-brand-icon {
+  color: var(--color-primary);
+}
+
+.footer-desc {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--color-muted-text);
+  margin-bottom: 1.25rem;
+}
+
+.footer-trust-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  background: rgba(5, 150, 105, 0.08);
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(5, 150, 105, 0.18);
+  width: fit-content;
+}
+
+[data-theme="dark"] .footer-trust-badge {
+  background: rgba(107, 250, 205, 0.1);
+  border-color: rgba(107, 250, 205, 0.2);
+  color: var(--color-primary);
+}
+
+.footer-heading {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-foreground);
+  margin-bottom: 1rem;
+  letter-spacing: -0.2px;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+}
+
+.footer-links a {
+  color: var(--color-muted-text);
+  transition: color var(--transition-fast);
+}
+
+.footer-links a:hover {
+  color: var(--color-primary);
+}
+
+.footer-contact-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-muted-text);
+}
+
+.footer-contact-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
 }
 
 .footer-bottom {
   text-align: center;
-  font-size: 0.875rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #1e293b;
+  font-size: 0.85rem;
+  color: var(--color-muted-text);
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--color-border);
+}
+
+[data-theme="dark"] .footer {
+  background-color: #010a06;
+  border-top-color: #0d3826;
+  color: #a7f3d0;
+}
+
+[data-theme="dark"] .footer-desc,
+[data-theme="dark"] .footer-links a,
+[data-theme="dark"] .footer-contact-list,
+[data-theme="dark"] .footer-bottom {
+  color: #a7f3d0;
+}
+
+[data-theme="dark"] .footer-links a:hover {
+  color: var(--color-primary);
 }

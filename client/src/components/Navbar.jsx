@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, User, LogOut, Sun, Moon, Store, ClipboardList } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -37,7 +37,6 @@ export default function Navbar() {
         <Link to="/" className="brand-logo">
           <Store size={24} />
           Nexoria
-          <span className="brand-badge">MERN</span>
         </Link>
 
         {/* NAV LINKS */}

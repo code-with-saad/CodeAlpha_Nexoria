@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { MapPin, CreditCard, ShieldCheck, ArrowRight, Lock } from 'lucide-react';
 import api from '../services/api';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
@@ -150,7 +151,8 @@ export default function CheckoutPage() {
             {/* 1. SHIPPING ADDRESS */}
             <div className="card" style={{ marginBottom: '1.75rem' }}>
               <h2 style={{ fontSize: '1.25rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span>📍 1. Shipping Address</span>
+                <MapPin size={20} color="var(--color-primary)" />
+                <span>1. Shipping Address</span>
               </h2>
 
               <div className="form-group">
@@ -230,25 +232,30 @@ export default function CheckoutPage() {
             <div className="card" style={{ marginBottom: '1.75rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
                 <h2 style={{ fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span>💳 2. Payment Method</span>
+                  <CreditCard size={20} color="var(--color-primary)" />
+                  <span>2. Payment Method</span>
                 </h2>
-                <span className="brand-badge" style={{ background: '#e0e7ff', color: '#4338ca' }}>
+                <span className="brand-badge">
                   Stripe Test Mode
                 </span>
               </div>
 
               <div
                 style={{
-                  background: '#f8fafc',
-                  border: '1px solid #cbd5e1',
+                  background: 'var(--color-muted)',
+                  border: '1px solid var(--color-border)',
                   borderRadius: 'var(--radius-md)',
                   padding: '0.85rem',
                   marginBottom: '1.25rem',
                   fontSize: '0.85rem',
-                  color: '#334155'
+                  color: 'var(--color-foreground)'
                 }}
               >
-                <strong>💡 Stripe Testing Note:</strong> Pre-filled with test card credentials (<code>4242 4242 4242 4242</code>, Exp: <code>12/28</code>, CVC: <code>123</code>).
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 700, marginBottom: '0.2rem' }}>
+                  <ShieldCheck size={16} color="var(--color-primary)" />
+                  <span>Stripe Test Credentials:</span>
+                </div>
+                <code>4242 4242 4242 4242</code> &bull; Exp: <code>12/28</code> &bull; CVC: <code>123</code>
               </div>
 
               <div className="form-group">
@@ -259,10 +266,10 @@ export default function CheckoutPage() {
                     className="form-input"
                     value={cardData.cardNumber}
                     readOnly
-                    style={{ background: '#f8fafc', fontWeight: 600 }}
+                    style={{ fontWeight: 600 }}
                   />
-                  <span style={{ position: 'absolute', right: '1rem', top: '0.75rem', fontSize: '1.2rem' }}>
-                    💳
+                  <span style={{ position: 'absolute', right: '1rem', top: '0.75rem', color: 'var(--color-muted-text)' }}>
+                    <CreditCard size={18} />
                   </span>
                 </div>
               </div>
@@ -275,7 +282,7 @@ export default function CheckoutPage() {
                     className="form-input"
                     value={cardData.expDate}
                     readOnly
-                    style={{ background: '#f8fafc', fontWeight: 600 }}
+                    style={{ fontWeight: 600 }}
                   />
                 </div>
 
@@ -286,7 +293,7 @@ export default function CheckoutPage() {
                     className="form-input"
                     value={cardData.cvc}
                     readOnly
-                    style={{ background: '#f8fafc', fontWeight: 600 }}
+                    style={{ fontWeight: 600 }}
                   />
                 </div>
               </div>

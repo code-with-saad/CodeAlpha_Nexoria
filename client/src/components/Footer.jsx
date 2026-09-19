@@ -1,40 +1,77 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Store, Mail, Phone, MapPin, ShieldCheck, CreditCard, Heart } from 'lucide-react';
 
 export default function Footer() {
   return (
     <footer className="footer">
-      <div className="container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '2rem', marginBottom: '2rem' }}>
-        <div>
-          <h3 style={{ color: '#ffffff', fontSize: '1.25rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            🛍️ Nexoria
-          </h3>
-          <p style={{ fontSize: '0.9rem', lineHeight: '1.6', color: '#94a3b8' }}>
-            Full-stack MERN e-commerce store built for high performance, verified product quality, and rapid checkout experience.
+      <div className="container footer-grid">
+        {/* BRAND & ABOUT */}
+        <div className="footer-col">
+          <div className="footer-brand">
+            <Store size={22} className="footer-brand-icon" />
+            <span>Nexoria</span>
+          </div>
+          <p className="footer-desc">
+            Discover curated electronics, modern accessories, lifestyle essentials, and smart home goods built to elevate your daily life.
           </p>
+          <div className="footer-trust-badge">
+            <ShieldCheck size={16} />
+            <span>Verified Authentic &amp; Stripe Protected</span>
+          </div>
         </div>
 
-        <div>
-          <h4 style={{ color: '#ffffff', fontSize: '1rem', marginBottom: '0.75rem' }}>Quick Navigation</h4>
-          <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.9rem' }}>
-            <li><Link to="/" style={{ color: '#94a3b8', transition: 'color 0.2s' }}>Home</Link></li>
-            <li><Link to="/products" style={{ color: '#94a3b8', transition: 'color 0.2s' }}>All Products</Link></li>
-            <li><Link to="/cart" style={{ color: '#94a3b8', transition: 'color 0.2s' }}>Shopping Cart</Link></li>
+        {/* QUICK LINKS */}
+        <div className="footer-col">
+          <h4 className="footer-heading">Shop Nexoria</h4>
+          <ul className="footer-links">
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/products">All Products</Link></li>
+            <li><Link to="/products?category=Electronics">Electronics</Link></li>
+            <li><Link to="/products?category=Accessories">Accessories</Link></li>
+            <li><Link to="/products?category=Lifestyle">Lifestyle</Link></li>
+            <li><Link to="/products?category=Home">Smart Home</Link></li>
           </ul>
         </div>
 
-        <div>
-          <h4 style={{ color: '#ffffff', fontSize: '1rem', marginBottom: '0.75rem' }}>Architecture</h4>
-          <p style={{ fontSize: '0.85rem', color: '#94a3b8', lineHeight: '1.6' }}>
-            <strong>Frontend:</strong> React 19 + Vite<br />
-            <strong>Backend:</strong> Express.js + Node.js<br />
-            <strong>Database:</strong> MongoDB + Mongoose
-          </p>
+        {/* CUSTOMER CARE */}
+        <div className="footer-col">
+          <h4 className="footer-heading">Customer Care</h4>
+          <ul className="footer-links">
+            <li><Link to="/cart">Shopping Cart</Link></li>
+            <li><Link to="/orders">Track Order</Link></li>
+            <li><Link to="/products">Shipping &amp; Delivery</Link></li>
+            <li><Link to="/products">30-Day Returns Policy</Link></li>
+            <li><Link to="/products">Terms of Service</Link></li>
+          </ul>
+        </div>
+
+        {/* CONTACT & SUPPORT */}
+        <div className="footer-col">
+          <h4 className="footer-heading">Contact &amp; Support</h4>
+          <ul className="footer-contact-list">
+            <li>
+              <Mail size={16} />
+              <span>support@nexoriastore.com</span>
+            </li>
+            <li>
+              <Phone size={16} />
+              <span>+1 (800) 555-0199</span>
+            </li>
+            <li>
+              <MapPin size={16} />
+              <span>San Francisco, CA 94105</span>
+            </li>
+            <li>
+              <CreditCard size={16} />
+              <span>Visa &bull; Mastercard &bull; Stripe</span>
+            </li>
+          </ul>
         </div>
       </div>
 
       <div className="container footer-bottom">
-        <p>© {new Date().getFullYear()} Nexoria Store. CodeAlpha Full-Stack Internship Project.</p>
+        <p>&copy; {new Date().getFullYear()} Nexoria. All rights reserved.</p>
       </div>
     </footer>
   );

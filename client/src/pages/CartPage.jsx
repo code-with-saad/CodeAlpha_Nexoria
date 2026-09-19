@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { ShoppingBag, ArrowRight, Trash2, ShieldCheck } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
@@ -49,13 +50,15 @@ export default function CartPage() {
         </div>
 
         <div className="card" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
-          <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🛒</div>
+          <div style={{ display: 'inline-flex', padding: '1.25rem', background: 'var(--color-muted)', borderRadius: '50%', marginBottom: '1.25rem' }}>
+            <ShoppingBag size={48} color="var(--color-muted-text)" />
+          </div>
           <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Your Cart is Empty</h2>
           <p style={{ color: 'var(--color-muted-text)', maxWidth: '450px', margin: '0 auto 2rem' }}>
             Looks like you haven't added anything to your cart yet. Explore our product catalog to discover trending items!
           </p>
           <Link to="/products" className="btn btn-primary" style={{ padding: '0.85rem 2rem' }}>
-            Browse Catalog 🚀
+            Browse Catalog <ArrowRight size={17} />
           </Link>
         </div>
       </div>
@@ -125,12 +128,11 @@ export default function CartPage() {
                     display: item.image?.startsWith('http') ? 'none' : 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '2rem',
                     height: '100%',
                     width: '100%'
                   }}
                 >
-                  📦
+                  <ShoppingBag size={32} color="var(--color-muted-text)" />
                 </div>
               </div>
 
@@ -204,11 +206,11 @@ export default function CartPage() {
                 </div>
                 <button
                   onClick={() => removeFromCart(item.product)}
-                  style={{ color: 'var(--color-destructive)', fontSize: '1.1rem', padding: '0.25rem' }}
+                  style={{ color: 'var(--color-destructive)', padding: '0.35rem', display: 'flex', alignItems: 'center' }}
                   title="Remove item"
                   aria-label="Remove item"
                 >
-                  🗑️
+                  <Trash2 size={18} />
                 </button>
               </div>
             </div>
@@ -262,13 +264,14 @@ export default function CartPage() {
           <button
             onClick={handleCheckoutClick}
             className="btn btn-accent"
-            style={{ width: '100%', padding: '0.85rem', fontSize: '1.05rem' }}
+            style={{ width: '100%', padding: '0.85rem', fontSize: '1.05rem', display: 'flex', justifyContent: 'center', gap: '0.5rem' }}
           >
-            Proceed to Checkout 💳
+            <span>Proceed to Checkout</span>
+            <ArrowRight size={18} />
           </button>
 
-          <p style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--color-muted-text)', marginTop: '1rem' }}>
-            🔒 Encrypted 256-bit checkout via Stripe Test Mode
+          <p style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--color-muted-text)', marginTop: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
+            <ShieldCheck size={15} /> Encrypted 256-bit checkout via Stripe
           </p>
         </div>
       </div>

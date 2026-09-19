@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
+import { CheckCircle2, Package, ShoppingBag, ArrowRight } from 'lucide-react';
 import api from '../services/api';
 
 export default function OrderConfirmationPage() {
@@ -51,7 +52,9 @@ export default function OrderConfirmationPage() {
           marginBottom: '2rem'
         }}
       >
-        <div style={{ fontSize: '4rem', marginBottom: '0.75rem' }}>🎉</div>
+        <div style={{ display: 'inline-flex', padding: '1.25rem', background: 'var(--color-muted)', borderRadius: '50%', marginBottom: '1.25rem' }}>
+          <CheckCircle2 size={48} color="var(--color-primary)" />
+        </div>
         <h1 style={{ fontSize: '2.25rem', color: 'var(--color-foreground)', marginBottom: '0.5rem' }}>
           Thank You for Your Order!
         </h1>
@@ -140,10 +143,12 @@ export default function OrderConfirmationPage() {
       {/* ACTION BUTTONS */}
       <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
         <Link to="/orders" className="btn btn-primary" style={{ padding: '0.85rem 1.75rem' }}>
-          View My Orders 📦
+          <Package size={17} />
+          View My Orders
         </Link>
         <Link to="/products" className="btn btn-outline" style={{ padding: '0.85rem 1.75rem' }}>
-          Continue Shopping 🛍️
+          <ShoppingBag size={17} />
+          Continue Shopping
         </Link>
       </div>
     </div>

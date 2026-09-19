@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Package, FileText, ArrowRight } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
@@ -66,7 +67,9 @@ export default function OrderHistoryPage() {
         </div>
 
         <div className="card" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
-          <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>📦</div>
+          <div style={{ display: 'inline-flex', padding: '1.25rem', background: 'var(--color-muted)', borderRadius: '50%', marginBottom: '1.25rem' }}>
+            <Package size={48} color="var(--color-muted-text)" />
+          </div>
           <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>No Orders Found</h2>
           <p style={{ color: 'var(--color-muted-text)', maxWidth: '420px', margin: '0 auto 1.5rem' }}>
             You haven't placed any orders with Nexoria yet. Browse our curated items to make your first purchase!
@@ -142,9 +145,10 @@ export default function OrderHistoryPage() {
                 <Link
                   to={`/order-confirmation/${order._id}`}
                   className="btn btn-outline"
-                  style={{ padding: '0.45rem 1rem', fontSize: '0.85rem' }}
+                  style={{ padding: '0.45rem 1rem', fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
                 >
-                  View Receipt 📄
+                  <FileText size={15} />
+                  <span>View Receipt</span>
                 </Link>
               </div>
             </div>
@@ -163,7 +167,7 @@ export default function OrderHistoryPage() {
                     gap: '0.5rem'
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
                     <span style={{ fontWeight: 800, color: 'var(--color-primary)' }}>{item.quantity}×</span>
                     <span style={{ fontWeight: 600 }}>{item.name}</span>
                   </div>
