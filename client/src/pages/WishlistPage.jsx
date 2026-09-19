@@ -87,7 +87,7 @@ export default function WishlistPage() {
       </div>
 
       {loading ? (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3].map(i => (
             <div key={i} className="skeleton-card">
               <div className="skeleton skeleton-img" />
@@ -112,7 +112,7 @@ export default function WishlistPage() {
           </Link>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))', gap: '1.75rem' }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map(prod => (
             <div key={prod._id} className="card product-card" style={{ display: 'flex', flexDirection: 'column' }}>
               <div className="product-image-container" style={{ marginBottom: '1rem', cursor: 'pointer' }} onClick={() => navigate(`/products/${prod._id}`)}>
