@@ -19,7 +19,7 @@ Nexoria is a premium e-commerce web application featuring a flagship-product edi
 
 ## Live Demo
 
-> Deployment pending. Link will be added here once hosted.
+> [Nexoria E-commerce store](https://codealpha-nexoria.vercel.app/).
 
 ---
 
