@@ -1,13 +1,13 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
 /* ==========================================================================
-   Nexoria Design System — Generated via ui-ux-pro-max
+   Nexoria Design System - Generated via ui-ux-pro-max
    Theme: Vibrant & Block-based / Clean E-commerce Showcase
    Palette: Rust / Terracotta (#D84315) & Deep Teal (#0F766E)
    ========================================================================== */
 
 :root {
-  /* Color Palette Tokens — Rust / Terracotta Primary */
+  /* Color Palette Tokens - Rust / Terracotta Primary */
   --color-primary: #d84315;
   --color-primary-hover: #bf360c;
   --color-primary-light: rgba(216, 67, 21, 0.12);
@@ -46,7 +46,7 @@
   --color-ring: #d84315;
   --color-navbar-bg: rgba(250, 247, 245, 0.92);
 
-  /* Typography Scale — Modern Premium Commerce */
+  /* Typography Scale - Modern Premium Commerce */
   --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-body: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -122,7 +122,7 @@
 
 [data-theme="dark"] .navbar {
   border-bottom-color: var(--color-border);
-  /* background-color intentionally omitted — inherits token --color-navbar-bg: rgba(4,26,16,0.94) */
+  /* background-color intentionally omitted - inherits token --color-navbar-bg: rgba(4,26,16,0.94) */
 }
 
 [data-theme="dark"] .nav-link {
@@ -328,6 +328,7 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
+  padding: 1.5rem;
   transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -377,7 +378,7 @@
   }
 }
 
-/* ── Flagship Editorial Hero Section — THEME-AWARE & FULL BLEED ── */
+/* ── Flagship Editorial Hero Section - THEME-AWARE & FULL BLEED ── */
 .flagship-hero {
   background: linear-gradient(145deg, #fdf6f3 0%, #faede8 45%, #f4dfd8 100%);
   color: #231714;
@@ -592,7 +593,7 @@
   margin-left: auto;
 }
 
-/* Dedicated Styled Stats Strip — Theme-Aware & Safe Responsive Layout */
+/* Dedicated Styled Stats Strip - Theme-Aware & Safe Responsive Layout */
 .flagship-stats-strip {
   display: flex;
   border-top: 2px solid var(--color-secondary);
@@ -762,7 +763,7 @@
   transform: translateY(0);
 }
 
-/* Stagger helpers — applied by JS via style.transitionDelay */
+/* Stagger helpers - applied by JS via style.transitionDelay */
 .reveal-up {
   opacity: 0;
   transform: translateY(16px);
@@ -2371,7 +2372,7 @@ button {
     gap: 0.5rem;
   }
 
-  /* Flagship hero — collapse to single col + shrink text */
+  /* Flagship hero - collapse to single col + shrink text */
   .flagship-hero-grid {
     grid-template-columns: 1fr !important;
     gap: 1.5rem;
@@ -2386,7 +2387,7 @@ button {
     font-size: clamp(2rem, 6vw, 3rem) !important;
   }
 
-  /* Products sidebar collapses — show mobile trigger */
+  /* Products sidebar collapses - show mobile trigger */
   .products-layout {
     grid-template-columns: 1fr;
   }
@@ -2438,7 +2439,7 @@ button {
     padding: 1.5rem 0;
   }
 
-  /* Hero section — single column, reduced padding */
+  /* Hero section - single column, reduced padding */
   .hero-asymmetric {
     padding: 2.25rem 1.5rem !important;
     border-radius: var(--radius-md) !important;
@@ -2467,7 +2468,7 @@ button {
     display: none !important;
   }
 
-  /* Product grid — single column */
+  /* Product grid - single column */
   [style*="minmax(270px"] {
     grid-template-columns: 1fr !important;
   }
@@ -2490,7 +2491,7 @@ button {
     font-size: 1.5rem !important;
   }
 
-  /* Trust bar — single column */
+  /* Trust bar - single column */
   .trust-bar {
     grid-template-columns: 1fr;
     padding: 1.25rem;
@@ -3308,4 +3309,19 @@ button {
     grid-template-columns: 1fr;
   }
 }
+
+/* ── Skeleton Box utility (full-block loading placeholder) ─────── */
+.skeleton-box {
+  background: linear-gradient(90deg, var(--color-muted) 25%, var(--color-border) 50%, var(--color-muted) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: var(--radius-md);
+}
+
+[data-theme="dark"] .skeleton-box {
+  background: linear-gradient(90deg, #271b17 25%, #3b2b25 50%, #271b17 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
 

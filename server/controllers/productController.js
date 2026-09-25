@@ -1,11 +1,11 @@
 import Product from '../models/Product.js';
 
-// @desc    Fetch all products (with search, category filters & pagination)
+// @desc    Fetch all products (with search, category filters, sorting & pagination)
 // @route   GET /api/products
 // @access  Public
 export const getProducts = async (req, res, next) => {
   try {
-    const { search, keyword, category, isFeatured, page = 1, limit = 12 } = req.query;
+    const { search, keyword, category, isFeatured, sort, page = 1, limit = 12 } = req.query;
     const filter = {};
 
     const searchTerm = search || keyword;
@@ -24,12 +24,22 @@ export const getProducts = async (req, res, next) => {
       filter.isFeatured = isFeatured === 'true' || isFeatured === true;
     }
 
+    // Determine sort order
+    let sortOptions = { createdAt: -1 }; // default: newest
+    if (sort === 'price_asc' || sort === 'lowest') {
+      sortOptions = { price: 1 };
+    } else if (sort === 'price_desc' || sort === 'highest') {
+      sortOptions = { price: -1 };
+    } else if (sort === 'newest') {
+      sortOptions = { createdAt: -1 };
+    }
+
     const pageNum = Math.max(1, parseInt(page, 10));
     const limitNum = Math.min(50, Math.max(1, parseInt(limit, 10)));
     const skip = (pageNum - 1) * limitNum;
 
     const [products, total] = await Promise.all([
-      Product.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limitNum),
+      Product.find(filter).sort(sortOptions).skip(skip).limit(limitNum),
       Product.countDocuments(filter)
     ]);
 
@@ -81,6 +91,13 @@ export const createProduct = async (req, res, next) => {
       throw new Error('Please provide name, description, price, image, category, and stock');
     }
 
+    const isFeaturedBool = isFeatured === true || isFeatured === 'true';
+
+    // If new product is set as featured flagship, unset isFeatured on all existing products
+    if (isFeaturedBool) {
+      await Product.updateMany({}, { isFeatured: false });
+    }
+
     const product = await Product.create({
       name,
       description,
@@ -88,7 +105,7 @@ export const createProduct = async (req, res, next) => {
       image,
       category,
       stock: Number(stock),
-      isFeatured: isFeatured === true || isFeatured === 'true'
+      isFeatured: isFeaturedBool
     });
 
     res.status(201).json({
@@ -121,8 +138,14 @@ export const updateProduct = async (req, res, next) => {
     product.image = image !== undefined ? image : product.image;
     product.category = category !== undefined ? category : product.category;
     product.stock = stock !== undefined ? Number(stock) : product.stock;
+
     if (isFeatured !== undefined) {
-      product.isFeatured = isFeatured === true || isFeatured === 'true';
+      const willBeFeatured = isFeatured === true || isFeatured === 'true';
+      if (willBeFeatured) {
+        // Enforce that only one product can be flagship at any time
+        await Product.updateMany({ _id: { $ne: product._id } }, { isFeatured: false });
+      }
+      product.isFeatured = willBeFeatured;
     }
 
     const updatedProduct = await product.save();

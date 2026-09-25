@@ -24,7 +24,7 @@ async function main() {
   let admin = await User.findOne({ email: ADMIN_EMAIL });
 
   if (admin) {
-    // Already exists — just make sure role is admin
+    // Already exists - just make sure role is admin
     admin.role = 'admin';
     await admin.save();
     console.log(`✅  Existing user promoted to admin: ${ADMIN_EMAIL}`);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   ArrowRight, ShoppingCart, Star, Package, Zap, Heart,
@@ -131,7 +131,7 @@ export default function HomePage() {
   return (
     <div className="home-page" ref={pageRef}>
 
-      {/* ── FLAGSHIP EDITORIAL HERO — THEME-AWARE & FULL BLEED ────── */}
+      {/* ── FLAGSHIP EDITORIAL HERO - THEME-AWARE & FULL BLEED ────── */}
       <section className="flagship-hero" aria-label="Flagship Product Showcase">
         <div className="flagship-hero-inner">
           <div className="flagship-hero-grid">
@@ -235,7 +235,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Dedicated Styled Stats Strip — Theme-Aware */}
+          {/* Dedicated Styled Stats Strip - Theme-Aware */}
           <div className="flagship-stats-strip reveal" data-delay="450">
             <div className="flagship-stat-col">
               <div className="flagship-stat-number"><CountUp end={12500} suffix="+" /></div>
@@ -257,10 +257,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── MARQUEE / TICKER STRIP — Full Bleed ───────────────────── */}
+      {/* ── MARQUEE / TICKER STRIP - Full Bleed ───────────────────── */}
       <MarqueeStrip />
 
-      {/* ── MAIN PAGE SECTIONS — inside container padding ─────────── */}
+      {/* ── MAIN PAGE SECTIONS - inside container padding ─────────── */}
       <div className="container mx-auto px-4 sm:px-6 w-full max-w-[1200px]">
 
         {/* ── SOCIAL PROOF / TRUST SIGNALS BAR ────────────────────── */}
@@ -297,7 +297,7 @@ export default function HomePage() {
 
         {/* ── CATEGORY SHOWCASE ───────────────────────────────────── */}
         <section className="home-section">
-          <div className="flex justify-between items-center mb-1 flex-wrap gap-4 reveal">
+          <div className="flex justify-between items-center mb-11 flex-wrap gap-4 reveal">
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold mb-1" style={{ fontFamily: 'var(--font-heading)' }}>Shop by Category</h2>
               <p style={{ color: 'var(--color-muted-text)', fontSize: '0.95rem' }}>Find exactly what you need in our curated sections</p>

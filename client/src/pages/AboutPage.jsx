@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+﻿import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Store, ShieldCheck, Truck, Award, Sparkles, HeartHandshake, ArrowRight } from 'lucide-react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
@@ -10,7 +10,7 @@ export default function AboutPage() {
   return (
     <div className="about-page" ref={pageRef}>
 
-      {/* ── THEME-AWARE EDITORIAL HERO — FULL BLEED ── */}
+      {/* ── THEME-AWARE EDITORIAL HERO - FULL BLEED ── */}
       <div
         className="flagship-hero"
         style={{
@@ -104,7 +104,7 @@ export default function AboutPage() {
               and everyday carry gear.
             </p>
             <p style={{ color: 'var(--color-muted-text)', lineHeight: 1.65, fontSize: '0.95rem', marginTop: '0.75rem' }}>
-              Every item in our catalog is chosen through rigorous quality benchmarks — from high-fidelity
+              Every item in our catalog is chosen through rigorous quality benchmarks, from high-fidelity
               acoustics and ergonomic workspaces to rugged mobile accessories.
             </p>
           </div>

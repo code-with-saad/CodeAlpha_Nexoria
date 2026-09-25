@@ -19,12 +19,29 @@ function FilterPanel({
   setMaxPrice,
   inStockOnly,
   setInStockOnly,
+  sort,
+  setSort,
   clearFilters,
   hasActiveFilters
 }) {
   return (
     <div>
-      <div className="filter-sidebar-title">FILTERS</div>
+      <div className="filter-sidebar-title">FILTERS &amp; SORT</div>
+
+      {/* Sort By */}
+      <div className="filter-section">
+        <span className="filter-section-label">SORT BY</span>
+        <select
+          className="form-select"
+          value={sort}
+          onChange={(e) => setSort(e.target.value)}
+          style={{ width: '100%', fontSize: '0.88rem' }}
+        >
+          <option value="newest">Newest First</option>
+          <option value="price_asc">Price: Low to High</option>
+          <option value="price_desc">Price: High to Low</option>
+        </select>
+      </div>
 
       {/* Search */}
       <div className="filter-section">
@@ -146,6 +163,7 @@ export default function ProductsPage() {
   const [category, setCategory]       = useState('');   // '' = All
   const [maxPrice, setMaxPrice]       = useState(MAX_PRICE_CAP);
   const [inStockOnly, setInStockOnly] = useState(false);
+  const [sort, setSort]               = useState('newest');
   const [limit, setLimit]             = useState(10);
   const [page, setPage]               = useState(1);
   const [totalPages, setTotalPages]   = useState(1);
@@ -162,13 +180,14 @@ export default function ProductsPage() {
   useScrollReveal(gridRef, { deps: [products] });
 
   /* ── Data Fetching ──────────────────────────────────────────────── */
-  const fetchProducts = useCallback(async (pg = 1, currentLimit = limit) => {
+  const fetchProducts = useCallback(async (pg = 1, currentLimit = limit, currentSort = sort) => {
     setLoading(true);
     try {
       const params = { page: pg, limit: currentLimit };
       if (search.trim())  params.search   = search.trim();
       if (category)       params.category  = category;
       if (inStockOnly)    params.inStock   = true;
+      if (currentSort)    params.sort      = currentSort;
       const { data } = await api.get('/products', { params });
       if (data?.data) {
         // Client-side price filter
@@ -186,21 +205,21 @@ export default function ProductsPage() {
     } finally {
       setLoading(false);
     }
-  }, [search, category, maxPrice, inStockOnly, limit]);
+  }, [search, category, maxPrice, inStockOnly, sort, limit, toast]);
 
-  /* Combined debounced fetch effect — handles page resets without triggering extra re-renders */
+  /* Combined debounced fetch effect - handles page resets without triggering extra re-renders */
   useEffect(() => {
     const debounce = setTimeout(() => {
-      fetchProducts(1, limit);
+      fetchProducts(1, limit, sort);
     }, 300);
     return () => clearTimeout(debounce);
-  }, [search, category, maxPrice, inStockOnly, limit]);
+  }, [search, category, maxPrice, inStockOnly, sort, limit, fetchProducts]);
 
   /* Pagination page change listener */
   const handlePageChange = (newPage) => {
     if (newPage < 1 || newPage > totalPages) return;
     setPage(newPage);
-    fetchProducts(newPage, limit);
+    fetchProducts(newPage, limit, sort);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -289,6 +308,8 @@ export default function ProductsPage() {
               setMaxPrice={setMaxPrice}
               inStockOnly={inStockOnly}
               setInStockOnly={setInStockOnly}
+              sort={sort}
+              setSort={setSort}
               clearFilters={clearFilters}
               hasActiveFilters={hasActiveFilters}
             />
@@ -310,6 +331,8 @@ export default function ProductsPage() {
             setMaxPrice={setMaxPrice}
             inStockOnly={inStockOnly}
             setInStockOnly={setInStockOnly}
+            sort={sort}
+            setSort={setSort}
             clearFilters={clearFilters}
             hasActiveFilters={hasActiveFilters}
           />
@@ -330,9 +353,24 @@ export default function ProductsPage() {
             </div>
           ) : (
             <>
-              {/* Results info */}
-              <div style={{ fontSize: '0.85rem', color: 'var(--color-muted-text)', marginBottom: '1rem', fontWeight: 600 }}>
-                Showing {products.length} of {total} results
+              {/* Results info & Top Sort Bar */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+                <div style={{ fontSize: '0.85rem', color: 'var(--color-muted-text)', fontWeight: 600 }}>
+                  Showing {products.length} of {total} results
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--color-muted-text)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Sort:</span>
+                  <select
+                    className="form-select"
+                    value={sort}
+                    onChange={(e) => setSort(e.target.value)}
+                    style={{ fontSize: '0.82rem', padding: '0.35rem 1.8rem 0.35rem 0.65rem', height: 'auto', minWidth: '155px' }}
+                  >
+                    <option value="newest">Newest First</option>
+                    <option value="price_asc">Price: Low to High</option>
+                    <option value="price_desc">Price: High to Low</option>
+                  </select>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

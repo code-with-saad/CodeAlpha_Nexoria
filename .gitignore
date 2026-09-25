@@ -3,12 +3,13 @@ node_modules/
 client/node_modules/
 server/node_modules/
 
-# Environment Variables
+# Environment Variables - NEVER commit these
 .env
 .env.local
 .env.*.local
 client/.env
 server/.env
+*.env
 
 # Production Builds
 dist/
@@ -36,3 +37,9 @@ Thumbs.db
 *.sln
 *.sw?
 .agents
+
+# Utility / one-time scripts (contain admin credentials or direct DB operations)
+# Keep locally, do not push to public repos
+server/createAdmin.js
+server/cleanupFlagship.js
+server/seed.js

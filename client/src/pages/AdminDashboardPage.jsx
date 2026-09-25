@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+﻿import React, { useState, useEffect, useCallback } from 'react';
 import {
   LayoutDashboard,
   Package,
@@ -20,8 +20,22 @@ import {
   TrendingUp,
   Filter,
   ChevronRight,
-  ExternalLink
+  ExternalLink,
+  BarChart3
 } from 'lucide-react';
+import {
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip as RechartsTooltip,
+  Legend,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid
+} from 'recharts';
 import api from '../services/api';
 import { useToast } from '../context/ToastContext';
 import ConfirmModal from '../components/ConfirmModal';
@@ -31,8 +45,12 @@ import OrderDetailModal from '../components/OrderDetailModal';
 export default function AdminDashboardPage() {
   const toast = useToast();
 
-  // Active Navigation Tab: 'overview' | 'products' | 'orders'
+  // Active Navigation Tab: 'overview' | 'products' | 'orders' | 'analytics'
   const [activeTab, setActiveTab] = useState('overview');
+
+  // Analytics State
+  const [analyticsData, setAnalyticsData] = useState(null);
+  const [analyticsLoading, setAnalyticsLoading] = useState(false);
 
   // Overview Stats
   const [stats, setStats] = useState(null);
@@ -120,12 +138,38 @@ export default function AdminDashboardPage() {
     }
   }, [toast]);
 
+  // Fetch Analytics
+  const fetchAnalytics = useCallback(async () => {
+    setAnalyticsLoading(true);
+    try {
+      const res = await api.get('/admin/analytics');
+      if (res.data?.data) {
+        setAnalyticsData(res.data.data);
+      }
+    } catch (err) {
+      toast.error(err.message || 'Failed to load analytics data', {
+        title: 'Analytics Error'
+      });
+    } finally {
+      setAnalyticsLoading(false);
+    }
+  }, [toast]);
+
   // Initial Load
   useEffect(() => {
     fetchStats();
     fetchProducts();
     fetchOrders();
   }, [fetchStats, fetchProducts, fetchOrders]);
+
+  // Load analytics when tab is selected (fetch-once guard via ref)
+  const analyticsFetchedRef = React.useRef(false);
+  useEffect(() => {
+    if (activeTab === 'analytics' && !analyticsFetchedRef.current) {
+      analyticsFetchedRef.current = true;
+      fetchAnalytics();
+    }
+  }, [activeTab, fetchAnalytics]);
 
   // Handle Product Create / Edit Submit
   const handleProductSubmit = async (formData) => {
@@ -345,6 +389,14 @@ export default function AdminDashboardPage() {
           <ShoppingBag size={18} />
           <span>Orders</span>
           <span className="admin-tab-count">{orders.length}</span>
+        </button>
+        <button
+          type="button"
+          className={`admin-tab-btn ${activeTab === 'analytics' ? 'active' : ''}`}
+          onClick={() => setActiveTab('analytics')}
+        >
+          <BarChart3 size={18} />
+          <span>Analytics</span>
         </button>
       </div>
 
@@ -860,6 +912,229 @@ export default function AdminDashboardPage() {
               </table>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* ─────────────────────────────────────────────────────────────
+          TAB 4: ANALYTICS
+         ───────────────────────────────────────────────────────────── */}
+      {activeTab === 'analytics' && (
+        <div className="admin-tab-content">
+          {/* Header */}
+          <div style={{ marginBottom: '2rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.4rem' }}>
+              <BarChart3 size={22} color="var(--color-primary)" />
+              <h2 style={{ fontSize: '1.3rem', fontWeight: 800, fontFamily: 'var(--font-heading)', margin: 0 }}>
+                Reports &amp; Analytics
+              </h2>
+            </div>
+            <p style={{ fontSize: '0.88rem', color: 'var(--color-muted-text)', marginBottom: 0 }}>
+              Order distribution, revenue trends, and operational insights over the last 30 days.
+            </p>
+          </div>
+
+          {analyticsLoading ? (
+            <div style={{ display: 'grid', gap: '1.5rem' }}>
+              <div className="skeleton-box" style={{ height: '340px', borderRadius: 'var(--radius-md)' }} />
+              <div className="skeleton-box" style={{ height: '300px', borderRadius: 'var(--radius-md)' }} />
+            </div>
+          ) : analyticsData ? (
+            <>
+              {/* ── KPI Summary Strip ── */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+                gap: '1rem',
+                marginBottom: '2rem'
+              }}>
+                {analyticsData.statusDistribution.map((s) => (
+                  <div key={s.status} className="admin-metric-card" style={{ padding: '1rem 1.25rem' }}>
+                    <div style={{ fontSize: '0.7rem', fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-muted-text)', marginBottom: '0.35rem' }}>
+                      {s.status}
+                    </div>
+                    <div style={{ fontSize: '1.6rem', fontWeight: 900, fontFamily: 'var(--font-heading)', color: 'var(--color-foreground)', lineHeight: 1.1 }}>
+                      {s.count}
+                    </div>
+                    {s.totalValue > 0 && (
+                      <div style={{ fontSize: '0.76rem', color: 'var(--color-muted-text)', marginTop: '0.2rem' }}>
+                        ${s.totalValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* ── Charts Row ── */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.6fr)', gap: '1.5rem', alignItems: 'start' }}>
+
+                {/* Pie Chart - Order Status Distribution */}
+                <div className="card" style={{ padding: '1.5rem' }}>
+                  <div style={{ marginBottom: '1.25rem' }}>
+                    <div style={{ fontSize: '0.72rem', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-primary)', marginBottom: '0.2rem' }}>Status Distribution</div>
+                    <div style={{ fontSize: '1rem', fontWeight: 700, fontFamily: 'var(--font-heading)' }}>Orders by Status</div>
+                  </div>
+                  <ResponsiveContainer width="100%" height={280}>
+                    <PieChart>
+                      <Pie
+                        data={analyticsData.statusDistribution.filter(s => s.count > 0)}
+                        dataKey="count"
+                        nameKey="status"
+                        cx="50%"
+                        cy="45%"
+                        outerRadius={95}
+                        innerRadius={45}
+                        paddingAngle={3}
+                        strokeWidth={0}
+                      >
+                        {analyticsData.statusDistribution.filter(s => s.count > 0).map((entry, i) => {
+                          const STATUS_COLORS = {
+                            Pending:    '#f59e0b',
+                            Processing: '#3b82f6',
+                            Paid:       '#10b981',
+                            Shipped:    '#8b5cf6',
+                            Delivered:  '#d84315',
+                            Cancelled:  '#ef4444',
+                          };
+                          return <Cell key={entry.status} fill={STATUS_COLORS[entry.status] || '#94a3b8'} />;
+                        })}
+                      </Pie>
+                      <RechartsTooltip
+                        contentStyle={{
+                          background: 'var(--color-card)',
+                          border: '1px solid var(--color-border)',
+                          borderRadius: '8px',
+                          fontSize: '0.82rem',
+                          color: 'var(--color-foreground)'
+                        }}
+                        formatter={(value, name) => [value + ' orders', name]}
+                      />
+                      <Legend
+                        iconType="circle"
+                        iconSize={9}
+                        formatter={(value) => <span style={{ fontSize: '0.78rem', color: 'var(--color-muted-text)' }}>{value}</span>}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+
+                {/* Area Chart - 30-day Revenue & Orders */}
+                <div className="card" style={{ padding: '1.5rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+                    <div>
+                      <div style={{ fontSize: '0.72rem', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-primary)', marginBottom: '0.2rem' }}>30-Day Trend</div>
+                      <div style={{ fontSize: '1rem', fontWeight: 700, fontFamily: 'var(--font-heading)' }}>Revenue &amp; Order Volume</div>
+                    </div>
+                    <div style={{ display: 'flex', gap: '1rem', fontSize: '0.78rem' }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                        <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--color-primary)', display: 'inline-block' }} />
+                        Revenue
+                      </span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                        <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--color-secondary)', display: 'inline-block' }} />
+                        Orders
+                      </span>
+                    </div>
+                  </div>
+                  <ResponsiveContainer width="100%" height={280}>
+                    <AreaChart data={analyticsData.timelineData} margin={{ top: 8, right: 4, left: 0, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id="gradRevenue" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="var(--color-primary)" stopOpacity={0.35} />
+                          <stop offset="95%" stopColor="var(--color-primary)" stopOpacity={0.03} />
+                        </linearGradient>
+                        <linearGradient id="gradOrders" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="var(--color-secondary)" stopOpacity={0.3} />
+                          <stop offset="95%" stopColor="var(--color-secondary)" stopOpacity={0.02} />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
+                      <XAxis
+                        dataKey="formattedDate"
+                        tick={{ fontSize: 10, fill: 'var(--color-muted-text)' }}
+                        tickLine={false}
+                        axisLine={false}
+                        interval={4}
+                      />
+                      <YAxis
+                        yAxisId="revenue"
+                        orientation="left"
+                        tick={{ fontSize: 10, fill: 'var(--color-muted-text)' }}
+                        tickLine={false}
+                        axisLine={false}
+                        tickFormatter={(v) => v >= 1000 ? `$${(v/1000).toFixed(1)}k` : `$${v}`}
+                        width={48}
+                      />
+                      <YAxis
+                        yAxisId="orders"
+                        orientation="right"
+                        tick={{ fontSize: 10, fill: 'var(--color-muted-text)' }}
+                        tickLine={false}
+                        axisLine={false}
+                        allowDecimals={false}
+                        width={32}
+                      />
+                      <RechartsTooltip
+                        contentStyle={{
+                          background: 'var(--color-card)',
+                          border: '1px solid var(--color-border)',
+                          borderRadius: '8px',
+                          fontSize: '0.82rem',
+                          color: 'var(--color-foreground)'
+                        }}
+                        formatter={(value, name) =>
+                          name === 'revenue'
+                            ? [`$${Number(value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, 'Revenue']
+                            : [value, 'Orders']
+                        }
+                        labelStyle={{ color: 'var(--color-muted-text)', fontSize: '0.75rem', marginBottom: '0.25rem' }}
+                      />
+                      <Area
+                        yAxisId="revenue"
+                        type="monotone"
+                        dataKey="revenue"
+                        stroke="var(--color-primary)"
+                        strokeWidth={2.5}
+                        fill="url(#gradRevenue)"
+                        dot={false}
+                        activeDot={{ r: 5, fill: 'var(--color-primary)', strokeWidth: 0 }}
+                      />
+                      <Area
+                        yAxisId="orders"
+                        type="monotone"
+                        dataKey="orders"
+                        stroke="var(--color-secondary)"
+                        strokeWidth={2}
+                        fill="url(#gradOrders)"
+                        dot={false}
+                        activeDot={{ r: 4, fill: 'var(--color-secondary)', strokeWidth: 0 }}
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              {/* Refresh note */}
+              <div style={{ marginTop: '1.25rem', textAlign: 'right' }}>
+                <button
+                  type="button"
+                  className="btn btn-ghost"
+                  style={{ fontSize: '0.8rem', gap: '0.4rem' }}
+                  onClick={fetchAnalytics}
+                  disabled={analyticsLoading}
+                >
+                  <RefreshCw size={13} />
+                  Refresh Analytics
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="card" style={{ textAlign: 'center', padding: '4rem 1.5rem' }}>
+              <BarChart3 size={48} style={{ color: 'var(--color-muted-text)', margin: '0 auto 1rem' }} />
+              <h3 style={{ fontSize: '1.15rem', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>No analytics data</h3>
+              <p style={{ color: 'var(--color-muted-text)', marginBottom: '1.5rem' }}>Place some orders first to see charts populate.</p>
+              <button className="btn btn-outline" onClick={fetchAnalytics}>Load Analytics</button>
+            </div>
+          )}
         </div>
       )}
 
