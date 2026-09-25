@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 5000;
 
 // Body Parsers & CORS Middleware
 app.use(cors({
-  origin: process.env.CLIENT_URL || '*',
+  origin: (origin, callback) => callback(null, true),
   credentials: true
 }));
 app.use((req, res, next) => {
