@@ -1,4 +1,4 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
 
 /* ==========================================================================
    Nexoria Design System - Generated via ui-ux-pro-max
@@ -1695,6 +1695,10 @@ button {
   animation: fadeIn 0.2s ease-out;
 }
 
+.filter-mobile-backdrop.open {
+  display: block !important;
+}
+
 .filter-mobile-panel {
   position: fixed;
   top: 0;
@@ -2684,6 +2688,33 @@ button {
   .admin-metrics-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ── Extra Safety Responsive Helpers ──────────────────── */
+@media (max-width: 1024px) {
+  .products-layout {
+    grid-template-columns: 220px 1fr;
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .products-layout {
+    grid-template-columns: 1fr;
+  }
+  .filter-sidebar {
+    display: none;
+  }
+  .filter-mobile-btn {
+    display: inline-flex !important;
+  }
+}
+
+/* Global table overflow container wrapper */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ==========================================================================
