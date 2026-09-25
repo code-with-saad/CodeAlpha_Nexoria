@@ -18,14 +18,17 @@ const PORT = process.env.PORT || 5000;
 
 // Body Parsers & CORS Middleware
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+  origin: process.env.CLIENT_URL || '*',
   credentials: true
 }));
+app.use((req, res, next) => {
+  connectDB().then(() => next()).catch(next);
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Root Route & API Info
-app.get('/', (req, res) => {
+app.get(['/', '/api'], (req, res) => {
   res.status(200).json({
     status: 'online',
     project: 'Nexoria E-Commerce API',
@@ -73,8 +76,11 @@ app.use('/api/admin', adminRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-// Start Express Server & Connect Database
-app.listen(PORT, () => {
-  console.log(`🚀 Nexoria Server running on port ${PORT} (http://localhost:${PORT})`);
-  connectDB();
-});
+// Start Express Server (only when run directly in dev)
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`🚀 Nexoria Server running on port ${PORT} (http://localhost:${PORT})`);
+  });
+}
+
+export default app;
