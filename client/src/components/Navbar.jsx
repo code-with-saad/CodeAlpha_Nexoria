@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
-import { ShoppingCart, User, LogOut, Sun, Moon, Store, Heart, Package, ChevronDown, Menu, X, Info, Phone, Home, ShoppingBag, Shield } from 'lucide-react';
+import { ShoppingCart, User, LogOut, Sun, Moon, Store, Heart, Package, ChevronDown, Menu, X, Info, LayoutGrid, Phone, Home, ShoppingBag, Shield } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
@@ -77,6 +77,7 @@ export default function Navbar() {
   };
 
   return (
+    <>
     <header className="navbar">
       <div className="container nav-container">
         {/* BRAND */}
@@ -140,12 +141,12 @@ export default function Navbar() {
           <button
             type="button"
             onClick={openCart}
-            className="btn btn-outline"
+            className="btn btn-outline nav-cart-btn"
             style={{ padding: '0.45rem 0.95rem', fontSize: '0.875rem', position: 'relative', gap: '0.4rem' }}
             aria-label="Open cart drawer"
           >
             <ShoppingCart size={18} />
-            Cart
+            <span className="nav-cart-label">Cart</span>
             {totalItems > 0 && (
               <span style={{
                 background: 'var(--color-accent)', color: 'var(--color-on-accent)',
@@ -159,7 +160,7 @@ export default function Navbar() {
           </button>
 
           {isAuthenticated ? (
-            <div className="user-dropdown-container" ref={dropdownRef}>
+            <div className="user-dropdown-container nav-desktop-only" ref={dropdownRef}>
               <button
                 type="button"
                 className="user-badge-pill"
@@ -223,7 +224,7 @@ export default function Navbar() {
               )}
             </div>
           ) : (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div className="nav-desktop-only" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Link to="/login" className="btn btn-outline" style={{ padding: '0.45rem 0.95rem', fontSize: '0.875rem' }}>
                 Sign In
               </Link>
@@ -405,5 +406,36 @@ export default function Navbar() {
         </div>
       )}
     </header>
+
+    {/* MOBILE BOTTOM NAV BAR */}
+    <nav className="bottom-nav" aria-label="Bottom Navigation">
+      <NavLink to="/" end className={({ isActive }) => 'bottom-nav-item' + (isActive ? ' active' : '')}>
+        <Home size={20} />
+        <span>Home</span>
+      </NavLink>
+      <NavLink to="/products" className={({ isActive }) => 'bottom-nav-item' + (isActive ? ' active' : '')}>
+        <LayoutGrid size={20} />
+        <span>Shop</span>
+      </NavLink>
+      <button type="button" className="bottom-nav-item" onClick={openCart} aria-label="Open cart">
+        <span className="bottom-nav-icon-wrap">
+          <ShoppingCart size={20} />
+          {totalItems > 0 && <span className="bottom-nav-badge">{totalItems}</span>}
+        </span>
+        <span>Cart</span>
+      </button>
+      <NavLink to="/wishlist" className={({ isActive }) => 'bottom-nav-item' + (isActive ? ' active' : '')}>
+        <Heart size={20} />
+        <span>Wishlist</span>
+      </NavLink>
+      <NavLink
+        to={isAuthenticated ? '/profile' : '/login'}
+        className={({ isActive }) => 'bottom-nav-item' + (isActive ? ' active' : '')}
+      >
+        <User size={20} />
+        <span>{isAuthenticated ? 'Account' : 'Sign In'}</span>
+      </NavLink>
+    </nav>
+    </>
   );
 }

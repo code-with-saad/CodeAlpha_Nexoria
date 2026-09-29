@@ -3383,3 +3383,70 @@ table { max-width: 100%; }
   .container { padding: 0 0.75rem; }
   .btn { padding: 0.6rem 1rem; }
 }
+
+
+/* ── Mobile Navbar + Bottom Bar ─────────────────────────── */
+.bottom-nav { display: none; }
+
+@media (max-width: 768px) {
+  .nav-desktop-only { display: none !important; }
+  .nav-cart-label { display: none; }
+  .nav-cart-btn { padding: 0.45rem 0.6rem !important; }
+  .nav-container { gap: 0.5rem; }
+  .brand-logo { min-width: 0; white-space: nowrap; }
+  .nav-actions { margin-left: auto; flex-shrink: 0; }
+  .mobile-nav-toggle { width: 2.4rem; height: 2.4rem; padding: 0; }
+  .mobile-nav-drawer { height: 100dvh; width: min(320px, 85vw); }
+  .mobile-nav-body { overflow-y: auto; }
+
+  .bottom-nav {
+    display: flex;
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 60;
+    background: var(--color-navbar-bg);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 1px solid var(--color-border);
+    box-shadow: 0 -4px 18px rgba(35, 23, 20, 0.08);
+    padding: 0.3rem 0.25rem calc(0.3rem + env(safe-area-inset-bottom));
+  }
+  .bottom-nav-item {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.15rem;
+    padding: 0.4rem 0.15rem;
+    font-size: 0.66rem;
+    font-weight: 700;
+    color: var(--color-muted-text);
+    border-radius: var(--radius-md);
+    transition: color var(--transition-fast), background-color var(--transition-fast);
+  }
+  .bottom-nav-item span:not(.bottom-nav-icon-wrap):not(.bottom-nav-badge) {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .bottom-nav-item.active { color: var(--color-primary); background: var(--color-primary-light); }
+  .bottom-nav-icon-wrap { position: relative; display: inline-flex; }
+  .bottom-nav-badge {
+    position: absolute; top: -6px; right: -10px;
+    min-width: 16px; padding: 0 4px;
+    background: var(--color-primary); color: #fff;
+    font-size: 0.62rem; font-weight: 800; line-height: 16px;
+    text-align: center; border-radius: var(--radius-full);
+  }
+
+  body { padding-bottom: calc(4rem + env(safe-area-inset-bottom)); }
+  .toast-container { bottom: calc(4.75rem + env(safe-area-inset-bottom)) !important; }
+  .mobile-nav-backdrop, .cart-drawer-backdrop { z-index: 1000; }
+}
+@media (max-width: 380px) {
+  .brand-logo { font-size: 1.15rem; gap: 0.35rem; }
+  .bottom-nav-item { font-size: 0.6rem; }
+}
