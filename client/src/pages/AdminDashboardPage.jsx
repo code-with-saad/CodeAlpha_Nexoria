@@ -943,7 +943,7 @@ export default function AdminDashboardPage() {
               {/* ── KPI Summary Strip ── */}
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(min(140px, 100%), 1fr))',
                 gap: '1rem',
                 marginBottom: '2rem'
               }}>
@@ -965,7 +965,7 @@ export default function AdminDashboardPage() {
               </div>
 
               {/* ── Charts Row ── */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.6fr)', gap: '1.5rem', alignItems: 'start' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: '1.5rem', alignItems: 'start' }}>
 
                 {/* Pie Chart - Order Status Distribution */}
                 <div className="card" style={{ padding: '1.5rem' }}>

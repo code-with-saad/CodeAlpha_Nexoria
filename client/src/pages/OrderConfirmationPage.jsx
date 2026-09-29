@@ -87,7 +87,7 @@ export default function OrderConfirmationPage() {
             </button>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', marginBottom: '1.75rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(240px, 100%), 1fr))', gap: '1.5rem', marginBottom: '1.75rem' }}>
             <div>
               <h3 style={{ fontSize: '0.9rem', color: 'var(--color-muted-text)', textTransform: 'uppercase', marginBottom: '0.35rem' }}>
                 Delivery Address

@@ -92,7 +92,7 @@ export default function ProductDetailPage() {
         <div style={{ marginBottom: '1.5rem' }}>
           <div className="skeleton" style={{ height: '20px', width: '150px' }} />
         </div>
-        <div className="card" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2.5rem', padding: '2.5rem' }}>
+        <div className="card" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px, 100%), 1fr))', gap: '2rem', padding: 'clamp(1rem, 4vw, 2.5rem)' }}>
           <div className="skeleton" style={{ height: '380px', width: '100%' }} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <div className="skeleton" style={{ height: '24px', width: '30%' }} />
@@ -136,7 +136,7 @@ export default function ProductDetailPage() {
         </button>
       </div>
 
-      <div className="card" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '3rem', padding: '2.5rem', marginBottom: '4rem' }}>
+      <div className="card" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px, 100%), 1fr))', gap: '3rem', padding: 'clamp(1rem, 4vw, 2.5rem)', marginBottom: '4rem' }}>
 
         {/* PRODUCT IMAGE */}
         <div style={{ minHeight: '380px', background: 'var(--color-muted)', borderRadius: 'var(--radius-lg)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', position: 'relative' }}>

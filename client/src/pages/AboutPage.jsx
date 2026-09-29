@@ -25,7 +25,7 @@ export default function AboutPage() {
         {/* Decorative glow */}
         <div style={{
           position: 'absolute', top: '-80px', left: '50%', transform: 'translateX(-50%)',
-          width: '450px', height: '450px',
+          width: 'min(450px, 100%)', aspectRatio: '1 / 1',
           background: 'radial-gradient(circle, rgba(216,67,21,0.12) 0%, rgba(153,101,21,0.08) 50%, transparent 70%)',
           pointerEvents: 'none'
         }} />
@@ -92,7 +92,7 @@ export default function AboutPage() {
       <div style={{ padding: '0 max(1.5rem, calc((100vw - 1200px) / 2 + 1.5rem))' }}>
 
         {/* ── BRAND STORY & MISSION ────────────────────────────────────── */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', marginBottom: '3.5rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: '2rem', marginBottom: '3.5rem' }}>
           <div className="card reveal" data-delay="0" style={{ padding: '2rem' }}>
             <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', background: 'var(--color-primary-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem', color: 'var(--color-primary)' }}>
               <Sparkles size={24} />
@@ -130,7 +130,7 @@ export default function AboutPage() {
           <h2 className="reveal" style={{ fontSize: '1.85rem', textAlign: 'center', marginBottom: '2rem', fontFamily: 'var(--font-display)' }}>
             Why Customers Choose Nexoria
           </h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(220px, 100%), 1fr))', gap: '1.5rem' }}>
             {[
               { Icon: ShieldCheck, title: '100% Authentic', desc: 'Direct supplier partnerships guaranteeing genuine products with full manufacturer warranty.' },
               { Icon: Truck, title: 'Swift Delivery', desc: 'Fast tracked dispatch and insured shipping to guarantee your items arrive safely.' },

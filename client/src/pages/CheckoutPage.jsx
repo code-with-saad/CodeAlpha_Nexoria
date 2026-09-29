@@ -155,7 +155,7 @@ export default function CheckoutPage() {
         </p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2.5rem', alignItems: 'start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px, 100%), 1fr))', gap: '2.5rem', alignItems: 'start' }}>
         {/* LEFT COLUMN: SHIPPING & PAYMENT FORM */}
         <div>
           <form onSubmit={handlePlaceOrder}>
@@ -183,7 +183,7 @@ export default function CheckoutPage() {
                 {formErrors.address && <span className="form-error-text">{formErrors.address}</span>}
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(200px, 100%), 1fr))', gap: '1rem' }}>
                 <div className="form-group">
                   <label className="form-label" htmlFor="city">
                     City
@@ -285,7 +285,7 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(200px, 100%), 1fr))', gap: '1rem' }}>
                 <div className="form-group">
                   <label className="form-label">Expires</label>
                   <input

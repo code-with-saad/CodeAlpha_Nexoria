@@ -917,8 +917,6 @@
 /* Reset & Global Defaults */
 *, *::before, *::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html {
@@ -3356,3 +3354,32 @@ button {
 }
 
 
+
+
+/* ── Global responsive safety net ───────────────────────── */
+img, video, svg, canvas { max-width: 100%; }
+body { overflow-x: hidden; }
+.card, .table-responsive, .admin-table-wrapper { max-width: 100%; }
+table { max-width: 100%; }
+
+@media (max-width: 640px) {
+  .main-content { padding: 1.5rem 0; }
+  .page-title { font-size: 1.6rem; }
+  .card { padding: 1.15rem; }
+  .auth-card { padding: 1.5rem 1.15rem; }
+  .auth-wrapper { margin: 1rem auto; }
+  .nav-container { height: 4rem; }
+  .brand-logo { font-size: 1.3rem; }
+  .cta-split-banner { padding: 2rem 1.15rem; }
+  .cta-stat-num { font-size: 1.75rem; }
+  .toast-container { right: 1rem; left: 1rem; bottom: 1rem; width: auto; max-width: none; }
+  .filters-bar { padding: 0.75rem; }
+  .search-box { min-width: 100%; }
+  .product-image-container { height: 170px; }
+  .flagship-actions .btn { flex: 1 1 100%; }
+  .trust-bar { padding: 1.25rem 1rem; }
+}
+@media (max-width: 400px) {
+  .container { padding: 0 0.75rem; }
+  .btn { padding: 0.6rem 1rem; }
+}
