@@ -115,3 +115,4 @@ npm run dev                 # runs on http://localhost:5173
 
 
 Part of a 3-project internship submission for CodeAlpha.
+1. [Nexoria](https://github.com/code-with-saad/CodeAlpha_Nexoria) 2. [Circl](https://codealpha-circl.vercel.app/) 
